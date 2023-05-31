@@ -9,7 +9,7 @@ const Navbar = () => (
         <div class="nav-inner">
             <div class="nav-items">
                 <Link activeClassName="active" href="/feed"><i class="bi bi-house"></i> Feed</Link>
-                <Link activeClassName="active" href="/saved-recipes"><i class="bi bi-bookmark"></i> Saved Recipes</Link>
+                <Link activeClassName="active" href="/savedrecipes"><i class="bi bi-bookmark"></i> Saved Recipes</Link>
                 <Link activeClassName="active" href="/recipes"><i class="bi bi-journals"></i> Recipes</Link>
                 <Link activeClassName="active" href="/lists"><i class="bi bi-list-task"></i> Lists</Link>
                 <Link activeClassName="active" href="/pantries"><i class="bi bi-bookshelf"></i> Pantries</Link>

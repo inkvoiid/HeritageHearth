@@ -1,9 +1,9 @@
 import { Component, h } from 'preact';
 
-class Home extends Component {
+class Pantry extends Component {
 
 	componentDidMount() {
-		document.title = 'Home - Our Kitchen';
+		document.title = 'Pantry - Our Kitchen';
 	  }
 
 	render() {
@@ -19,4 +19,4 @@ class Home extends Component {
 	};
 };
 
-export default Home;
+export default Pantry;

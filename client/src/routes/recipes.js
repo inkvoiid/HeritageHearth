@@ -1,16 +1,16 @@
 import { Component, h } from 'preact';
 
-class Home extends Component {
+class Recipes extends Component {
 
 	componentDidMount() {
-		document.title = 'Home - Our Kitchen';
+		document.title = 'Recipes - Our Kitchen';
 	  }
 
 	render() {
 		return(
 		<>
 		<article style="text-align:center;">
-			<h1 class="brown">Kia Ora!</h1>
+			<h1 class="brown">Your Recipes</h1>
 			<h3>Nau mai, Haere mai ki Our Kitchen</h3>
 			<p>This is the Home component.</p>
 		</article>
@@ -19,4 +19,4 @@ class Home extends Component {
 	};
 };
 
-export default Home;
+export default Recipes;
