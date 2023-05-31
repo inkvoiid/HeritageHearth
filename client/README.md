@@ -1,4 +1,4 @@
-# client
+# preact
 
 ## CLI Commands
 

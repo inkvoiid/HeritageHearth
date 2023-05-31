@@ -11,11 +11,10 @@ var app = express();
 app.use(bodyParser.json());
 
 var db = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@127.0.0.1:27017/ourKitchen?authSource=${process.env.DB_AUTHSOURCE}`;
-console.log(db);
 
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(function() {
-        console.log('MongoDB connected...');
+        console.log('MongoDB connected successfully');
     })
     .catch(function(err) {
         console.log(err);
