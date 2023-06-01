@@ -5,6 +5,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// Import routes
+import userroute from './routes/api/userroute.js';
+
 var app = express();
 
 // Add body parser middleware to handle JSON data
@@ -22,6 +25,8 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 var port = process.env.PORT || 5000;
+
+app.use("/api/users", userroute);
 
 // Route for HOME
 app.get('/', function(req, res) {

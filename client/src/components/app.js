@@ -21,7 +21,7 @@ const App = () => (
 			<Router>
 				<Home path="/" />
 				<Feed path="/feed" />
-				<SavedRecipes path="/savedrecipes" />
+				<SavedRecipes path="/saved-recipes" />
 				<Recipes path="/recipes" />
 				<Lists path="/lists" />
 				<Pantries path="/pantries" />
