@@ -22,6 +22,14 @@ const userSchema = new Schema(
         type: String,
         default: "default-profile-pic.jpg"
     },
+    "email": {
+        type: String,
+        required: true
+    },
+    "password": {
+        type: String,
+        required: true
+    },
     "friends": [
       {
         "_id": false,
