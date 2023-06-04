@@ -2,6 +2,11 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser'; 
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -30,15 +35,24 @@ app.use("/api/users", userroute);
 
 // Route for HOME
 app.get('/', function(req, res) {
-    res.json({reply:'Route for HOME path'});
+    res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
 // Route for Error 404
-app.get('*' , function(req, res) {
-    res.send('Error 404: Page not found');
+app.all('*' , function(req, res) {
+    res.status(404)
+    if(req.accepts('html')){
+        res.sendFile(path.join(__dirname, 'views', '404.html'));
+    }
+    else if(req.accepts('json')){
+        res.json({message: '404 Not found'});
+    }
+    else{
+        res.type('txt').send('404 Not found');
+    }
 });
 
 // Start server
 app.listen(port, function() {
-    console.log('Server listening on port ' + port);
+    console.log('Server running on port ' + port);
 });
