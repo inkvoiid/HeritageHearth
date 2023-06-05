@@ -12,6 +12,7 @@ dotenv.config();
 
 // Import routes
 import userroute from './routes/api/userroute.js';
+import reciperoute from './routes/api/reciperoute.js';
 
 var app = express();
 
@@ -32,6 +33,7 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 var port = process.env.PORT || 5000;
 
 app.use("/api/users", userroute);
+app.use("/api/recipes", reciperoute);
 
 // Route for HOME
 app.get('/', function(req, res) {

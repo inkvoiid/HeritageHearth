@@ -181,6 +181,10 @@ router.put("/:id?", async function (req, res) {
 });
 
 // Route for DELETE request to delete a user by id
+
+// @desc    Delete a user
+// @route   DELETE /api/users/:id
+// @access  Private
 router.delete("/:id?", async function (req, res) {
 
     // Get the id from the request parameters
@@ -209,11 +213,11 @@ router.delete("/:id?", async function (req, res) {
 
     // Remove user from other users' friends array
     // TODO: Double Triple Check this works as intended
-    const friends = await users.find({ friends: { $elemMatch: { friendId: requestedId } } }).exec();
-    for (const friend of friends) {
-        friend.friends = friend.friends.filter(f => f.friendId !== requestedId);
-        await friend.save();
-    }
+    await User.updateMany(
+        { friends: { $elemMatch: { friendId: requestedId } } }, // Filter condition: users who have the requestedId as a friend
+        { $pull: { friends: { friendId: requestedId } } } // Update operation: remove the friend with friendId equal to requestedId
+    );
+  
 
     // Delete user
     const result = await user.deleteOne();

@@ -4,16 +4,19 @@ const { Schema } = mongoose;
 
 // Create a schema for the comment taht goes in a recipe, so that it can recursively be replied to
 const commentSchema = new Schema({
-    userId: String,
-    content: String,
-    userLikes: [
-      {
-        type: String
-      }
-    ],
-    replies: [this] // Array of comments for nested replies
-  });
-
+        userId: String,
+        content: String,
+        userLikes: [
+            {
+                type: String
+            }
+        ],
+        replies: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Comment'
+          }]
+    });
+    const Comment = mongoose.model('Comment', commentSchema);
 
 // Create a schema for the Recipe document structure
 const recipeSchema = new Schema(
@@ -23,6 +26,10 @@ const recipeSchema = new Schema(
         required: true
     },
     "name": {
+        type: String,
+        required: true
+    },
+    "creator": {
         type: String,
         required: true
     },
@@ -57,13 +64,19 @@ const recipeSchema = new Schema(
         "length": Number,
         "unit": String,
     },
-    "ingredients": [
-        {
-            "name": String,
-            "quantity": Number,
-            "unit": String,
-        }
-    ],
+    "ingredients": {
+        type: [
+          {
+            name: {
+              type: String,
+              required: true
+            },
+            quantity: Number,
+            unit: String
+          }
+        ],
+        required: true
+    },
     "instructions": [
         {
             type: String,
