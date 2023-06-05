@@ -15,7 +15,7 @@ router.get("/", function (req, res) {
     users.find().select("-password -email").lean()
         .then(function(user) {
             // If the users collection doesn't contain users, send 400 response
-            if(!user) {
+            if(!user?.length) {
                 return res.status(400).json({message:"No users found"})
             }
 
@@ -50,7 +50,7 @@ router.get("/:id?", function (req, res) {
 // @access  Private
 router.post("/", async function (req, res) {
 
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, friends, savedRecipes, recipes, pantries, lists } = req.body;
 
     // If any of the required fields are missing, send 400 response (bad request)
     if (!(email) || !(password) || !(firstName) || !(lastName)) {
@@ -58,7 +58,7 @@ router.post("/", async function (req, res) {
     }
 
     // Check if email already exists
-    const duplicate = await users.findOne({ email: email }).lean();
+    const duplicate = await users.findOne({ email: email }).lean().exec();
     if(duplicate){
         return res.status(409).json({message:"Duplicate Email"});
     }
@@ -66,8 +66,33 @@ router.post("/", async function (req, res) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10); // salt rounds
 
+    if(friends && Array.isArray(friends))
+    {
+        user.friends = friends;
+    }
+
+    if(savedRecipes && Array.isArray(savedRecipes))
+    {
+        user.savedRecipes = savedRecipes;
+    }
+
+    if(recipes && Array.isArray(recipes))
+    {
+        user.recipes = recipes;
+    }
+
+    if(pantries && Array.isArray(pantries))
+    {
+        user.pantries = pantries;
+    }
+
+    if(lists && Array.isArray(lists))
+    {
+        user.lists = lists;
+    }
+
     const id = new mongoose.Types.ObjectId().toString();
-    const userObject = { _id: id, firstName: firstName, lastName: lastName, email: email, password: hashedPassword };
+    const userObject = { _id: id, firstName: firstName, lastName: lastName, email: email, password: hashedPassword, friends: req.friends, savedRecipes: req.savedRecipes, recipes: req.recipes, pantries: req.pantries, lists: req.lists };
     const user = await users.create(userObject);
 
     if(user){ // If user is created successfully, send 201 response (created)
@@ -79,36 +104,125 @@ router.post("/", async function (req, res) {
 });
 
 // Route for PUT request to update a user by id
-router.put("/:id?", function (req, res) {
+
+// @desc    Update a user
+// @route   PUT /api/users/:id
+// @access  Private
+router.put("/:id?", async function (req, res) {
+    // Get the id from the request parameters
     var requestedId = req.params.id;
-    console.log(requestedId);
-    users.findByIdAndUpdate(requestedId, req.body, { new: true })
-        .then(function(user) {
-            if(user){
-                res.json(user);
-            } else{
-                res.json(`Error 404: User ${requestedId} not found`);
-            }
-        })
-        .catch(err => {
-            res.send("Error updating user: "+err);
-        });
+
+    // Get the user data from the request body
+    const { _id, firstName, lastName, email, password, friends, savedRecipes, recipes, pantries, lists } = req.body;
+
+    // If no id is included in the request parameters, use the id from the request body
+    if(!req.params.id)
+    {
+        requestedId = _id;
+    }
+
+    // If any of the required fields are missing, send 400 response (bad request)
+    if (!requestedId || !firstName || !lastName || !email) {
+        return res.status(400).json({message:"Please enter all fields"});
+    }
+
+    // Doesn't use lean so that we can modify the user object, but does have exec to return a promise
+    const user = await users.findById(requestedId).exec();
+
+    // If user doesn't exist, send 404 response (not found)
+    if(!user){
+        return res.status(404).json({message:"User not found"});
+    }
+
+    const duplicate = await users.findOne({ email: email }).lean().exec();
+    // If duplicate email exists and it's not the same user, send 409 response (conflict)
+    if(duplicate && duplicate._id !== requestedId){
+        return res.status(409).json({message:"Duplicate Email"});
+    }
+
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.email = email;
+
+    if(password)
+    {
+        // Hash password
+        user.password = bcrypt.hashSync(password, 10); // salt rounds
+    }
+
+    if(friends && Array.isArray(friends))
+    {
+        user.friends = friends;
+    }
+
+    if(savedRecipes && Array.isArray(savedRecipes))
+    {
+        user.savedRecipes = savedRecipes;
+    }
+
+    if(recipes && Array.isArray(recipes))
+    {
+        user.recipes = recipes;
+    }
+
+    if(pantries && Array.isArray(pantries))
+    {
+        user.pantries = pantries;
+    }
+
+    if(lists && Array.isArray(lists))
+    {
+        user.lists = lists;
+    }
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({message: `User ${updatedUser.firstName} ${updatedUser.lastName} updated`});
 });
 
 // Route for DELETE request to delete a user by id
-router.delete("/:id?", function (req, res) {
+router.delete("/:id?", async function (req, res) {
+
+    // Get the id from the request parameters
     var requestedId = req.params.id;
-    users.findByIdAndRemove(requestedId)
-        .then(function(user) {
-            if(user){
-                res.json(user);
-            } else{
-                res.json(`Error 404: User ${requestedId} not found`);
-            }
-        })
-        .catch(err => {
-            res.send("Error deleting user: "+err);
-        });
+
+    // Get the user data from the request body
+    const { _id } = req.body;
+
+    // If no id is included in the request parameters, use the id from the request body
+    if(!req.params.id)
+    {
+        requestedId = _id;
+    }
+
+    // If any of the required fields are missing, send 400 response (bad request)
+    if (!requestedId) {
+        return res.status(400).json({message:"User ID required"});
+    }
+
+    const user = await users.findById(requestedId).exec();
+
+    // If user doesn't exist, send 404 response (not found)
+    if(!user){
+        return res.status(404).json({message:"User not found"});
+    }
+
+    // Remove user from other users' friends array
+    // TODO: Double Triple Check this works as intended
+    const friends = await users.find({ friends: { $elemMatch: { friendId: requestedId } } }).exec();
+    for (const friend of friends) {
+        friend.friends = friend.friends.filter(f => f.friendId !== requestedId);
+        await friend.save();
+    }
+
+    // Delete user
+    const result = await user.deleteOne();
+
+    // Response message
+    const reply = `User ${result.firstName} ${result.lastName} with ID ${result._id} deleted`;
+
+    // Send response
+    res.json(reply);
 });
 
 export default router;
