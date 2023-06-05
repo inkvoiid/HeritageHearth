@@ -59,11 +59,11 @@ const recipeSchema = new Schema(
         type: Number,
         required: true
     },
-    "cookingTime":
-    {
-        "length": Number,
-        "unit": String,
-    },
+    "cookingTime":{
+    type: {
+        "length": {type: Number, required: true},
+        "unit": {type: String, required: true}
+    }, required: true},
     "ingredients": {
         type: [
           {
@@ -77,12 +77,15 @@ const recipeSchema = new Schema(
         ],
         required: true
     },
-    "instructions": [
+    "instructions": {
+        type: [
         {
             type: String,
             required: true
         }
     ],
+    required: true
+    },
     "comments": [commentSchema]
   },
   {timestamps: true, collection: 'recipes', versionKey: false }

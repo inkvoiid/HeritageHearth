@@ -13,21 +13,22 @@ const listSchema = new Schema(
         type: String,
         required: true
     },
-    "items": [
+    "items": {type: [
         {
             "name": {type: String, required: true},
             "completed": {type: Boolean, required: true, default: false},
             "quantity": Number,
             "unit": String,
         }
-    ],
-    "userAccess": [
-        {
-            "userId": String,
-        }
-    ],
+    ], default: []},
+    "userAccess": {
+        type: [
+            {type: String, required: true}
+        ],
+        required: true
+    }, 
   },
-  { collection: 'lists', versionKey: false }
+  { timestamps: true, collection: 'lists', versionKey: false }
 );
 
 // Create a model based on the schema

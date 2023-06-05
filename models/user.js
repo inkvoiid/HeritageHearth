@@ -39,22 +39,22 @@ const userSchema = new Schema(
     ],
     "savedRecipes": [
       {
-        "recipeId": Number,
+        type: String,
       },
     ],
     "recipes": [
       {
-        "recipeId": Number,
+        type: String,
       },
     ],
     "pantries": [
       {
-        "pantryId": Number,
+        type: String,
       },
     ],
     "lists": [
       {
-        "listId": Number,
+        type: String,
       },
     ],
   },

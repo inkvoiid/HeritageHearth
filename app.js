@@ -13,6 +13,8 @@ dotenv.config();
 // Import routes
 import userroute from './routes/api/userroute.js';
 import reciperoute from './routes/api/reciperoute.js';
+import pantryroute from './routes/api/pantryroute.js';
+import listroute from './routes/api/listroute.js';
 
 var app = express();
 
@@ -34,6 +36,8 @@ var port = process.env.PORT || 5000;
 
 app.use("/api/users", userroute);
 app.use("/api/recipes", reciperoute);
+app.use("/api/pantries", pantryroute);
+app.use("/api/lists", listroute);
 
 // Route for HOME
 app.get('/', function(req, res) {

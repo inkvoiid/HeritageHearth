@@ -13,7 +13,7 @@ const pantrySchema = new Schema(
         type: String,
         required: true
     },
-    "items": [
+    "items": {type: [
         {
             "name": {type: String, required: true},
             "category": String,
@@ -21,12 +21,13 @@ const pantrySchema = new Schema(
             "quantity": Number,
             "unit": String,
         }
-    ],
-    "userAccess": [
-        {
-            "userId": String,
-        }
-    ],
+    ], default: []},
+    "userAccess": {
+        type: [
+            {type: String, required: true}
+        ],
+        required: true
+    }, 
   },
   { collection: 'pantries', versionKey: false }
 );

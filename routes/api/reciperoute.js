@@ -1,10 +1,10 @@
 import { Router } from "express";
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
 const router = Router();
 
 // Import the recipe model schema from the models folder
 import recipes from "../../models/recipe.js";
+import users from "../../models/user.js";
 
 // Route for GET request to retrieve all recipes
 
@@ -56,6 +56,13 @@ router.post("/", async function (req, res) {
     if (!(name) || !(creator) || !(recipeImage) || !(description) || !(servingSize) || !(cookingTime) || !(ingredients) || !(instructions) || !Array.isArray(ingredients) || !Array.isArray(instructions) || !ingredients.length || !instructions.length) {
         return res.status(400).json({message:"Please enter all fields"});
     }
+
+    // Check if the creator exists
+    const user = await users.findById(creator).lean().exec();
+    if(!user){
+        return res.status(400).json({message:"Invalid creator ID"});
+    }
+
     // Check if recipe already exists
     const duplicate = await recipes.findOne({ 
         creator: creator,
@@ -69,10 +76,12 @@ router.post("/", async function (req, res) {
 
     const id = new mongoose.Types.ObjectId().toString();
     const recipeObject = { _id: id, name, creator, recipeImage, description, forkedFrom, forkRecipeIds, servingSize, cookingTime, ingredients, instructions };
-    const recipe = await users.create(recipeObject);
+    const recipe = await recipes.create(recipeObject);
 
     if(recipe){ // If recipe is created successfully, send 201 response (created)
         res.status(201).json({message: `New recipe ${name} created`});
+        // Add the recipe to the user's recipes array
+        await users.updateOne({_id: creator}, {$push: {recipes: id}}).exec();
     }
     else{
         res.status(400).json({message: "Invalid recipe data received"})
@@ -110,7 +119,7 @@ router.put("/:id?", async function (req, res) {
         return res.status(404).json({message:"Recipe not found"});
     }
 
-    const duplicate = await users.findOne({ 
+    const duplicate = await recipes.findOne({ 
         creator: creator,
         ingredients: ingredients, 
         instructions: instructions }).lean().exec();
