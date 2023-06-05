@@ -30,7 +30,7 @@ router.get("/", function (req, res) {
 // Route for GET request to retrieve a user by id
 router.get("/:id?", function (req, res) {
     var requestedId = req.params.id;
-    users.findById(requestedId)
+    users.findById(requestedId).select("-password -email").lean()
         .then(function(user) {
             if(user){
                 res.json(user);
