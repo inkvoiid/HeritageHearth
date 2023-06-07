@@ -30,6 +30,7 @@
 html,
 body {
   background: var(--sitebg);
+  background-size: cover;
   color: var(--text);
   font-family: "Segoe UI Variable", "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 1.1rem;
