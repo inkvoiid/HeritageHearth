@@ -1,27 +1,27 @@
-import { h } from 'preact';
-import { Link } from 'preact-router/match';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => (
-    <nav>
-        <Link href="/">
-            <h1 class="title"><span class="green">Our</span> <span class="pink">Kitchen</span></h1>
-        </Link>
-        <div class="nav-inner">
-            <div class="nav-items">
-                <Link activeClassName="active" href="/feed"><i class="bi bi-house"></i> Feed</Link>
-                <Link activeClassName="active" href="/saved-recipes"><i class="bi bi-bookmark"></i> Saved Recipes</Link>
-                <Link activeClassName="active" href="/recipes"><i class="bi bi-journals"></i> Recipes</Link>
-                <Link activeClassName="active" href="/lists"><i class="bi bi-list-task"></i> Lists</Link>
-                <Link activeClassName="active" href="/pantries"><i class="bi bi-bookshelf"></i> Pantries</Link>
-            </div>
-            
-            <div class="user-info">
-                <Link activeClassName="active" class="brown" href="/profile"><img src="https://i.ytimg.com/vi/US-rsVhRREA/maxresdefault.jpg" class="avatar" alt="Avatar" /><p class="avatar-text"> Buddy Holly</p></Link>
-                <Link activeClassName="active" class="green" href="/settings"><i class="bi bi-gear"></i> Settings</Link>
-                <Link class="green" href="/logout"><i class="bi bi-door-open"></i> Logout</Link>
-            </div>
-        </div>
-    </nav>
+  <nav>
+    <NavLink to="/">
+      <h1 className="title"><span className="green">Our</span> <span className="pink">Kitchen</span></h1>
+    </NavLink>
+    <div className="nav-inner">
+      <div className="nav-items">
+        <NavLink activeClassName="active" to="/feed"><i className="bi bi-house"></i> Feed</NavLink>
+        <NavLink activeClassName="active" to="/saved-recipes"><i className="bi bi-bookmark"></i> Saved Recipes</NavLink>
+        <NavLink activeClassName="active" to="/recipes"><i className="bi bi-journals"></i> Recipes</NavLink>
+        <NavLink activeClassName="active" to="/lists"><i className="bi bi-list-task"></i> Lists</NavLink>
+        <NavLink activeClassName="active" to="/pantries"><i className="bi bi-bookshelf"></i> Pantries</NavLink>
+      </div>
+
+      <div className="user-info">
+        <NavLink activeClassName="active" className="brown" to="/profile"><img src="https://i.ytimg.com/vi/US-rsVhRREA/maxresdefault.jpg" className="avatar" alt="Avatar" /><p className="avatar-text"> Buddy Holly</p></NavLink>
+        <NavLink activeClassName="active" className="green" to="/settings"><i className="bi bi-gear"></i> Settings</NavLink>
+        <NavLink className="green" to="/logout"><i className="bi bi-door-open"></i> Logout</NavLink>
+      </div>
+    </div>
+  </nav>
 );
 
 export default Navbar;

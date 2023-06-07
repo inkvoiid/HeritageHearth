@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,6 +22,10 @@ var app = express();
 
 // Add body parser middleware to handle JSON data
 app.use(bodyParser.json());
+
+app.use(cookieParser());
+
+app.use(cors());
 
 var db = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@127.0.0.1:27017/ourKitchen?authSource=${process.env.DB_AUTHSOURCE}`;
 
