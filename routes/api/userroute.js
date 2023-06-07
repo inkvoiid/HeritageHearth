@@ -213,7 +213,7 @@ router.delete("/:id?", async function (req, res) {
 
     // Remove user from other users' friends array
     // TODO: Double Triple Check this works as intended
-    await User.updateMany(
+    await users.updateMany(
         { friends: { $elemMatch: { friendId: requestedId } } }, // Filter condition: users who have the requestedId as a friend
         { $pull: { friends: { friendId: requestedId } } } // Update operation: remove the friend with friendId equal to requestedId
     );

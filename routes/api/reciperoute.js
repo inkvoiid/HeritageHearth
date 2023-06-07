@@ -53,7 +53,7 @@ router.post("/", async function (req, res) {
     const { name, creator, recipeImage, description, forkedFrom, forkRecipeIds, servingSize, cookingTime, ingredients, instructions } = req.body;
 
     // If any of the required fields are missing, send 400 response (bad request)
-    if (!(name) || !(creator) || !(recipeImage) || !(description) || !(servingSize) || !(cookingTime) || !(ingredients) || !(instructions) || !Array.isArray(ingredients) || !Array.isArray(instructions) || !ingredients.length || !instructions.length) {
+    if (!(name) || !(creator) || !(description) || !(servingSize) || !(cookingTime) || !(ingredients) || !(instructions) || !Array.isArray(ingredients) || !Array.isArray(instructions) || !ingredients.length || !instructions.length) {
         return res.status(400).json({message:"Please enter all fields"});
     }
 
@@ -195,7 +195,7 @@ router.delete("/:id?", async function (req, res) {
     }
 
     // Remove recipe from creator's recipe list
-    await User.updateOne(
+    await users.updateOne(
         { _id: recipe.creator }, // Filter condition: find the creator by their _id
         { $pull: { recipes: requestedId } } // Update operation: remove the requestedId from recipes array
     );

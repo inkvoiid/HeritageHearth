@@ -173,7 +173,7 @@ router.delete("/:id?", async function (req, res) {
     }
 
     // Remove pantry from users' pantry list
-    await User.updateMany(
+    await users.updateMany(
         { _id: { $in: pantry.userAccess } }, // Filter condition: find users with _id in userAccess array
         { $pull: { pantries: requestedId } } // Update operation: remove the requestedId from pantries array
     );
