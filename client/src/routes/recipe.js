@@ -60,19 +60,47 @@ const Recipe = () => {
   } else {
     pageContent = (
       <>
-        <p>recipe.recipeImage</p>
-        <article>
-			<p><b>{recipe.name}</b> by <Link to={"../profile/"+creatorId}>{recipe.creator}</Link></p>
+		<article>
+		<p>Recipe Image {recipe.recipeImage}</p>
 		</article>
 
 		<article>
-          <p>Ingredients:</p>
-          <ul>
-            {recipe.ingredients.map(ingredient => (
-              <li key={ingredient._id}>{ingredient.name}</li>
-            ))}
-          </ul>
-        </article>
+			<p><b>{recipe.name}</b> by <Link to={"../profile/"+creatorId}>{recipe.creator}</Link></p>
+
+			<p>Serving Size: {recipe.servingSize}</p>
+			<p>Cooking Time: {recipe.cookingTime.length} {recipe.cookingTime.unit}</p>
+		</article>
+
+		<article>
+			<p>Description: {recipe.description}</p>
+		</article>
+
+		<article>
+			<p>Ingredients</p>
+			<ul>
+				{recipe.ingredients.map((ingredient) => (
+					<li>{ingredient.name}</li>
+				))}
+			</ul>
+		</article>
+
+		<article>
+			<p>Directions</p>
+			<ol>
+				{recipe.instructions.map((instruction) => (
+					<li>{instruction}</li>
+				))}
+			</ol>
+		</article>
+
+		<article>
+			<p>Comments</p>
+			<ul>
+				{recipe.comments.map((comment) => (
+					<li>{comment}</li>
+				))}
+			</ul>
+		</article>
       </>
     );
   }
