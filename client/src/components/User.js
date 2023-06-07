@@ -1,6 +1,6 @@
 import {useNavigate} from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectUserById } from './usersApiSlice';
+import { selectUserById } from '../features/users/usersApiSlice';
 
 const User = ({ userId }) => {
     const user = useSelector(state => selectUserById(state, userId));
@@ -8,14 +8,13 @@ const User = ({ userId }) => {
     
     
     if(user){
-        const handleEdit = () => navigate(`/users/${userId}`);
+        const handleEdit = () => navigate(`/profile/${userId}`);
 
         const userFriendsString = user.friends.toString().replaceAll(',', ', ');
         const userSavedRecipesString = user.savedRecipes.toString().replaceAll(',', ', ');
         const userRecipesString = user.recipes.toString().replaceAll(',', ', ');
         const userPantriesString = user.pantries.toString().replaceAll(',', ', ');
         const userListsString = user.lists.toString().replaceAll(',', ', ');
-
         return (
             <div className="User" onClick={handleEdit}>
             <h3>{user.firstName} {user.lastName}</h3>

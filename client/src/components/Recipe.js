@@ -1,6 +1,6 @@
 import {useNavigate} from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectUserById } from './recipesApiSlice';
+import { selectUserById } from '../features/recipes/recipesApiSlice';
 
 const User = ({ recipeId }) => {
     const recipe = useSelector(state => selectUserById(state, recipeId));

@@ -1,61 +1,65 @@
-import React, { useEffect } from 'react';
-import { useGetUsersQuery } from '../features/users/usersApiSlice';
-import User from '../features/users/User';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+
+import { useParams } from 'react-router-dom';
 
 const Profile = () => {
-	const { data: users, isLoading, isSuccess, isError, error } = useGetUsersQuery();
+	let {profileId} = useParams();
+	const [profile, setProfile] = useState(null);
+	const [loading, setLoading] = useState(true);
 
-	let content;
+	let pageContent;
 
-	if(isLoading) 
-	{
-		content = (
-			<>
+	useEffect(() => {
+		document.title = 'Profile - Our Kitchen';
+	  }, []);
+
+	useEffect(() => {
+		// Fetch profile data based on the profileId
+		axios.get(`http://localhost:5000/api/users/${profileId}`)
+		  .then(response => {
+			setProfile(response.data);
+			setLoading(false);
+		  })
+		  .catch(error => {
+			console.error(error);
+			setLoading(false);
+		  });
+	  }, [profileId]);
+
+	  if (!profile) {
+		pageContent = (<div>Profile not found</div>);
+	  }
+	  else if (loading) {
+		pageContent = (<div>Loading...</div>);
+	  }
+	  else
+	  {
+		const profileFriendsString = profile.friends.toString().replaceAll(',', ', ');
+        const profileSavedRecipesString = profile.savedRecipes.toString().replaceAll(',', ', ');
+        const profileRecipesString = profile.recipes.toString().replaceAll(',', ', ');
+        const profilePantriesString = profile.pantries.toString().replaceAll(',', ', ');
+        const profileListsString = profile.lists.toString().replaceAll(',', ', ');
+		pageContent = (<div>
+		  <h3>{profile.firstName} {profile.lastName}</h3>
+            <p>Friends: {profileFriendsString}</p>
+            <p>Saved Recipes: {profileSavedRecipesString}</p>
+            <p>Recipes: {profileRecipesString}</p>
+            <p>Pantries: {profilePantriesString}</p>
+            <p>Lists: {profileListsString}</p>
+		</div>);
+	  }
+	
+	  
+	
+	  return (
+		<>
 			<article style={{ textAlign: 'center' }}>
-				<h1 className="brown">Your Profile</h1>
-				<h3>Nau mai, Haere mai ki Our Kitchen</h3>
-				<p>Loading...</p>
+				{pageContent}
 			</article>
-			</>
-		)
-	}
-
-	if(isError) 
-	{
-		console.log(error);
-		content = (
-			<>
-			<article style={{ textAlign: 'center' }}>
-				<h1 className="brown">Your Profile</h1>
-				<h3>Nau mai, Haere mai ki Our Kitchen</h3>
-				<p>Error: {error?.message}</p>
-			</article>
-			</>
-		)
-	}
-
-	if(isSuccess)
-	{
-		const {ids} = users;
-
-		const userContent = ids?.length ? ids.map(userId => <User key={userId} userId={userId} />) : <p>No users</p>;
-		content = (
-			<>
-			<article style={{ textAlign: 'center' }}>
-				<h1 className="brown">Your Profile</h1>
-				<h3>Nau mai, Haere mai ki Our Kitchen</h3>
-				{userContent}
-			</article>
-			</>
-		)
-	}
-			
-
-  useEffect(() => {
-    document.title = 'Profile - Our Kitchen';
-  }, []);
-
-  return content;
-};
+		</>
+	  );
+	};
 
 export default Profile;

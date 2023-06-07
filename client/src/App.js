@@ -14,13 +14,10 @@ import Profile from './routes/profile';
 import Settings from './routes/settings';
 
 
-import {store} from './app/store';
-import {Provider} from 'react-redux';
 
 function App() {
   return (
     <>
-      <Provider store={store}>
         <BrowserRouter>
         <Navbar />
         <main>
@@ -31,12 +28,11 @@ function App() {
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/lists" element={<Lists />} />
             <Route path="/pantries" element={<Pantries />} />
-            <Route path="/profile/:id" element={<Profile />} />
+            <Route path="/profile/:profileId" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>
         </BrowserRouter>
-		</Provider>
     </>
   );
 }
