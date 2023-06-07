@@ -10,12 +10,20 @@ const User = ({ userId }) => {
     if(user){
         const handleEdit = () => navigate(`/users/${userId}`);
 
+        const userFriendsString = user.friends.toString().replaceAll(',', ', ');
+        const userSavedRecipesString = user.savedRecipes.toString().replaceAll(',', ', ');
         const userRecipesString = user.recipes.toString().replaceAll(',', ', ');
+        const userPantriesString = user.pantries.toString().replaceAll(',', ', ');
+        const userListsString = user.lists.toString().replaceAll(',', ', ');
 
         return (
             <div className="User" onClick={handleEdit}>
             <h3>{user.firstName} {user.lastName}</h3>
-            <p>{userRecipesString}</p>
+            <p>Friends: {userFriendsString}</p>
+            <p>Saved Recipes: {userSavedRecipesString}</p>
+            <p>Recipes: {userRecipesString}</p>
+            <p>Pantries: {userPantriesString}</p>
+            <p>Lists: {userListsString}</p>
             </div>
         );
     }

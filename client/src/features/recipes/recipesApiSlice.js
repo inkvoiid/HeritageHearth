@@ -30,11 +30,47 @@ export const recipesApiSlice = apiSlice.injectEndpoints({
                 else return [{type: "Recipe", id: "LIST"}];
             }
         }),
+        addNewRecipe: builder.mutation({
+            query: initialRecipeData => ({
+                url: `/recipes`,
+                method: 'POST',
+                body: {
+                    ...initialRecipeData
+                }
+            }),
+            invalidatesTags: [
+                {type: "Recipe", id: "LIST"}
+            ]
+        }),
+        updateRecipe: builder.mutation({
+            query: initialRecipeData => ({
+                url: `/recipes/${initialRecipeData.id}`,
+                method: 'PUT',
+                body: {
+                    ...initialRecipeData
+                }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                {type: "Recipe", id: arg.id}
+            ]
+        }),
+        deleteRecipe: builder.mutation({
+            query: ({id}) => ({
+                url: `/recipes/${id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: (result, error, arg) => [
+                {type: "Recipe", id: arg.id}
+            ]
+        }),
     }),
 });
 
 export const {
     useGetRecipesQuery,
+    useAddNewRecipeMutation,
+    useUpdateRecipeMutation,
+    useDeleteRecipeMutation,
 } = recipesApiSlice;
 
 // Returns the query result object

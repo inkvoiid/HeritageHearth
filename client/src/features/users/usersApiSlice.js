@@ -30,11 +30,69 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 else return [{type: "User", id: "LIST"}];
             }
         }),
+
+        // Get a single user by id
+        getUserById: builder.query({
+            query: (id) => `/users/${id}`,
+            validateStatus: (response, result) => {
+                return response.status === 200 && !result.isError;
+            },
+            keepUnusedDataFor: 5,
+            transformResponse: responseData => {
+                const loadedUser = responseData;
+                loadedUser.id = loadedUser._id;
+                return usersAdapter.setOne(initialState, loadedUser);
+            },
+            providesTags: (result, error, arg) => {
+                if(result?.id){
+                    return [{type: "User", id: result.id}];
+                }
+                else return [{type: "User", id: "LIST"}];
+            }
+        }),
+
+
+        addNewUser: builder.mutation({
+            query: initialUserData => ({
+                url: `/users`,
+                method: 'POST',
+                body: {
+                    ...initialUserData
+                }
+            }),
+            invalidatesTags: [
+                {type: "User", id: "LIST"}
+            ]
+        }),
+        updateUser: builder.mutation({
+            query: initialUserData => ({
+                url: `/users/${initialUserData.id}`,
+                method: 'PUT',
+                body: {
+                    ...initialUserData
+                }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                {type: "User", id: arg.id}
+            ]
+        }),
+        deleteUser: builder.mutation({
+            query: ({id}) => ({
+                url: `/users/${id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: (result, error, arg) => [
+                {type: "User", id: arg.id}
+            ]
+        }),
     }),
 });
 
 export const {
     useGetUsersQuery,
+    useAddNewUserMutation,
+    useUpdateUserMutation,
+    useDeleteUserMutation,
 } = usersApiSlice;
 
 // Returns the query result object

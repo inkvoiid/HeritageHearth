@@ -1,22 +1,61 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
+import { useGetUsersQuery } from '../features/users/usersApiSlice';
+import User from '../features/users/User';
 
-class Profile extends Component {
+const Profile = () => {
+	const { data: users, isLoading, isSuccess, isError, error } = useGetUsersQuery();
 
-	componentDidMount() {
-		document.title = 'Profile - Our Kitchen';
-	  }
+	let content;
 
-	render() {
-		return(
-		<>
-		<article style={{ textAlign:'center' }}>
-			<h1 className="brown">Your Profile</h1>
-			<h3>Nau mai, Haere mai ki Our Kitchen</h3>
-			<p>This is the Home component.</p>
-		</article>
-		</>
-		);
-	};
+	if(isLoading) 
+	{
+		content = (
+			<>
+			<article style={{ textAlign: 'center' }}>
+				<h1 className="brown">Your Profile</h1>
+				<h3>Nau mai, Haere mai ki Our Kitchen</h3>
+				<p>Loading...</p>
+			</article>
+			</>
+		)
+	}
+
+	if(isError) 
+	{
+		console.log(error);
+		content = (
+			<>
+			<article style={{ textAlign: 'center' }}>
+				<h1 className="brown">Your Profile</h1>
+				<h3>Nau mai, Haere mai ki Our Kitchen</h3>
+				<p>Error: {error?.message}</p>
+			</article>
+			</>
+		)
+	}
+
+	if(isSuccess)
+	{
+		const {ids} = users;
+
+		const userContent = ids?.length ? ids.map(userId => <User key={userId} userId={userId} />) : <p>No users</p>;
+		content = (
+			<>
+			<article style={{ textAlign: 'center' }}>
+				<h1 className="brown">Your Profile</h1>
+				<h3>Nau mai, Haere mai ki Our Kitchen</h3>
+				{userContent}
+			</article>
+			</>
+		)
+	}
+			
+
+  useEffect(() => {
+    document.title = 'Profile - Our Kitchen';
+  }, []);
+
+  return content;
 };
 
 export default Profile;
