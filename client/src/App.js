@@ -6,6 +6,7 @@ import Navbar from './components/navbar';
 
 import Home from './routes/home';
 import Feed from './routes/feed';
+import Recipe from './routes/recipe';
 import SavedRecipes from './routes/savedrecipes';
 import Recipes from './routes/recipes';
 import Lists from './routes/lists';
@@ -24,6 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/feed" element={<Feed />} />
+            <Route path="/recipe/:recipeId" element={<Recipe />} />
             <Route path="/saved-recipes" element={<SavedRecipes />} />
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/lists" element={<Lists />} />

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -15,12 +16,59 @@ const Profile = () => {
 		document.title = 'Profile - Our Kitchen';
 	  }, []);
 
-	useEffect(() => {
+	  useEffect(() => {
 		// Fetch profile data based on the profileId
-		axios.get(`http://localhost:5000/api/users/${profileId}`)
+		axios
+		  .get(`http://localhost:5000/api/users/${profileId}`)
 		  .then(response => {
-			setProfile(response.data);
+			const fetchedProfile = response.data;
+			setProfile(fetchedProfile);
 			setLoading(false);
+	
+			if (fetchedProfile.recipes && fetchedProfile.recipes.length > 0) {
+			  const fetchRecipes = async () => {
+				const recipePromises = fetchedProfile.recipes.map(recipeId =>
+				  axios.get(`http://localhost:5000/api/recipes/${recipeId}`)
+				);
+				const recipeResponses = await Promise.all(recipePromises);
+				const recipesData = recipeResponses.map(response => response.data);
+				setProfile(prevProfile => ({
+				  ...prevProfile,
+				  recipes: recipesData
+				}));
+			  };
+			  fetchRecipes();
+			}
+
+			const fetchFriends = async () => {
+				if (fetchedProfile.friends && fetchedProfile.friends.length > 0) {
+				  const friendPromises = fetchedProfile.friends.map(friendId =>
+					axios.get(`http://localhost:5000/api/users/${friendId}`)
+				  );
+				  const friendResponses = await Promise.all(friendPromises);
+				  const friendsData = friendResponses.map(response => response.data);
+				  setProfile(prevProfile => ({
+					...prevProfile,
+					friends: friendsData
+				  }));
+				}
+				fetchFriends();
+			  };
+	  
+			  const fetchSavedRecipes = async () => {
+				if (fetchedProfile.savedRecipes && fetchedProfile.savedRecipes.length > 0) {
+				  const recipePromises = fetchedProfile.savedRecipes.map(recipeId =>
+					axios.get(`http://localhost:5000/api/recipes/${recipeId}`)
+				  );
+				  const recipeResponses = await Promise.all(recipePromises);
+				  const recipesData = recipeResponses.map(response => response.data);
+				  setProfile(prevProfile => ({
+					...prevProfile,
+					savedRecipes: recipesData
+				  }));
+				}
+				fetchSavedRecipes();
+			  };
 		  })
 		  .catch(error => {
 			console.error(error);
@@ -36,18 +84,36 @@ const Profile = () => {
 	  }
 	  else
 	  {
-		const profileFriendsString = profile.friends.toString().replaceAll(',', ', ');
-        const profileSavedRecipesString = profile.savedRecipes.toString().replaceAll(',', ', ');
-        const profileRecipesString = profile.recipes.toString().replaceAll(',', ', ');
-        const profilePantriesString = profile.pantries.toString().replaceAll(',', ', ');
-        const profileListsString = profile.lists.toString().replaceAll(',', ', ');
 		pageContent = (<div>
-		  <h3>{profile.firstName} {profile.lastName}</h3>
-            <p>Friends: {profileFriendsString}</p>
-            <p>Saved Recipes: {profileSavedRecipesString}</p>
-            <p>Recipes: {profileRecipesString}</p>
-            <p>Pantries: {profilePantriesString}</p>
-            <p>Lists: {profileListsString}</p>
+		  
+			<article>
+		  		<h3>{profile.firstName} {profile.lastName}</h3>
+
+            	<p>Friends:</p>
+				<ul>
+					{profile.friends.map(friend => (
+						<li key={friend._id}>{friend.firstName} {friend.lastName}</li>
+					))}
+				</ul>
+			</article>
+
+			<article>
+				<p>Saved Recipes:</p>
+				<ul>
+					{profile.savedRecipes.map(savedRecipe => (
+						<li key={savedRecipe._id}><Link to={"../recipe/"+savedRecipe._id}>{savedRecipe.name}</Link></li>
+					))}
+				</ul>
+			</article>
+
+			<article>
+				<p>Recipes:</p>
+				<ul>
+					{profile.recipes.map(recipe => (
+						<li key={recipe._id}><Link to={"../recipe/"+recipe._id}>{recipe.name}</Link></li>
+					))}
+				</ul>
+			</article>
 		</div>);
 	  }
 	
@@ -55,9 +121,7 @@ const Profile = () => {
 	
 	  return (
 		<>
-			<article style={{ textAlign: 'center' }}>
-				{pageContent}
-			</article>
+		{pageContent}
 		</>
 	  );
 	};
