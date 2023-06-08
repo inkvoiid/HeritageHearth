@@ -12,7 +12,7 @@ import users from "../../models/user.js";
 // @route   GET /api/users
 // @access  Private
 router.get("/", function (req, res) {
-    users.find().select("-password -email").lean()
+    users.find().select("-password").lean()
         .then(function(user) {
             // If the users collection doesn't contain users, send 400 response
             if(!user?.length) {
@@ -28,14 +28,14 @@ router.get("/", function (req, res) {
 });
 
 // Route for GET request to retrieve a user by id
-router.get("/:id?", function (req, res) {
-    var requestedId = req.params.id;
-    users.findById(requestedId).select("-password -email").lean()
+router.get("/:username?", function (req, res) {
+    var requestedUsername = req.params.username;
+    users.findOne({username: requestedUsername}).select("-password").lean()
         .then(function(user) {
             if(user){
                 res.json(user);
             } else{
-                res.json(`Error 404: User ${requestedId} not found`);
+                res.json(`Error 404: User ${requestedUsername} not found`);
             }
         })
         .catch(err => {
@@ -50,17 +50,17 @@ router.get("/:id?", function (req, res) {
 // @access  Private
 router.post("/", async function (req, res) {
 
-    const { firstName, lastName, email, password, friends, savedRecipes, recipes, pantries, lists } = req.body;
+    const { username, firstName, lastName, password, friends, savedRecipes, recipes, pantries, lists } = req.body;
 
     // If any of the required fields are missing, send 400 response (bad request)
-    if (!(email) || !(password) || !(firstName) || !(lastName)) {
+    if (!(username) || !(password) || !(firstName) || !(lastName)) {
         return res.status(400).json({message:"Please enter all fields"});
     }
 
     // Check if email already exists
-    const duplicate = await users.findOne({ email: email }).lean().exec();
+    const duplicate = await users.findOne({ username: username }).lean().exec();
     if(duplicate){
-        return res.status(409).json({message:"Duplicate Email"});
+        return res.status(409).json({message:"Duplicate Username"});
     }
 
     // Hash password
@@ -91,12 +91,11 @@ router.post("/", async function (req, res) {
         user.lists = lists;
     }
 
-    const id = new mongoose.Types.ObjectId().toString();
-    const userObject = { _id: id, firstName: firstName, lastName: lastName, email: email, password: hashedPassword, friends: req.friends, savedRecipes: req.savedRecipes, recipes: req.recipes, pantries: req.pantries, lists: req.lists };
+    const userObject = { username: username, firstName: firstName, lastName: lastName, password: hashedPassword, friends: req.friends, savedRecipes: req.savedRecipes, recipes: req.recipes, pantries: req.pantries, lists: req.lists };
     const user = await users.create(userObject);
 
     if(user){ // If user is created successfully, send 201 response (created)
-        res.status(201).json({message: `New user ${firstName} ${lastName} created`});
+        res.status(201).json({message: `New user ${firstName} ${lastName} (${username}) created`});
     }
     else{
         res.status(400).json({message: "Invalid user data received"})
@@ -108,41 +107,41 @@ router.post("/", async function (req, res) {
 // @desc    Update a user
 // @route   PUT /api/users/:id
 // @access  Private
-router.put("/:id?", async function (req, res) {
+router.put("/:username?", async function (req, res) {
     // Get the id from the request parameters
-    var requestedId = req.params.id;
+    var requestedUsername = req.params.username;
 
     // Get the user data from the request body
-    const { _id, firstName, lastName, email, password, friends, savedRecipes, recipes, pantries, lists } = req.body;
+    const { username, firstName, lastName, password, friends, savedRecipes, recipes, pantries, lists } = req.body;
 
     // If no id is included in the request parameters, use the id from the request body
-    if(!req.params.id)
+    if(!req.params.username)
     {
-        requestedId = _id;
+        requestedUsername = username;
     }
 
     // If any of the required fields are missing, send 400 response (bad request)
-    if (!requestedId || !firstName || !lastName || !email) {
+    if (!requestedUsername || !firstName || !lastName || !email) {
         return res.status(400).json({message:"Please enter all fields"});
     }
 
     // Doesn't use lean so that we can modify the user object, but does have exec to return a promise
-    const user = await users.findById(requestedId).exec();
+    const user = await users.findOne(requestedUsername).exec();
 
     // If user doesn't exist, send 404 response (not found)
     if(!user){
         return res.status(404).json({message:"User not found"});
     }
 
-    const duplicate = await users.findOne({ email: email }).lean().exec();
+    const duplicate = await users.findOne({ username: username }).lean().exec();
     // If duplicate email exists and it's not the same user, send 409 response (conflict)
-    if(duplicate && duplicate._id !== requestedId){
-        return res.status(409).json({message:"Duplicate Email"});
+    if(duplicate && duplicate.username !== requestedUsername){
+        return res.status(409).json({message:"Duplicate Username"});
     }
 
     user.firstName = firstName;
     user.lastName = lastName;
-    user.email = email;
+    user.username = username;
 
     if(password)
     {
@@ -177,7 +176,7 @@ router.put("/:id?", async function (req, res) {
 
     const updatedUser = await user.save();
 
-    res.status(200).json({message: `User ${updatedUser.firstName} ${updatedUser.lastName} updated`});
+    res.status(200).json({message: `User ${updatedUser.firstName} ${updatedUser.lastName} (${updatedUser.username}) updated`});
 });
 
 // Route for DELETE request to delete a user by id
@@ -185,26 +184,26 @@ router.put("/:id?", async function (req, res) {
 // @desc    Delete a user
 // @route   DELETE /api/users/:id
 // @access  Private
-router.delete("/:id?", async function (req, res) {
+router.delete("/:username?", async function (req, res) {
 
     // Get the id from the request parameters
-    var requestedId = req.params.id;
+    var requestedUsername = req.params.username;
 
     // Get the user data from the request body
-    const { _id } = req.body;
+    const { username } = req.body;
 
     // If no id is included in the request parameters, use the id from the request body
-    if(!req.params.id)
+    if(!req.params.username)
     {
-        requestedId = _id;
+        requestedUsername = username;
     }
 
     // If any of the required fields are missing, send 400 response (bad request)
-    if (!requestedId) {
-        return res.status(400).json({message:"User ID required"});
+    if (!requestedUsername) {
+        return res.status(400).json({message:"Username required"});
     }
 
-    const user = await users.findById(requestedId).exec();
+    const user = await users.findOne(requestedUsername).exec();
 
     // If user doesn't exist, send 404 response (not found)
     if(!user){
@@ -214,8 +213,8 @@ router.delete("/:id?", async function (req, res) {
     // Remove user from other users' friends array
     // TODO: Double Triple Check this works as intended
     await users.updateMany(
-        { friends: { $elemMatch: { friendId: requestedId } } }, // Filter condition: users who have the requestedId as a friend
-        { $pull: { friends: { friendId: requestedId } } } // Update operation: remove the friend with friendId equal to requestedId
+        { friends: { $elemMatch: { friendName: requestedUsername } } }, // Filter condition: users who have the requestedId as a friend
+        { $pull: { friends: { friendName: requestedUsername } } } // Update operation: remove the friend with friendId equal to requestedId
     );
   
 
@@ -223,7 +222,7 @@ router.delete("/:id?", async function (req, res) {
     const result = await user.deleteOne();
 
     // Response message
-    const reply = `User ${result.firstName} ${result.lastName} with ID ${result._id} deleted`;
+    const reply = `User ${result.firstName} ${result.lastName} with ID ${result.username} deleted`;
 
     // Send response
     res.json(reply);

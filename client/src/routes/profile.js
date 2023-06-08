@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-
-import { useParams } from 'react-router-dom';
-
 const Profile = () => {
-	let {profileId} = useParams();
+	let {profileUsername} = useParams();
 	const [profile, setProfile] = useState(null);
 	const [loading, setLoading] = useState(true);
 
@@ -19,7 +16,7 @@ const Profile = () => {
 	  useEffect(() => {
 		// Fetch profile data based on the profileId
 		axios
-		  .get(`http://localhost:5000/api/users/${profileId}`)
+		  .get(`http://localhost:5000/api/users/${profileUsername}`)
 		  .then(response => {
 			const fetchedProfile = response.data;
 			setProfile(fetchedProfile);
@@ -42,8 +39,8 @@ const Profile = () => {
 
 			const fetchFriends = async () => {
 				if (fetchedProfile.friends && fetchedProfile.friends.length > 0) {
-				  const friendPromises = fetchedProfile.friends.map(friendId =>
-					axios.get(`http://localhost:5000/api/users/${friendId}`)
+				  const friendPromises = fetchedProfile.friends.map(friendUsername =>
+					axios.get(`http://localhost:5000/api/users/${friendUsername}`)
 				  );
 				  const friendResponses = await Promise.all(friendPromises);
 				  const friendsData = friendResponses.map(response => response.data);
@@ -51,9 +48,9 @@ const Profile = () => {
 					...prevProfile,
 					friends: friendsData
 				  }));
-				}
+				};
 				fetchFriends();
-			  };
+			  }
 	  
 			  const fetchSavedRecipes = async () => {
 				if (fetchedProfile.savedRecipes && fetchedProfile.savedRecipes.length > 0) {
@@ -74,7 +71,7 @@ const Profile = () => {
 			console.error(error);
 			setLoading(false);
 		  });
-	  }, [profileId]);
+	  }, [profileUsername]);
 
 	  if (!profile) {
 		pageContent = (<div>Profile not found</div>);
@@ -88,6 +85,7 @@ const Profile = () => {
 		  
 			<article>
 		  		<h3>{profile.firstName} {profile.lastName}</h3>
+				<p>{profile.username}</p>
 
             	<p>Friends:</p>
 				<ul>

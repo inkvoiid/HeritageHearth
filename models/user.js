@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 // Create a schema for the User document structure
 const userSchema = new Schema(
   {
-    "_id": {
+    "username": {
         type: String,
         required: true
     },
@@ -22,10 +22,6 @@ const userSchema = new Schema(
         type: String,
         default: "default-profile-pic.jpg"
     },
-    "email": {
-        type: String,
-        required: true
-    },
     "password": {
         type: String,
         required: true
@@ -33,7 +29,7 @@ const userSchema = new Schema(
     "friends": [
       {
         "_id": false,
-        "friendId": String,
+        "friendName": String,
         "relation": String,
       },
     ],

@@ -30,7 +30,7 @@ function App() {
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/lists" element={<Lists />} />
             <Route path="/pantries" element={<Pantries />} />
-            <Route path="/profile/:profileId" element={<Profile />} />
+            <Route path="/profile/:profileUsername" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>
