@@ -1,22 +1,45 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
 
-class Recipes extends Component {
+import RecipePreview from "../components/recipePreview";
 
-	componentDidMount() {
-		document.title = 'Recipes - Our Kitchen';
-	  }
+const Recipes = () => {
 
-	render() {
-		return(
+	useEffect(() => {
+		document.title = 'Browse Recipes - Our Kitchen';
+	  }, []);
+
+	  const [recipePreviews, setRecipePreviews] = useState([]);
+
+	  useEffect(() => {
+		// Fetch users from the server using an API endpoint
+		axios.get("http://localhost:5000/api/recipes")
+		  .then(response => {
+			setRecipePreviews(response.data);
+		  })
+		  .catch(error => {
+			console.error(error);
+		  });
+	  }, []);
+
+	return(
 		<>
-		<article style={{ textAlign:'center' }}>
-			<h1 className="brown">Your Recipes</h1>
-			<h3>Nau mai, Haere mai ki Our Kitchen</h3>
-			<p>This is the Home component.</p>
-		</article>
+		<div style={{ textAlign:'center' }}>
+			<h1 className="brown">Browse Recipes</h1>
+			<section className='grid squares'>
+				<article>
+					<Link to={"/recipes/new"}><b>+ Create a new recipe</b></Link>
+				</article>
+
+				{recipePreviews.map(recipePreview => (
+				<RecipePreview key={recipePreview.recipeId} recipe={recipePreview} />
+			))}
+			</section>
+			
+		</div>
 		</>
 		);
 	};
-};
 
 export default Recipes;

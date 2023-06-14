@@ -42,12 +42,12 @@ body {
 }
 
 main {
-    margin-left: 17.5rem;
+    margin: 3rem 5vw 3rem 25rem;
+
 }
 
 article {
   background-color: var(--bg);
-  margin: 3rem 15vw 3rem 5vw;
   padding: 1rem 3rem;
   border-radius: 0.75rem;
   box-shadow: -5px 5px 15px rgba(203, 176, 176, 0.3);
@@ -185,4 +185,16 @@ nav a:hover:not(.active)
 {
     margin-top: 0.5rem;
     margin-bottom: 0.9rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 1rem;
+    margin: 1rem 0;
+}
+
+.squares > * {
+    aspect-ratio: 1/1;
+    padding: 1rem 1.5rem;
 }

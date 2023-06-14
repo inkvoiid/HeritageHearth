@@ -99,7 +99,7 @@ const Profile = () => {
 				<p>Saved Recipes:</p>
 				<ul>
 					{profile.savedRecipes.map(savedRecipe => (
-						<li key={savedRecipe._id}><Link to={"../recipe/"+savedRecipe._id}>{savedRecipe.name}</Link></li>
+						<li key={savedRecipe.recipeId}><Link to={"../recipe/"+savedRecipe.recipeId}>{savedRecipe.name}</Link></li>
 					))}
 				</ul>
 			</article>
@@ -108,7 +108,7 @@ const Profile = () => {
 				<p>Recipes:</p>
 				<ul>
 					{profile.recipes.map(recipe => (
-						<li key={recipe._id}><Link to={"../recipe/"+recipe._id}>{recipe.name}</Link></li>
+						<li key={recipe.recipeId}><Link to={"../recipe/"+recipe.recipeId}>{recipe.name}</Link></li>
 					))}
 				</ul>
 			</article>

@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import "react-widgets/styles.css";
 
 import Navbar from './components/navbar';
 
@@ -12,6 +13,7 @@ import Register from './routes/register';
 
 import Feed from './routes/feed';
 import Recipe from './routes/recipe';
+import RecipeForm from './routes/recipeform';
 import SavedRecipes from './routes/savedrecipes';
 import Recipes from './routes/recipes';
 import Lists from './routes/lists';
@@ -37,6 +39,7 @@ function App() {
             <Route path="/recipe/:recipeId" element={<Recipe />} />
             <Route path="/saved-recipes" element={<SavedRecipes />} />
             <Route path="/recipes" element={<Recipes />} />
+            <Route path="/recipes/new" element={<RecipeForm />} />
             <Route path="/lists" element={<Lists />} />
             <Route path="/pantries" element={<Pantries />} />
 
