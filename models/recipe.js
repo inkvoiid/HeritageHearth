@@ -21,7 +21,7 @@ const commentSchema = new Schema({
 // Create a schema for the Recipe document structure
 const recipeSchema = new Schema(
   {
-    "_id": {
+    "recipeId": {
         type: String,
         required: true
     },

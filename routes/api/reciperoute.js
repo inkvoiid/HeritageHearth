@@ -1,5 +1,6 @@
 import { Router } from "express";
 import mongoose from 'mongoose';
+import slugify from "slugify";
 const router = Router();
 
 // Import the recipe model schema from the models folder
@@ -28,9 +29,9 @@ router.get("/", function (req, res) {
 });
 
 // Route for GET request to retrieve a recipe by id
-router.get("/:id?", function (req, res) {
-    var requestedId = req.params.id;
-    recipes.findById(requestedId).select().lean()
+router.get("/:recipeId?", function (req, res) {
+    var requestedId = req.params.recipeId;
+    recipes.findOne({recipeId: requestedId}).select().lean()
         .then(function(recipe) {
             if(recipe){
                 res.json(recipe);
@@ -58,9 +59,9 @@ router.post("/", async function (req, res) {
     }
 
     // Check if the creator exists
-    const user = await users.findById(creator).lean().exec();
+    const user = await users.findOne({username: creator}).lean().exec();
     if(!user){
-        return res.status(400).json({message:"Invalid creator ID"});
+        return res.status(400).json({message:"Invalid username"});
     }
 
     // Check if recipe already exists
@@ -74,14 +75,14 @@ router.post("/", async function (req, res) {
         return res.status(409).json({message:"Duplicate recipe"});
     }
 
-    const id = new mongoose.Types.ObjectId().toString();
-    const recipeObject = { _id: id, name, creator, recipeImage, description, forkedFrom, forkRecipeIds, servingSize, cookingTime, ingredients, instructions };
+    const recipeId = slugify(name + " by " + creator, {lower: true});
+    const recipeObject = { recipeId: recipeId, name, creator, recipeImage, description, forkedFrom, forkRecipeIds, servingSize, cookingTime, ingredients, instructions };
     const recipe = await recipes.create(recipeObject);
 
     if(recipe){ // If recipe is created successfully, send 201 response (created)
         res.status(201).json({message: `New recipe ${name} created`});
         // Add the recipe to the user's recipes array
-        await users.updateOne({_id: creator}, {$push: {recipes: id}}).exec();
+        await users.updateOne({username: creator}, {$push: {recipes: recipeId}}).exec();
     }
     else{
         res.status(400).json({message: "Invalid recipe data received"})
@@ -93,17 +94,17 @@ router.post("/", async function (req, res) {
 // @desc    Update a recipe
 // @route   PUT /api/recipe/:id
 // @access  Private
-router.put("/:id?", async function (req, res) {
+router.put("/:recipeId?", async function (req, res) {
     // Get the id from the request parameters
-    var requestedId = req.params.id;
+    var requestedId = req.params.recipeId;
 
     // Get the recipe data from the request body
-    const { _id, name, creator, recipeImage, userLikes, description, forkedFrom, forkRecipeIds, servingSize, cookingTime, ingredients, instructions, comments } = req.body;
+    const { recipeId, name, creator, recipeImage, userLikes, description, forkedFrom, forkRecipeIds, servingSize, cookingTime, ingredients, instructions, comments } = req.body;
 
     // If no id is included in the request parameters, use the id from the request body
-    if(!req.params.id)
+    if(!req.params.recipeId)
     {
-        requestedId = _id;
+        requestedId = recipeId;
     }
 
     // If any of the required fields are missing, send 400 response (bad request)
@@ -112,7 +113,7 @@ router.put("/:id?", async function (req, res) {
     }
 
     // Doesn't use lean so that we can modify the recipe object, but does have exec to return a promise
-    const recipe = await recipes.findById(requestedId).exec();
+    const recipe = await recipes.findOne({recipeId: requestedId}).exec();
 
     // If recipe doesn't exist, send 404 response (not found)
     if(!recipe){
@@ -124,7 +125,7 @@ router.put("/:id?", async function (req, res) {
         ingredients: ingredients, 
         instructions: instructions }).lean().exec();
     // If duplicate ingredients and instructions from the same creator exists and it's not the same recipe, send 409 response (conflict)
-    if(duplicate && duplicate._id !== requestedId){
+    if(duplicate && duplicate.recipeId !== requestedId){
         return res.status(409).json({message:"Duplicate recipe content from the same user"});
     }
 
@@ -168,18 +169,18 @@ router.put("/:id?", async function (req, res) {
 // @desc    Delete a recipe
 // @route   DELETE /api/recipe/:id
 // @access  Private
-router.delete("/:id?", async function (req, res) {
+router.delete("/:recipeId?", async function (req, res) {
 
     // Get the id from the request parameters
-    var requestedId = req.params.id;
+    var requestedId = req.params.recipeId;
 
     // Get the recipe data from the request body
-    const { _id } = req.body;
+    const { recipeId } = req.body;
 
     // If no id is included in the request parameters, use the id from the request body
-    if(!req.params.id)
+    if(!req.params.recipeId)
     {
-        requestedId = _id;
+        requestedId = recipeId;
     }
 
     // If any of the required fields are missing, send 400 response (bad request)
@@ -187,7 +188,7 @@ router.delete("/:id?", async function (req, res) {
         return res.status(400).json({message:"Recipe ID required"});
     }
 
-    const recipe = await recipes.findById(requestedId).exec();
+    const recipe = await recipes.findOne({recipeId:requestedId}).exec();
 
     // If recipe doesn't exist, send 404 response (not found)
     if(!recipe){
@@ -196,7 +197,7 @@ router.delete("/:id?", async function (req, res) {
 
     // Remove recipe from creator's recipe list
     await users.updateOne(
-        { _id: recipe.creator }, // Filter condition: find the creator by their _id
+        { username: recipe.creator }, // Filter condition: find the creator by their _id
         { $pull: { recipes: requestedId } } // Update operation: remove the requestedId from recipes array
     );
   
@@ -207,7 +208,7 @@ router.delete("/:id?", async function (req, res) {
     // Remove recipe from forkedFrom recipe's forkRecipeIds list
     if (recipe.forkedFrom) {
         await Recipe.updateOne(
-        { _id: recipe.forkedFrom }, // Filter condition: find the forkedFrom recipe by its _id
+        { recipeId: recipe.forkedFrom }, // Filter condition: find the forkedFrom recipe by its _id
         { $pull: { forkRecipeIds: requestedId } } // Update operation: remove the requestedId from forkRecipeIds array
         );
     }
@@ -216,7 +217,7 @@ router.delete("/:id?", async function (req, res) {
     const result = await recipe.deleteOne();
 
     // Response message
-    const reply = `Recipe ${result.name} with ID ${result._id} deleted`;
+    const reply = `Recipe ${result.name} with ID ${result.recipeId} deleted`;
 
     // Send response
     res.json(reply);
