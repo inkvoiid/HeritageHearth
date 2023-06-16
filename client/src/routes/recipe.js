@@ -83,6 +83,7 @@ const Recipe = () => {
       <article>
 			<p><b>{recipe.name}</b> by <Link to={"../profile/"+creatorId}>{recipe.creator}</Link></p>
 
+      <Link to={"/recipe/"+recipeId+"/edit"}><b>Edit Recipe</b></Link>
       <button onClick={handleDeleteRecipe}>Delete Recipe</button>
 			<p>Serving Size: {recipe.servingSize}</p>
 			<p>Cooking Time: {recipe.cookingTime.length} {recipe.cookingTime.unit}</p>

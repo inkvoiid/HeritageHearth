@@ -1,36 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, useFieldArray, Controller } from 'react-hook-form';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { DropdownList } from 'react-widgets';
 import { toast } from 'react-toastify';
 
 const RecipeForm = () => {
-  const { register, handleSubmit, control, formState: { errors } } = useForm();
+  const { register, handleSubmit, control, formState: { errors }, setValue } = useForm();
   const { fields: ingredientsFields, append: appendIngredient, remove: removeIngredient } = useFieldArray({ control, name: 'ingredients' });
   const { fields: instructionsFields, append: appendInstruction, remove: removeInstruction } = useFieldArray({ control, name: 'instructions' });
   const navigate = useNavigate();
-
-  const onSubmit = async (data) => {
-    try {
-      const response = await axios.post('http://localhost:5000/api/recipes', data);
-      if (response.status === 201) {
-        toast.success(`Successfully created ${data.name}`);
-        navigate('/recipes');
-      }
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        const errorMessage = error.response.data.message;
-        toast.error(errorMessage);
-      } else {
-        console.error(error);
-      }
-    }
-  };
-
+  const { recipeId } = useParams();
+  
   const [creatorsList, setCreatorsList] = useState([]);
-  const [isQuantityEnabled, setIsQuantityEnabled] = useState(false);
-  const [isUnitEnabled, setIsUnitEnabled] = useState(false);
+  const [isQuantityEnabled, setIsQuantityEnabled] = useState(true);
+  const [isUnitEnabled, setIsUnitEnabled] = useState(true);
 
   useEffect(() => {
     // Fetch users from the server using an API endpoint
@@ -44,7 +28,52 @@ const RecipeForm = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+      
+    // Fetch recipe data based on the provided recipeId
+    axios
+      .get(`http://localhost:5000/api/recipes/${recipeId}`)
+      .then((response) => {
+        const recipeData = response.data;
+        
+        // Populate form fields with the retrieved recipe data
+        setValue('name', recipeData.name);
+        setValue('creator', recipeData.creator);
+        setValue('description', recipeData.description);
+        setValue('servingSize', recipeData.servingSize);
+        setValue('cookingTime.length', recipeData.cookingTime.length);
+        setValue('cookingTime.unit', recipeData.cookingTime.unit);
+        
+        // Populate ingredients fields
+        recipeData.ingredients.forEach((ingredient) => {
+          appendIngredient(ingredient);
+        });
+        
+        // Populate instructions fields
+        recipeData.instructions.forEach((instruction) => {
+          appendInstruction(instruction);
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [recipeId, appendIngredient, appendInstruction, setValue]);
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/recipes/${recipeId}`, data);
+      if (response.status === 200) {
+        toast.success(`Successfully updated ${data.name}`);
+        navigate('/recipes');
+      }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        const errorMessage = error.response.data.message;
+        toast.error(errorMessage);
+      } else {
+        console.error(error);
+      }
+    }
+  };
 
   const handleQuantityCheckboxChange = (event) => {
     setIsQuantityEnabled(event.target.checked);
@@ -118,6 +147,7 @@ const RecipeForm = () => {
                 defaultValue={field.name}
               />
               {errors?.ingredients?.[index]?.name && <span>This field is required</span>}
+
               <label>
                 <input
                   type="checkbox"
@@ -127,13 +157,16 @@ const RecipeForm = () => {
                 Quantity:
               </label>
               {isQuantityEnabled && (
-                <input
-                  type="number"
-                  {...register(`ingredients[${index}].quantity`, { required: true })}
-                  defaultValue={field.quantity}
-                />
+                <>
+                  <input
+                    type="number"
+                    {...register(`ingredients[${index}].quantity`, { required: isQuantityEnabled })}
+                    defaultValue={field.quantity}
+                  />
+                  {errors?.ingredients?.[index]?.quantity && <span>This field is required</span>}
+                </>
               )}
-              {errors?.ingredients?.[index]?.quantity && <span>This field is required</span>}
+
               <label>
                 <input
                   type="checkbox"
@@ -143,13 +176,16 @@ const RecipeForm = () => {
                 Unit:
               </label>
               {isUnitEnabled && (
-                <input
-                  type="text"
-                  {...register(`ingredients[${index}].unit`, { required: true })}
-                  defaultValue={field.unit}
-                />
+                <>
+                  <input
+                    type="text"
+                    {...register(`ingredients[${index}].unit`, { required: isUnitEnabled })}
+                    defaultValue={field.unit}
+                  />
+                  {errors?.ingredients?.[index]?.unit && <span>This field is required</span>}
+                </>
               )}
-              {errors?.ingredients?.[index]?.unit && <span>This field is required</span>}
+
               <button type="button" onClick={() => removeIngredient(index)}>
                 Remove
               </button>

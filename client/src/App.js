@@ -42,6 +42,7 @@ function App() {
             <Route path="/saved-recipes" element={<SavedRecipes />} />
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/recipes/new" element={<RecipeForm />} />
+            <Route path="/recipe/:recipeId/edit" element={<RecipeForm />} />
             <Route path="/lists" element={<Lists />} />
             <Route path="/pantries" element={<Pantries />} />
 
