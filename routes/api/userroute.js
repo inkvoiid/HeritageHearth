@@ -203,7 +203,7 @@ router.delete("/:username?", async function (req, res) {
         return res.status(400).json({message:"Username required"});
     }
 
-    const user = await users.findOne(requestedUsername).exec();
+    const user = await users.findOne({username: requestedUsername}).exec();
 
     // If user doesn't exist, send 404 response (not found)
     if(!user){
