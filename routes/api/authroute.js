@@ -50,7 +50,7 @@ router.post("/", loginLimiter, async function (req, res) {
             }
         },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "10s" }
+            { expiresIn: "1m" }
     );
 
     const refreshToken = jwt.sign(
@@ -61,7 +61,7 @@ router.post("/", loginLimiter, async function (req, res) {
 
     res.cookie('jwt', refreshToken, {
         httpOnly: true, // Accessible only by the server
-        secure: true, // Only sent with HTTPS
+        // secure: true, // Only sent with HTTPS // Turned off for dev
         sameSite: 'None', // Cross-site cookie
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
@@ -103,7 +103,7 @@ router.get("/refresh", function (req, res) {
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: "10s" }
+                { expiresIn: "1m" }
             );
 
             res.json({ accessToken: accessToken });

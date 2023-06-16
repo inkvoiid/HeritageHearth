@@ -9,6 +9,7 @@ import Navbar from './components/navbar';
 
 import Home from './routes/home';
 
+import Login from './routes/login';
 import Register from './routes/register';
 
 import Feed from './routes/feed';
@@ -33,6 +34,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
 
+            <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
             <Route path="/feed" element={<Feed />} />

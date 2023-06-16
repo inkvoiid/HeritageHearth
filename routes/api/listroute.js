@@ -1,10 +1,14 @@
 import { Router } from "express";
 import mongoose from 'mongoose';
+import verifyJWT from "../../middleware/verifyJWT.js";
 const router = Router();
 
 // Import the list model schema from the models folder
 import lists from "../../models/list.js";
 import users from "../../models/user.js";
+
+// router.use(verifyJWT); // disabled as i didn't get JWTs working
+
 
 // Route for GET request to retrieve all lists
 
@@ -59,7 +63,7 @@ router.post("/", async function (req, res) {
     
     // Check if all the users in userAccess exist
     for (const userID of userAccess) {
-        const user = await users.findById(userID).lean().exec();
+        const user = await users.findOne({username: userID}).lean().exec();
         if(!user){
             return res.status(400).json({message:`User ${userID} in userAccess does not exist`});
         }
@@ -74,7 +78,7 @@ router.post("/", async function (req, res) {
     if(list){ // If list is created successfully, send 201 response (created)
         // Add the pantry to the users' pantries
         for (const userID of userAccess) {
-            await users.updateOne({_id: userID}, {$push: {lists: id}}).exec();
+            await users.updateOne({username: userID}, {$push: {lists: id}}).exec();
         }
         res.status(201).json({message: `New list ${name} created`});
     }
@@ -116,7 +120,7 @@ router.put("/:id?", async function (req, res) {
 
     // Check if all the users in userAccess exist
     for (const userID of userAccess) {
-        const user = await users.findById(userID).lean().exec();
+        const user = await users.findOne({username: userID}).lean().exec();
         if(!user){
             return res.status(400).json({message:`User ${userID} in userAccess does not exist`});
         }
@@ -175,7 +179,7 @@ router.delete("/:id?", async function (req, res) {
 
     // Remove pantry from users' list of shopping lists
     await users.updateMany(
-        { _id: { $in: list.userAccess } }, // Filter condition: find users with _id in userAccess array
+        { username: { $in: list.userAccess } }, // Filter condition: find users with _id in userAccess array
         { $pull: { lists: requestedId } } // Update operation: remove the requestedId from pantries array
     );
 

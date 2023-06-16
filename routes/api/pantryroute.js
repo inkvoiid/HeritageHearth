@@ -59,7 +59,7 @@ router.post("/", async function (req, res) {
     
     // Check if all the users in userAccess exist
     for (const userID of userAccess) {
-        const user = await users.findById(userID).lean().exec();
+        const user = await users.findOne({username: userID}).lean().exec();
         if(!user){
             return res.status(400).json({message:`User ${userID} in userAccess does not exist`});
         }
@@ -74,7 +74,7 @@ router.post("/", async function (req, res) {
     if(pantry){ // If pantry is created successfully, send 201 response (created)
         // Add the pantry to the users' pantries
         for (const userID of userAccess) {
-            await users.updateOne({_id: userID}, {$push: {pantries: id}}).exec();
+            await users.updateOne({username: userID}, {$push: {pantries: id}}).exec();
         }
         res.status(201).json({message: `New pantry ${name} created`});
     }
@@ -116,7 +116,7 @@ router.put("/:id?", async function (req, res) {
 
     // Check if all the users in userAccess exist
     for (const userID of userAccess) {
-        const user = await users.findById(userID).lean().exec();
+        const user = await users.findOne({username: userID}).lean().exec();
         if(!user){
             return res.status(400).json({message:`User ${userID} in userAccess does not exist`});
         }
@@ -174,7 +174,7 @@ router.delete("/:id?", async function (req, res) {
 
     // Remove pantry from users' pantry list
     await users.updateMany(
-        { _id: { $in: pantry.userAccess } }, // Filter condition: find users with _id in userAccess array
+        { username: { $in: pantry.userAccess } }, // Filter condition: find users with _id in userAccess array
         { $pull: { pantries: requestedId } } // Update operation: remove the requestedId from pantries array
     );
 

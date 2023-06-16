@@ -28,7 +28,7 @@ app.use(cookieParser());
 
 app.use(cors());
 
-var db = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@127.0.0.1:27017/ourKitchen?authSource=${process.env.DB_AUTHSOURCE}`;
+var db = process.env.DB_CONNECTION_STRING;
 
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(function() {

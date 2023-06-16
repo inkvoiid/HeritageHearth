@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import UserList from '../components/userList';
+import PantryList from '../components/pantryList';
+import ListList from '../components/listList';
 
 class Home extends Component {
 	componentDidMount() {
@@ -15,6 +17,8 @@ class Home extends Component {
 					<h3>Nau mai, Haere mai ki Our Kitchen</h3>
 					<Link to="/login" >Login</Link> <Link to="/register" >Register</Link>
 					<UserList />
+					<PantryList />
+					<ListList />
 				</article>
 			</>
 		);

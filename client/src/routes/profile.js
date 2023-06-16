@@ -112,6 +112,24 @@ const Profile = () => {
 					))}
 				</ul>
 			</article>
+
+			<article>
+				<p>Lists:</p>
+				<ul>
+					{profile.lists.map(list => (
+						<li key={list._id}><Link to={"../list/"+list._id}>{list.name}</Link></li>
+					))}
+				</ul>
+			</article>
+
+			<article>
+				<p>Pantries</p>
+				<ul>
+					{profile.pantries.map(pantry => (
+						<li key={pantry._id}><Link to={"../pantry/"+pantry._id}>{pantry.name}</Link></li>
+					))}
+				</ul>
+			</article>
 		</div>);
 	  }
 	
