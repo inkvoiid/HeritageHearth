@@ -21,7 +21,7 @@ const PantryList = () => {
       <h1>List of Pantries</h1>
       <ul>
         {pantries.map(pantry => (
-          <li key={pantry._id}><Link to={"./pantries/"+pantry._id}>{pantry.name} - {pantry.userAccess.join(', ')}</Link></li>
+          <li key={pantry._id}><Link to={"./pantry/"+pantry._id}>{pantry.name} - {pantry.userAccess.join(', ')}</Link></li>
         ))}
       </ul>
     </div>

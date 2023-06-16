@@ -21,7 +21,7 @@ const ListList = () => {
       <h1>List of Lists</h1>
       <ul>
         {lists.map(list => (
-          <li key={list._id}><Link to={"./lists/"+list._id}>{list.name} - {list.userAccess.join(', ')}</Link></li>
+          <li key={list._id}><Link to={"./list/"+list._id}>{list.name} - {list.userAccess.join(', ')}</Link></li>
         ))}
       </ul>
     </div>

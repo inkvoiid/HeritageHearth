@@ -22,6 +22,8 @@ import Pantries from './routes/pantries';
 
 import Profile from './routes/profile';
 import Settings from './routes/settings';
+import List from './routes/list';
+import Pantry from './routes/pantry';
 
 
 
@@ -44,6 +46,9 @@ function App() {
             <Route path="/recipes/new" element={<RecipeForm />} />
             <Route path="/recipe/:recipeId/edit" element={<RecipeForm />} />
             <Route path="/lists" element={<Lists />} />
+
+            <Route path="/list/:listId" element={<List />} />
+            <Route path="/pantry/:pantryId" element={<Pantry />} />
             <Route path="/pantries" element={<Pantries />} />
 
             <Route path="/profile/:profileUsername" element={<Profile />} />
