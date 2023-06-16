@@ -29,6 +29,8 @@ const RecipeForm = () => {
   };
 
   const [creatorsList, setCreatorsList] = useState([]);
+  const [isQuantityEnabled, setIsQuantityEnabled] = useState(false);
+  const [isUnitEnabled, setIsUnitEnabled] = useState(false);
 
   useEffect(() => {
     // Fetch users from the server using an API endpoint
@@ -43,6 +45,14 @@ const RecipeForm = () => {
         console.error(error);
       });
   }, []);
+
+  const handleQuantityCheckboxChange = (event) => {
+    setIsQuantityEnabled(event.target.checked);
+  };
+
+  const handleUnitCheckboxChange = (event) => {
+    setIsUnitEnabled(event.target.checked);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -108,17 +118,37 @@ const RecipeForm = () => {
                 defaultValue={field.name}
               />
               {errors?.ingredients?.[index]?.name && <span>This field is required</span>}
-              <input
-                type="number"
-                {...register(`ingredients[${index}].quantity`, { required: true })}
-                defaultValue={field.quantity}
-              />
+              <label>
+                <input
+                  type="checkbox"
+                  checked={isQuantityEnabled}
+                  onChange={handleQuantityCheckboxChange}
+                />
+                Quantity:
+              </label>
+              {isQuantityEnabled && (
+                <input
+                  type="number"
+                  {...register(`ingredients[${index}].quantity`, { required: true })}
+                  defaultValue={field.quantity}
+                />
+              )}
               {errors?.ingredients?.[index]?.quantity && <span>This field is required</span>}
-              <input
-                type="text"
-                {...register(`ingredients[${index}].unit`, { required: true })}
-                defaultValue={field.unit}
-              />
+              <label>
+                <input
+                  type="checkbox"
+                  checked={isUnitEnabled}
+                  onChange={handleUnitCheckboxChange}
+                />
+                Unit:
+              </label>
+              {isUnitEnabled && (
+                <input
+                  type="text"
+                  {...register(`ingredients[${index}].unit`, { required: true })}
+                  defaultValue={field.unit}
+                />
+              )}
               {errors?.ingredients?.[index]?.unit && <span>This field is required</span>}
               <button type="button" onClick={() => removeIngredient(index)}>
                 Remove
