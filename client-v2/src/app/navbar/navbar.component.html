@@ -1,0 +1,22 @@
+<nav>
+  <h1 class="title">
+    <span class="green">Our </span>
+    <span class="light-pink">Kitchen</span>
+  </h1>
+  <a
+    routerLink="./"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    >Home</a
+  >
+  <a routerLink="./recipes" routerLinkActive="active">Recipes</a>
+  <button id="themebutton" (click)="toggleTheme()">
+    <mat-icon>{{ currentTheme === "light" ? "light" : "dark" }}_mode</mat-icon>
+  </button>
+
+  <!-- If the user is logged in, display the log out button -->
+  <div *ngIf="isAuthenticated()">
+    <a routerLink="./profile" routerLinkActive="active">Profile</a>
+    <button mat-raised-button color="accent" (click)="logout()">Log Out</button>
+  </div>
+</nav>

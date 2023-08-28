@@ -1,0 +1,88 @@
+<div class="container">
+  <h1>Sign Up</h1>
+  <form [formGroup]="form" (ngSubmit)="createNewAccount(form)">
+    <div>
+      <mat-form-field color="accent" class="flex-item">
+        <mat-label>First Name</mat-label>
+        <input
+          matInput
+          placeholder="eg. Dave"
+          formControlName="firstname"
+          #firstnameInput
+          required
+        />
+      </mat-form-field>
+      <mat-form-field color="accent" class="flex-item">
+        <mat-label>Last Name</mat-label>
+        <input
+          matInput
+          placeholder="eg. Smith"
+          formControlName="lastname"
+          required
+        />
+      </mat-form-field>
+    </div>
+    <mat-form-field color="accent">
+      <mat-label>Username</mat-label>
+      <input
+        matInput
+        placeholder="eg. coolguy17"
+        formControlName="username"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field color="accent">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        [type]="hidepassword ? 'password' : 'text'"
+        formControlName="password"
+        required
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hidepassword = !hidepassword"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hidepassword"
+        type="button"
+      >
+        <mat-icon>{{
+          hidepassword ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field color="accent">
+      <mat-label>Confirm Password</mat-label>
+      <input
+        matInput
+        [type]="hideconfirmpassword ? 'password' : 'text'"
+        formControlName="confirmpassword"
+        required
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hideconfirmpassword = !hideconfirmpassword"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hideconfirmpassword"
+        type="button"
+      >
+        <mat-icon>{{
+          hideconfirmpassword ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="accent"
+      type="submit"
+      [disabled]="!form.valid"
+    >
+      Submit
+    </button>
+  </form>
+</div>

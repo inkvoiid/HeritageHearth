@@ -1,0 +1,66 @@
+.title {
+  font-family: "Big Snow";
+  font-size: 2.25em;
+  font-weight: 400;
+  margin: 0;
+  padding: 1rem;
+  transition: all 0.3s ease-in-out;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  box-shadow: var(--containershadow);
+}
+
+a {
+  color: var(--text);
+  text-decoration: none;
+  margin: 10px 5px;
+  padding: 10px;
+  transition: all 0.25s ease-in-out;
+  text-decoration-color: var(--bg);
+}
+
+a:hover,
+.active {
+  text-decoration: underline;
+  text-decoration-color: var(--pink);
+  text-decoration-thickness: 4px;
+  text-underline-offset: 2.5px;
+  text-decoration-skip-ink: none;
+}
+
+[data-theme="light"] a {
+  color: var(--text);
+}
+
+#themebutton {
+  height: 40px;
+  width: 40px;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  background-color: var(--pink);
+  margin: 10px;
+  padding: 10px;
+  border-radius: 7.5px;
+  transition: all 0.25s ease-in-out;
+  box-shadow: var(--containershadow);
+}
+
+#themebutton mat-icon {
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
+}
+
+[data-theme="light"] * #themebutton {
+  background-color: var(--pink);
+}
+
+[data-theme="dark"] * #themebutton {
+  background: var(--green);
+}

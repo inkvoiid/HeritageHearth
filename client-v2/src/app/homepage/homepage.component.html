@@ -1,0 +1,16 @@
+<div class="container">
+  <h3>Hello, welcome to the family recipe site.</h3>
+  <p>To get started, login or sign up to add recipes.</p>
+  <div class="flex-div">
+    <a class="button" routerLink="./login">Login</a>
+    <a class="button" routerLink="./signup">Sign Up</a>
+  </div>
+</div>
+<br />
+<div class="container">
+  <p>Who's already a part of Our Kitchen?</p>
+  <div class="flex-div">
+    <!-- for each user in the list of users, create a p tag -->
+    <p *ngFor="let user of users">{{ user.firstName }} {{ user.lastName }}</p>
+  </div>
+</div>
