@@ -6,7 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from "@angular/material/icon";
+import { MatIconModule } from '@angular/material/icon';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +21,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { ProfilepageComponent } from './profilepage/profilepage.component';
 import { SignuppageComponent } from './signuppage/signuppage.component';
+import { AddrecipebuttonComponent } from './addrecipebutton/addrecipebutton.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { RecipeformComponent } from './recipeform/recipeform.component';
+import { AuditlogpageComponent } from './auditlogpage/auditlogpage.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,10 @@ import { SignuppageComponent } from './signuppage/signuppage.component';
     RecipepreviewComponent,
     LoginpageComponent,
     ProfilepageComponent,
-    SignuppageComponent
+    SignuppageComponent,
+    AddrecipebuttonComponent,
+    RecipeformComponent,
+    AuditlogpageComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,9 +52,16 @@ import { SignuppageComponent } from './signuppage/signuppage.component';
     BrowserAnimationsModule,
     HttpClientModule,
     MatProgressSpinnerModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('ourkitchen_auth');
+        },
+      },
+    }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

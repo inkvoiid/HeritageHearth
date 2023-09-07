@@ -11,8 +11,22 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
-  box-shadow: var(--containershadow);
+  background: var(--container);
+  box-shadow: var(--shadow);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 a {
@@ -20,14 +34,13 @@ a {
   text-decoration: none;
   margin: 10px 5px;
   padding: 10px;
-  transition: all 0.25s ease-in-out;
-  text-decoration-color: var(--bg);
+  text-decoration-color: var(--container);
 }
 
 a:hover,
 .active {
   text-decoration: underline;
-  text-decoration-color: var(--pink);
+  text-decoration-color: var(--primary);
   text-decoration-thickness: 4px;
   text-underline-offset: 2.5px;
   text-decoration-skip-ink: none;
@@ -43,12 +56,12 @@ a:hover,
   color: #fff;
   text-align: center;
   text-decoration: none;
-  background-color: var(--pink);
+  background-color: var(--primary);
   margin: 10px;
   padding: 10px;
   border-radius: 7.5px;
   transition: all 0.25s ease-in-out;
-  box-shadow: var(--containershadow);
+  box-shadow: var(--shadow);
 }
 
 #themebutton mat-icon {
@@ -57,10 +70,11 @@ a:hover,
   font-size: 20px;
 }
 
-[data-theme="light"] * #themebutton {
-  background-color: var(--pink);
+[data-theme="light"] #themebutton {
+  background-color: #a4f3f4;
+  color: #f4de54;
 }
 
-[data-theme="dark"] * #themebutton {
-  background: var(--green);
+[data-theme="dark"] #themebutton {
+  background: #193450;
 }

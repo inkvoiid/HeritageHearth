@@ -1,28 +1,28 @@
 <div class="container">
   <h1>Sign Up</h1>
-  <form [formGroup]="form" (ngSubmit)="createNewAccount(form)">
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
     <div>
-      <mat-form-field color="accent" class="flex-item">
+      <mat-form-field color="primary" class="flex-item">
         <mat-label>First Name</mat-label>
         <input
           matInput
           placeholder="eg. Dave"
-          formControlName="firstname"
+          formControlName="firstName"
           #firstnameInput
           required
         />
       </mat-form-field>
-      <mat-form-field color="accent" class="flex-item">
+      <mat-form-field color="primary" class="flex-item">
         <mat-label>Last Name</mat-label>
         <input
           matInput
           placeholder="eg. Smith"
-          formControlName="lastname"
+          formControlName="lastName"
           required
         />
       </mat-form-field>
     </div>
-    <mat-form-field color="accent">
+    <mat-form-field color="primary">
       <mat-label>Username</mat-label>
       <input
         matInput
@@ -32,7 +32,7 @@
       />
     </mat-form-field>
 
-    <mat-form-field color="accent">
+    <mat-form-field color="primary">
       <mat-label>Password</mat-label>
       <input
         matInput
@@ -54,7 +54,7 @@
       </button>
     </mat-form-field>
 
-    <mat-form-field color="accent">
+    <mat-form-field color="primary">
       <mat-label>Confirm Password</mat-label>
       <input
         matInput
@@ -76,6 +76,14 @@
       </button>
     </mat-form-field>
 
+    <div
+      *ngIf="form.get('password')?.hasError('minlength')"
+      class="error-message"
+    >
+      Password must be at least 8 characters long.
+    </div>
+
+    <div *ngIf="form.hasError('passwordMismatch')">Passwords don't match.</div>
     <button
       mat-raised-button
       color="accent"

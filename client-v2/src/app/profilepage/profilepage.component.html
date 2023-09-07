@@ -1,5 +1,5 @@
 <div *ngIf="loading; else profile">
-  <mat-spinner></mat-spinner>
+  <mat-spinner color="primary"></mat-spinner>
 </div>
 
 <ng-template #profile>
@@ -18,3 +18,5 @@
 <ng-template #userNotFound>
   <app-pagenotfound></app-pagenotfound>
 </ng-template>
+
+<app-addrecipebutton></app-addrecipebutton>

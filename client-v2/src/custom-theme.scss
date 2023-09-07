@@ -12,15 +12,47 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
+$md-olive: (
+  50 : #ecefe9,
+  100 : #cfd8c9,
+  200 : #b0bea5,
+  300 : #90a480,
+  400 : #789165,
+  500 : #607d4a,
+  600 : #587543,
+  700 : #4e6a3a,
+  800 : #446032,
+  900 : #334d22,
+  A100 : #bbff92,
+  A200 : #9bff5f,
+  A400 : #7bff2c,
+  A700 : #6bff13,
+  contrast: (50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
 
 // Light Theme Palettes
-$client-v2-primary-light: mat.define-palette(mat.$indigo-palette);
-$client-v2-accent-light: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$client-v2-primary-light: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$client-v2-accent-light: mat.define-palette($md-olive, 500, 400, 600);
 $client-v2-warn-light: mat.define-palette(mat.$red-palette);
 
 // Dark Theme Palettes
-$client-v2-primary-dark: mat.define-palette(mat.$indigo-palette);
-$client-v2-accent-dark: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$client-v2-primary-dark: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$client-v2-accent-dark: mat.define-palette($md-olive, 500, 400, 600);
 $client-v2-warn-dark: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual

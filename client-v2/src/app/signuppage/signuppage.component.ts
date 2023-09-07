@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UserService } from '../user.service';
+import { firstValueFrom } from 'rxjs';
+import { passwordMatchValidator } from '../password-match.validator';
 
 @Component({
   selector: 'app-signuppage',
   templateUrl: './signuppage.component.html',
-  styleUrls: ['./signuppage.component.css']
+  styleUrls: ['./signuppage.component.css'],
 })
 export class SignuppageComponent implements OnInit {
   hidepassword = true;
@@ -12,19 +15,41 @@ export class SignuppageComponent implements OnInit {
 
   form: FormGroup = new FormGroup({});
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private userService: UserService) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      firstname: [null, [Validators.required]],
-      lastname: [null, [Validators.required]],
-      username: [null, [Validators.required]],
-      password: [null, [Validators.required, Validators.minLength(8)]],
-      confirmpassword: [null, [Validators.required, Validators.minLength(8)]]
-    });
+    this.form = this.fb.group(
+      {
+        firstName: [null, [Validators.required]],
+        lastName: [null, [Validators.required]],
+        username: [null, [Validators.required]],
+        password: [null, [Validators.required, Validators.minLength(8)]],
+        confirmpassword: [null, [Validators.required, Validators.minLength(8)]],
+      },
+      {
+        validators: [passwordMatchValidator('password', 'confirmpassword')], // Use the custom validator here
+      }
+    );
   }
 
-  createNewAccount(form: any) {
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(form.value, null, 4));
+  async onSubmit(form: any) {
+    if (form.valid) {
+      const { firstName, lastName, username, password, confirmpassword } =
+        form.value;
+
+      try {
+        const response = await firstValueFrom(
+          this.userService.createNewUser({
+            firstName,
+            lastName,
+            username,
+            password,
+            confirmpassword,
+          })
+        );
+      } catch (error) {
+        this.userService.signupError(error);
+      }
+    }
   }
 }

@@ -1,8 +1,11 @@
-<nav>
+<div class="left">
   <h1 class="title">
-    <span class="green">Our </span>
-    <span class="light-pink">Kitchen</span>
+    <span class="secondary">Our </span>
+    <span class="primary">Kitchen</span>
   </h1>
+</div>
+
+<div>
   <a
     routerLink="./"
     routerLinkActive="active"
@@ -10,13 +13,23 @@
     >Home</a
   >
   <a routerLink="./recipes" routerLinkActive="active">Recipes</a>
+
+  <a routerLink="./logs" routerLinkActive="active">Audit Log</a>
+</div>
+
+<div class="right">
+  <!-- If the user is logged in, display the log out button -->
+  <div *ngIf="auth.loggedInStatus$ | async; else signInButtons">
+    <a routerLink="./profile/{{ username }}" routerLinkActive="active">{{
+      username
+    }}</a>
+    <button mat-raised-button color="accent" (click)="logout()">Log Out</button>
+  </div>
+  <ng-template #signInButtons>
+    <a routerLink="/signup"> Sign Up </a>
+    <button mat-raised-button color="accent" routerLink="/login">Login</button>
+  </ng-template>
   <button id="themebutton" (click)="toggleTheme()">
     <mat-icon>{{ currentTheme === "light" ? "light" : "dark" }}_mode</mat-icon>
   </button>
-
-  <!-- If the user is logged in, display the log out button -->
-  <div *ngIf="isAuthenticated()">
-    <a routerLink="./profile" routerLinkActive="active">Profile</a>
-    <button mat-raised-button color="accent" (click)="logout()">Log Out</button>
-  </div>
-</nav>
+</div>

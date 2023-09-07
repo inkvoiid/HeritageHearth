@@ -3,21 +3,24 @@ import { ThemeService } from '../theme.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../auth.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent {
+  username: string = '';
 
   constructor(
     private themeService: ThemeService,
     private renderer: Renderer2,
-    private auth: AuthService,
+    public auth: AuthService,
+    private userService: UserService,
     private router: Router,
     private toastr: ToastrService
-    ) {}
+  ) {}
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
@@ -27,18 +30,13 @@ export class NavbarComponent {
     return this.themeService.getCurrentTheme();
   }
 
-  isAuthenticated(): boolean {
-    return this.auth.isAuthenticated();
-  }
-
   logout(): void {
     this.auth.logout();
-    this.toastr.success("Logged Out");
-    this.router.navigate(["/"]);
   }
 
   ngOnInit(): void {
     const theme = this.themeService.getCurrentTheme();
-    this.renderer.setAttribute(document.documentElement, "data-theme", theme);
+    this.renderer.setAttribute(document.documentElement, 'data-theme', theme);
+    this.username = this.userService.getUsername();
   }
 }

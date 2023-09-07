@@ -1,42 +1,62 @@
-:root {
-  --green: #607d4a;
-  --pink: #ff4886;
-  --light-pink: #ff97ba;
-  --brown: #976130;
+*,
+:after,
+:before {
+  box-sizing: border-box;
+}
 
-  --sitebg: linear-gradient(150deg, #fededc 0%, #ededed 50%);
+:root {
+  --primary: #ff4886;
+  --secondary: #607d4a;
+  --accent: #ff97ba;
+  --tertiary: #976130;
+
+  --background: linear-gradient(150deg, #fededc 0%, #ededed 50%);
 
   --navbg: linear-gradient(65deg, #d9e8c376 0%, #ffffff 60%);
   --innernavbg: linear-gradient(135deg, #496337, #6f834b);
   --activenavbg: linear-gradient(135deg, #91a76a, #6f834b);
 
   --font: Poppins, "Helvetica Neue", sans-serif;
-  --containershadow: -5px 5px 15px rgba(203, 176, 176, 0.3);
 
-  --bg: rgb(255, 255, 255);
-  --text: rgb(34, 34, 34);
-  --buttoncolour: #111111;
-  --buttontextcolour: #fff;
+  --container: #fff;
+  --text: #222;
+  --shadow: -5px 5px 15px rgba(203, 176, 176, 0.3);
+
+  --button: #111111;
+  --buttontext: #fff;
 }
 
 [data-theme="dark"] {
-  --containershadow: -5px 5px 15px rgba(0, 0, 0, 0.3);
+  --shadow: -5px 5px 15px rgba(0, 0, 0, 0.3);
 
-  --sitebg: #2d2d2d;
+  --background: #1e1e1e;
   --text: #fff;
-  --bg: #1e1e1e;
-  --buttoncolour: var(--green);
-  --buttontextcolour: #fff;
+  --container: #2d2d2d;
+  --button: transparent;
+  --buttontext: #fff;
+}
+
+[data-theme="dark"] .button {
+  border: var(--buttontext) 2px solid;
+}
+
+[data-theme="dark"] .bg-primary,
+[data-theme="dark"] .bg-secondary,
+[data-theme="dark"] .bg-tertiary,
+[data-theme="dark"] .bg-accent {
+  border: none;
 }
 
 html,
 body {
-  background: var(--sitebg);
+  background: var(--background);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
   color: var(--text);
   scroll-padding-top: 2rem;
   scroll-behavior: smooth;
   margin: 0;
-  height: 100%;
 }
 
 body {
@@ -44,42 +64,35 @@ body {
   font-family: var(--font);
 }
 
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+.angular {
   height: 100vh;
 }
 
+main {
+  margin: 0 auto;
+  padding: 2rem 0;
+  max-width: 500px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 app-navbar {
-  position: fixed;
-  width: 100%;
-  margin: auto;
+  position: sticky;
+  z-index: 100;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--container);
+  box-shadow: var(--shadow);
 }
 
 .container {
-  background-color: var(--bg);
+  background-color: var(--container);
   padding: 1rem 3rem;
   border-radius: 0.75rem;
-  box-shadow: var(--containershadow);
-}
-
-.light-pink {
-  color: var(--light-pink);
-}
-
-.pink {
-  color: var(--pink);
-}
-
-.green {
-  color: var(--green);
-}
-
-.brown {
-  color: var(--brown);
+  box-shadow: var(--shadow);
 }
 
 img {
@@ -109,8 +122,8 @@ button {
 }
 
 .button {
-  color: var(--buttontextcolour);
-  background-color: var(--buttoncolour);
+  color: var(--buttontext);
+  background-color: var(--button);
   text-decoration: none;
   margin: 10px 5px;
   padding: 10px;
@@ -120,8 +133,8 @@ button {
 }
 
 .button:hover {
-  background-color: #e1e1e1;
-  color: #111111;
+  background-color: #fbfbfb;
+  color: #111;
 }
 
 .flex-div {
@@ -129,4 +142,40 @@ button {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.primary {
+  color: var(--primary);
+}
+
+.secondary {
+  color: var(--secondary);
+}
+
+.tertiary {
+  color: var(--tertiary);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-secondary {
+  background-color: var(--secondary);
+}
+
+.bg-tertiary {
+  background-color: var(--tertiary);
+}
+
+.bg-accent {
+  background-color: var(--accent);
+}
+
+mat-hint {
+  font-size: 12px; /* You can adjust the size as needed */
 }
