@@ -17,7 +17,7 @@ export class NavbarComponent {
     private themeService: ThemeService,
     private renderer: Renderer2,
     public auth: AuthService,
-    private userService: UserService,
+    protected userService: UserService,
     private router: Router,
     private toastr: ToastrService
   ) {}

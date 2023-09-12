@@ -20,9 +20,11 @@
 <div class="right">
   <!-- If the user is logged in, display the log out button -->
   <div *ngIf="auth.loggedInStatus$ | async; else signInButtons">
-    <a routerLink="./profile/{{ username }}" routerLinkActive="active">{{
-      username
-    }}</a>
+    <a
+      routerLink="./profile/{{ userService.getUsername() }}"
+      routerLinkActive="active"
+      >{{ userService.getUsername() }}</a
+    >
     <button mat-raised-button color="accent" (click)="logout()">Log Out</button>
   </div>
   <ng-template #signInButtons>

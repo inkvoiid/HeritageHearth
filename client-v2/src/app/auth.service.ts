@@ -42,7 +42,7 @@ export class AuthService {
         if (response.accessToken != null) {
           this._loggedInStatus$.next(true);
           localStorage.setItem('ourkitchen_auth', response.accessToken);
-          this.userService.setUsername(username);
+          this.userService.updateUsernameFromToken();
           this.toastr.success('Login successful');
           this.router.navigate([`/profile/${username}`]);
         }
@@ -66,6 +66,8 @@ export class AuthService {
   }
 
   logout(): void {
+    this.userService.setUsername('');
+
     // Check if the user has a valid token
     const token = localStorage.getItem('ourkitchen_auth');
     if (!token) {

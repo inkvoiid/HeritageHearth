@@ -23,6 +23,18 @@ export class RecipeService {
     this.username = this.userService.getUsername();
   }
 
+  getAllRecipes() {
+    return this.http.get(`${this.baseURL}`);
+  }
+
+  getRecipe(recipeId: string) {
+    return this.http.get(`${this.baseURL}/${recipeId}`);
+  }
+
+  getUserRecipes(userId: string) {
+    
+  }
+
   createNewRecipe(recipe: any) {
     return this.http
       .post(`${this.baseURL}`, recipe, { observe: 'response' })

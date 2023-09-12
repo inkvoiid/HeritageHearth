@@ -9,9 +9,20 @@
 <br />
 <div class="container">
   <p>Who's already a part of Our Kitchen?</p>
-  <div class="flex-div">
+  <div class="grid">
     <!-- for each user in the list of users, create a p tag -->
-    <p *ngFor="let user of users">{{ user.firstName }} {{ user.lastName }}</p>
+    <div class="profile" *ngFor="let user of users">
+      <a [routerLink]="'/profile/' + user.username"
+        ><img
+          class="profileImage"
+          [src]="
+            '../../assets/media/images/profileimages/' + user.profilePic ||
+            '../../assets/media/images/profileimages/default-profile-pic.jpg'
+          "
+        />
+        <h3>{{ user.firstName }} {{ user.lastName }}</h3></a
+      >
+    </div>
   </div>
 </div>
 

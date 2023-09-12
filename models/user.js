@@ -1,63 +1,66 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
 // Create a schema for the User document structure
 const userSchema = new Schema(
   {
-    "username": {
-        type: String,
-        required: true
+    username: {
+      type: String,
+      required: true,
     },
-    "firstName": {
-        type: String,
-        required: true
+    firstName: {
+      type: String,
+      required: true,
     },
-    "lastName": {
-        type: String,
-        required: true
+    lastName: {
+      type: String,
+      required: true,
     },
-    "profilePic": 
-    {
-        type: String,
-        default: "default-profile-pic.jpg"
+    profilePic: {
+      type: String,
+      default: "default-profile-pic.jpg",
     },
-    "password": {
-        type: String,
-        required: true
+    password: {
+      type: String,
+      required: true,
     },
-    "friends": [
+    roles: {
+      type: [String],
+      default: [],
+    },
+    friends: [
       {
-        "_id": false,
-        "friendName": String,
-        "relation": String,
+        _id: false,
+        friendName: String,
+        relation: String,
       },
     ],
-    "savedRecipes": [
-      {
-        type: String,
-      },
-    ],
-    "recipes": [
+    savedRecipes: [
       {
         type: String,
       },
     ],
-    "pantries": [
+    recipes: [
       {
         type: String,
       },
     ],
-    "lists": [
+    pantries: [
+      {
+        type: String,
+      },
+    ],
+    lists: [
       {
         type: String,
       },
     ],
   },
-  { collection: 'users', versionKey: false }
+  { collection: "users", versionKey: false }
 );
 
 // Create a model based on the schema
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;

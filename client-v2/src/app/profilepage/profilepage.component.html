@@ -1,16 +1,82 @@
-<div *ngIf="loading; else profile">
+<div class="flex-div" *ngIf="loading; else profile">
   <mat-spinner color="primary"></mat-spinner>
 </div>
 
 <ng-template #profile>
-  <div *ngIf="user !== null; else userNotFound">
-    <div class="container">
-      <h1 id="profile-name">{{ user.firstName }} {{ user.lastName }}</h1>
-      <p id="profile-username">{{ user.username }}</p>
+  <div *ngIf="user !== null; else userNotFound" class="profile">
+    <div class="container profile-info">
+      <div class="profile-info">
+        <img
+          class="profileImage"
+          [src]="
+            '../../assets/media/images/profileimages/' + user.profilePic ||
+            '../../assets/media/images/profileimages/default-profile-pic.jpg'
+          "
+        />
+        <div>
+          <h1 id="profile-name">{{ user.firstName }} {{ user.lastName }}</h1>
+          <p id="profile-username">{{ user.username }}</p>
+        </div>
+      </div>
+      <button mat-raised-button color="accent" [routerLink]="['./edit']">
+        Edit Profile
+      </button>
     </div>
 
     <div class="container">
-      <h2>Recipes</h2>
+      <h2 class="darktitleoverride tertiary">Following</h2>
+      <div *ngIf="user.friends.length > 0; else noFollowing">
+        <div *ngFor="let friend of user.friends">
+          <div class="profile">
+            <a [routerLink]="'/profile/' + friend.username">
+              <img
+                class="profileImage"
+                [src]="
+                  '../../assets/media/images/profileimages/' +
+                    friend.profilePic ||
+                  '../../assets/media/images/profileimages/default-profile-pic.jpg'
+                "
+              />
+              <h3>{{ friend.firstName }} {{ friend.lastName }}</h3>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noFollowing>
+        <p>{{ user.firstName }} isn't following anyone.</p>
+      </ng-template>
+    </div>
+
+    <div class="container">
+      <h2 class="darktitleoverride tertiary">Favourite Recipes</h2>
+      <div *ngIf="user.savedRecipes.length > 0; else noFavourites">
+        <div *ngFor="let recipe of user.savedRecipes">
+          <app-recipepreview
+            [id]="recipe"
+            [recipe]="recipe"
+          ></app-recipepreview>
+        </div>
+      </div>
+      <ng-template #noFavourites>
+        <p>{{ user.firstName }} doesn't have any favourite recipes.</p>
+      </ng-template>
+    </div>
+
+    <div class="container">
+      <h2 class="darktitleoverride tertiary">Recipes</h2>
+      <div *ngIf="user.recipes.length > 0; else noRecipes">
+        <div *ngFor="let recipe of user.recipes">
+          <app-recipepreview
+            [id]="recipe"
+            [recipe]="recipe"
+          ></app-recipepreview>
+        </div>
+      </div>
+
+      <ng-template #noRecipes>
+        <p>{{ user.firstName }} hasn't written any recipes.</p>
+      </ng-template>
     </div>
   </div>
 </ng-template>

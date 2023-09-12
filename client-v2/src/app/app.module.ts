@@ -7,13 +7,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomepageComponent } from './homepage/homepage.component';
-import { RecipesComponent } from './recipes/recipes.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { RecipepreviewComponent } from './recipepreview/recipepreview.component';
 import { LoginpageComponent } from './loginpage/loginpage.component';
@@ -25,13 +25,13 @@ import { AddrecipebuttonComponent } from './addrecipebutton/addrecipebutton.comp
 import { JwtModule } from '@auth0/angular-jwt';
 import { RecipeformComponent } from './recipeform/recipeform.component';
 import { AuditlogpageComponent } from './auditlogpage/auditlogpage.component';
+import { BrowserecipepageComponent } from './browserecipepage/browserecipepage.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     HomepageComponent,
-    RecipesComponent,
     PagenotfoundComponent,
     RecipepreviewComponent,
     LoginpageComponent,
@@ -40,6 +40,7 @@ import { AuditlogpageComponent } from './auditlogpage/auditlogpage.component';
     AddrecipebuttonComponent,
     RecipeformComponent,
     AuditlogpageComponent,
+    BrowserecipepageComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,6 +49,7 @@ import { AuditlogpageComponent } from './auditlogpage/auditlogpage.component';
     MatButtonModule,
     MatInputModule,
     MatIconModule,
+    MatCardModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,

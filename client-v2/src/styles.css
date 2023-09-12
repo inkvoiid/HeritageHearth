@@ -71,7 +71,7 @@ body {
 main {
   margin: 0 auto;
   padding: 2rem 0;
-  max-width: 500px;
+  max-width: 75vw;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -178,4 +178,26 @@ button {
 
 mat-hint {
   font-size: 12px; /* You can adjust the size as needed */
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+}
+
+[data-theme="dark"] .darktitleoverride {
+  color: #fff;
+}
+
+.profile h3 {
+  margin: 0;
+}
+
+.profileImage {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
 }

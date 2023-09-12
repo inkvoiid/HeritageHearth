@@ -1,1 +1,16 @@
-<p>recipepreview works!</p>
+<div class="preview">
+  <div *ngIf="recipe; else strange">
+    <img
+      [src]="
+        recipe.image || '../../assets/media/images/profileimages/profile1.png'
+      "
+      width="100%"
+    />
+    <h3>{{ recipe.name }}</h3>
+    <p class="description">{{ recipe.description }}</p>
+  </div>
+
+  <ng-template #strange>
+    <p>An unviewable recipe, how strange.</p>
+  </ng-template>
+</div>

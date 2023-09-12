@@ -1,8 +1,8 @@
 <div class="container">
   <h1>Sign Up</h1>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
-    <div>
-      <mat-form-field color="primary" class="flex-item">
+    <div class="flex-div">
+      <mat-form-field color="primary" style="width: 100%" class="flex-item">
         <mat-label>First Name</mat-label>
         <input
           matInput
@@ -12,7 +12,7 @@
           required
         />
       </mat-form-field>
-      <mat-form-field color="primary" class="flex-item">
+      <mat-form-field color="primary" style="width: 100%" class="flex-item">
         <mat-label>Last Name</mat-label>
         <input
           matInput

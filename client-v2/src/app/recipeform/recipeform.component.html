@@ -13,9 +13,9 @@
       />
     </mat-form-field>
 
-    <div>
+    <div class="flex-div">
       <!-- Serving Size -->
-      <mat-form-field color="primary" class="flex-item">
+      <mat-form-field color="primary" style="width: 100%" class="flex-item">
         <mat-label>Serving Size</mat-label>
         <input
           matInput
@@ -27,7 +27,7 @@
       </mat-form-field>
 
       <!-- Cooking Time -->
-      <mat-form-field color="primary" class="flex-item">
+      <mat-form-field color="primary" style="width: 100%" class="flex-item">
         <mat-label>Cooking Time</mat-label>
         <input
           matInput
@@ -63,10 +63,11 @@
     <!-- Ingredients -->
     <h2>Ingredients</h2>
     <div
+      class="flex-div"
       formArrayName="ingredients"
       *ngFor="let ingredient of ingredients.controls; let i = index"
     >
-      <mat-form-field color="primary">
+      <mat-form-field color="primary" style="width: 100%">
         <mat-label>Ingredient #{{ i + 1 }}</mat-label>
         <input
           matInput
@@ -101,28 +102,29 @@
     <!-- instructions -->
     <h2>Steps</h2>
     <div
+      class="flex-div"
       formArrayName="instructions"
       *ngFor="let instruction of instructions.controls; let i = index"
     >
-      <mat-form-field color="primary">
+      <mat-form-field color="primary" style="width: 100%">
         <mat-label>Step #{{ i + 1 }}</mat-label>
-        <input
+        <textarea
           matInput
           required
           type="text"
           id="instruction{{ i }}"
           placeholder="Enter instruction"
           [formControlName]="i"
-        />
+        ></textarea>
       </mat-form-field>
       <button
         [disabled]="!shouldDisplayinstructionRemoveButton()"
-        mat-raised-button
+        mat-icon-button
         color="warn"
         type="button"
         (click)="removeinstruction(i)"
       >
-        Remove
+        <mat-icon>close</mat-icon>
       </button>
     </div>
 
@@ -144,5 +146,4 @@
       Submit
     </button>
   </form>
-  <p>{{ recipeForm.value | json }}</p>
 </div>

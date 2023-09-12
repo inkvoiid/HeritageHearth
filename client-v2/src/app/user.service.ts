@@ -17,10 +17,16 @@ export class UserService {
     private toastr: ToastrService,
     private router: Router
   ) {
+    this.updateUsernameFromToken();
+  }
+
+  updateUsernameFromToken() {
     const token = localStorage.getItem('ourkitchen_auth');
     if (token) {
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       this._username = decodedToken.UserInfo.username;
+    } else {
+      this._username = ''; // Clear username if there's no token (logged out)
     }
   }
 
