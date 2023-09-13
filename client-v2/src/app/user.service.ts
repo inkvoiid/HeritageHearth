@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { tap } from 'rxjs/operators';
+import { Observable, lastValueFrom } from 'rxjs';
+import { last, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -44,6 +45,11 @@ export class UserService {
 
   getUser(username: string) {
     return this.http.get(`${this.baseURL}/${username}`);
+  }
+
+  getFirstName(): Observable<string> {
+    const user = this.getUser(this._username);
+    return user.pipe(map((user: any) => user.firstName));
   }
 
   createNewUser(user: any) {

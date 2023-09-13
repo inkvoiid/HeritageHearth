@@ -1,50 +1,116 @@
+/* Title at the top */
 .title {
-  font-family: "Big Snow";
-  font-size: 2.25em;
+  font-family: "Caprasimo", "Big Snow";
+  font-size: 2em;
+  line-height: 2rem;
+  text-align: center;
   font-weight: 400;
-  margin: 0;
-  padding: 1rem;
+  margin: 1.5rem 0.5rem 0;
+  padding: 0;
   transition: all 0.3s ease-in-out;
 }
 
-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Inner green container that has the route links */
+.nav-inner {
+  background: var(--innernavbg);
+  margin: 1rem;
+  height: 90%;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  box-shadow: var(--innernavshadow);
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+[data-theme="dark"] .nav-inner {
   background: var(--container);
-  box-shadow: var(--shadow);
 }
 
-.left {
+/* The route links */
+.nav-items {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.right {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
+button {
+  box-shadow: none;
 }
 
-a {
+.nav-items button {
+  border-radius: 1.5rem;
+  background-color: transparent;
+  color: var(--buttontext);
+  box-shadow: none;
+}
+
+.nav-items .active,
+.profile.active {
+  background: var(--activenavbg);
+  border-radius: 0.5rem;
+  box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.nav-items button:hover:not(.active) {
+  transition: all 0.15s ease-in-out;
+  border-radius: 0.5rem;
+  background-color: var(--navbghover);
+  box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* The profile/login area at the bottom */
+.user-info {
+  background: var(--container);
   color: var(--text);
-  text-decoration: none;
-  margin: 10px 5px;
-  padding: 10px;
-  text-decoration-color: var(--container);
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-a:hover,
-.active {
-  text-decoration: underline;
-  text-decoration-color: var(--primary);
-  text-decoration-thickness: 4px;
-  text-underline-offset: 2.5px;
-  text-decoration-skip-ink: none;
+.user-info div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
+
+.profile {
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 1.1em;
+  background-color: transparent;
+}
+
+.profile:hover:not(.active) {
+  transition: all 0.15s ease-in-out;
+  border-radius: 0.5rem;
+  background-color: var(--secondary);
+  color: white;
+  box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile:hover:not(.active) p {
+  color: white;
+}
+
+.profile.active p {
+  color: white;
+}
+
+.avatar {
+  width: 100%;
+  max-width: 50px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  margin-inline-end: 0.5rem;
+  border-radius: 10rem;
+  box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Bottom Buttons to go dark mode and settings */
 
 [data-theme="light"] a {
   color: var(--text);
@@ -57,7 +123,6 @@ a:hover,
   text-align: center;
   text-decoration: none;
   background-color: var(--primary);
-  margin: 10px;
   padding: 10px;
   border-radius: 7.5px;
   transition: all 0.25s ease-in-out;
@@ -77,4 +142,7 @@ a:hover,
 
 [data-theme="dark"] #themebutton {
   background: #193450;
+}
+
+@media screen and (max-width: 768px) {
 }

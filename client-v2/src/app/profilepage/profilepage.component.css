@@ -12,7 +12,6 @@
 
 .profile-info {
   display: flex;
-  flex: 2 2 1;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -36,4 +35,19 @@
   font-weight: 400;
   margin-top: 0;
   opacity: 50%;
+}
+
+@media screen and (max-width: 768px) {
+  .profile-info {
+    flex-direction: column;
+  }
+
+  .profileImage {
+    width: 100px;
+    height: 100px;
+  }
+
+  #profile-name {
+    font-size: 1.25em;
+  }
 }

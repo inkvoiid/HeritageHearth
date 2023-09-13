@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 // Material
 import { MatButtonModule } from '@angular/material/button';
@@ -54,6 +55,7 @@ import { BrowserecipepageComponent } from './browserecipepage/browserecipepage.c
     BrowserAnimationsModule,
     HttpClientModule,
     MatProgressSpinnerModule,
+    MatSlideToggleModule,
     ToastrModule.forRoot(),
     JwtModule.forRoot({
       config: {

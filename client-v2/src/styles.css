@@ -14,13 +14,16 @@
 
   --navbg: linear-gradient(65deg, #d9e8c376 0%, #ffffff 60%);
   --innernavbg: linear-gradient(135deg, #496337, #6f834b);
+  --innernavshadow: -5px 5px 15px rgba(54, 79, 34, 0.3);
   --activenavbg: linear-gradient(135deg, #91a76a, #6f834b);
+  --navbghover: #91a76a3b;
 
   --font: Poppins, "Helvetica Neue", sans-serif;
 
   --container: #fff;
   --text: #222;
   --shadow: -5px 5px 15px rgba(203, 176, 176, 0.3);
+  --navshadow: 5px 5px 15px rgba(255, 168, 168, 0.3);
 
   --button: #111111;
   --buttontext: #fff;
@@ -28,6 +31,13 @@
 
 [data-theme="dark"] {
   --shadow: -5px 5px 15px rgba(0, 0, 0, 0.3);
+  --navshadow: var(--shadow);
+
+  --innernavbg: linear-gradient(135deg, #222, #202020);
+  --innernavshadow: -5px 5px 15px rgba(0, 0, 0, 0.3);
+  --activenavbg: linear-gradient(135deg, #80945d, #505f36);
+  --navbg: #2d2d2d;
+  --navbghover: #2121213b;
 
   --background: #1e1e1e;
   --text: #fff;
@@ -70,6 +80,8 @@ body {
 
 main {
   margin: 0 auto;
+  margin-left: 23rem;
+  margin-right: 5rem;
   padding: 2rem 0;
   max-width: 75vw;
   align-items: center;
@@ -78,14 +90,13 @@ main {
 }
 
 app-navbar {
-  position: sticky;
-  z-index: 100;
   top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 17.5rem;
   background: var(--container);
-  box-shadow: var(--shadow);
+  position: fixed;
+  height: 100%;
+  box-shadow: var(--navshadow);
+  border-radius: 0 0.5rem 0.5rem 0;
 }
 
 .container {
@@ -200,4 +211,21 @@ mat-hint {
   border-radius: 50%;
   object-fit: cover;
   object-position: center;
+}
+
+@media screen and (max-width: 768px) {
+  main {
+    max-width: 90vw;
+  }
+  /*
+  app-navbar {
+    position: sticky;
+    z-index: 100;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--container);
+    box-shadow: var(--shadow);
+  } */
 }

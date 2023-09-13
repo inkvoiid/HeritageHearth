@@ -1,6 +1,6 @@
 import { Component, Renderer2 } from '@angular/core';
 import { ThemeService } from '../theme.service';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../auth.service';
 import { UserService } from '../user.service';
@@ -12,6 +12,7 @@ import { UserService } from '../user.service';
 })
 export class NavbarComponent {
   username: string = '';
+  userFirstName: string = '';
 
   constructor(
     private themeService: ThemeService,
@@ -35,8 +36,24 @@ export class NavbarComponent {
   }
 
   ngOnInit(): void {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.updateFirstName();
+      }
+    });
+
     const theme = this.themeService.getCurrentTheme();
     this.renderer.setAttribute(document.documentElement, 'data-theme', theme);
     this.username = this.userService.getUsername();
+
+    this.updateFirstName();
+  }
+
+  updateFirstName() {
+    this.userService
+      .getUser(this.userService.getUsername())
+      .subscribe((response: any) => {
+        this.userFirstName = response.firstName;
+      });
   }
 }

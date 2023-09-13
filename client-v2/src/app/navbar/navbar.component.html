@@ -5,33 +5,67 @@
   </h1>
 </div>
 
-<div>
-  <a
-    routerLink="./"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
-    >Home</a
-  >
-  <a routerLink="./recipes" routerLinkActive="active">Recipes</a>
-
-  <a routerLink="./logs" routerLinkActive="active">Audit Log</a>
-</div>
-
-<div class="right">
-  <!-- If the user is logged in, display the log out button -->
-  <div *ngIf="auth.loggedInStatus$ | async; else signInButtons">
-    <a
-      routerLink="./profile/{{ userService.getUsername() }}"
+<div class="nav-inner">
+  <div class="nav-items">
+    <button
+      mat-raised-button
+      routerLink="./"
       routerLinkActive="active"
-      >{{ userService.getUsername() }}</a
+      [routerLinkActiveOptions]="{ exact: true }"
     >
-    <button mat-raised-button color="accent" (click)="logout()">Log Out</button>
+      <mat-icon>home</mat-icon>Home
+    </button>
+    <button mat-raised-button routerLink="./recipes" routerLinkActive="active">
+      <mat-icon>local_dining</mat-icon>Recipes
+    </button>
+
+    <button mat-raised-button routerLink="./logs" routerLinkActive="active">
+      <mat-icon>summarize</mat-icon>Audit Log
+    </button>
   </div>
-  <ng-template #signInButtons>
-    <a routerLink="/signup"> Sign Up </a>
-    <button mat-raised-button color="accent" routerLink="/login">Login</button>
-  </ng-template>
-  <button id="themebutton" (click)="toggleTheme()">
-    <mat-icon>{{ currentTheme === "light" ? "light" : "dark" }}_mode</mat-icon>
-  </button>
+
+  <div class="user-info">
+    <!-- If the user is logged in, display the log out button -->
+    <div *ngIf="auth.loggedInStatus$ | async; else signInButtons">
+      <a
+        class="profile tertiary"
+        routerLink="./profile/{{ userService.getUsername() }}"
+        routerLinkActive="active"
+        ><img
+          src="../../assets/media/images/profileimages/profile2.png"
+          class="avatar"
+        />
+        <p class="tertiary darktitleoverride">
+          {{ userFirstName }}
+        </p></a
+      >
+
+      <button mat-raised-button class="bg-tertiary">
+        <mat-icon>settings</mat-icon>
+        Settings
+      </button>
+
+      <button mat-raised-button class="bg-tertiary" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Log Out
+      </button>
+    </div>
+    <!-- If the user is not logged in, display the sign up and login buttons -->
+    <ng-template #signInButtons>
+      <button mat-raised-button class="tertiary" routerLink="/signup">
+        <mat-icon>person_add</mat-icon>
+        Sign Up
+      </button>
+      <button mat-raised-button color="accent" routerLink="/login">
+        <mat-icon>login</mat-icon>
+        Login
+      </button>
+    </ng-template>
+
+    <!-- Theme button -->
+    <button mat-raised-button color="primary" (click)="toggleTheme()">
+      <mat-icon>{{ currentTheme === "light" ? "light" : "dark" }}_mode</mat-icon
+      >{{ currentTheme === "light" ? "Light" : "Dark" }} Mode
+    </button>
+  </div>
 </div>
