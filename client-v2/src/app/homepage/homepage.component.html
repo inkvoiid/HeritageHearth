@@ -1,9 +1,12 @@
 <div class="container">
+  <h1 class="tertiary darktitleoverride">Haere Mai</h1>
   <h3>Hello, welcome to the family recipe site.</h3>
-  <p>To get started, login or sign up to add recipes.</p>
-  <div *ngIf="!(auth.loggedInStatus$ | async)" class="flex-div">
-    <a class="bg-primary button" routerLink="./login">Login</a>
-    <a class="button" routerLink="./signup">Sign Up</a>
+  <div *ngIf="!(auth.loggedInStatus$ | async)">
+    <p>To get started, login or sign up to add recipes.</p>
+    <div class="flex-div">
+      <a class="bg-primary button" routerLink="./login">Login</a>
+      <a class="button" routerLink="./signup">Sign Up</a>
+    </div>
   </div>
 </div>
 <br />

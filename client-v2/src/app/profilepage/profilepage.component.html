@@ -14,11 +14,21 @@
           "
         />
         <div>
-          <h1 id="profile-name">{{ user.firstName }} {{ user.lastName }}</h1>
-          <p id="profile-username">{{ user.username }}</p>
+          <h1 id="profile-name">
+            {{ user.firstName }} {{ user.lastName
+            }}<span *ngIf="user.roles[0] === 'admin'">Voo</span>
+          </h1>
+          <p id="profile-username">
+            {{ user.username }}
+          </p>
         </div>
       </div>
-      <button mat-raised-button color="accent" [routerLink]="['./edit']">
+      <button
+        *ngIf="isOwnProfile"
+        mat-raised-button
+        color="accent"
+        [routerLink]="['./edit']"
+      >
         Edit Profile
       </button>
     </div>
@@ -44,7 +54,10 @@
       </div>
 
       <ng-template #noFollowing>
-        <p>{{ user.firstName }} isn't following anyone.</p>
+        <p *ngIf="!isOwnProfile">
+          {{ user.firstName }} isn't following anyone.
+        </p>
+        <p *ngIf="isOwnProfile">You aren't following anyone.</p>
       </ng-template>
     </div>
 
@@ -59,7 +72,10 @@
         </div>
       </div>
       <ng-template #noFavourites>
-        <p>{{ user.firstName }} doesn't have any favourite recipes.</p>
+        <p *ngIf="!isOwnProfile">
+          {{ user.firstName }} doesn't have any favourite recipes.
+        </p>
+        <p *ngIf="isOwnProfile">You don't have any favourite recipes.</p>
       </ng-template>
     </div>
 
@@ -75,7 +91,10 @@
       </div>
 
       <ng-template #noRecipes>
-        <p>{{ user.firstName }} hasn't written any recipes.</p>
+        <p *ngIf="!isOwnProfile">
+          {{ user.firstName }} hasn't written any recipes.
+        </p>
+        <p *ngIf="isOwnProfile">You haven't written any recipes.</p>
       </ng-template>
     </div>
   </div>

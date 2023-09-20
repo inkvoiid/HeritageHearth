@@ -1,3 +1,4 @@
+import { NavbarService } from './../navbar.service';
 import { Component, Renderer2 } from '@angular/core';
 import { ThemeService } from '../theme.service';
 import { NavigationEnd, Router } from '@angular/router';
@@ -13,12 +14,14 @@ import { UserService } from '../user.service';
 export class NavbarComponent {
   username: string = '';
   userFirstName: string = '';
+  navbarVisible = false;
 
   constructor(
     private themeService: ThemeService,
     private renderer: Renderer2,
     public auth: AuthService,
     protected userService: UserService,
+    private navbarService: NavbarService,
     private router: Router,
     private toastr: ToastrService
   ) {}
@@ -36,6 +39,10 @@ export class NavbarComponent {
   }
 
   ngOnInit(): void {
+    this.navbarService.navbarVisible$.subscribe((visible) => {
+      this.navbarVisible = visible;
+    });
+
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.updateFirstName();
@@ -49,11 +56,20 @@ export class NavbarComponent {
     this.updateFirstName();
   }
 
+  toggleNavbar(): void {
+    this.navbarService.toggleNavbarVisibility();
+    console.log('navbarVisible: ' + this.navbarVisible);
+  }
+
   updateFirstName() {
-    this.userService
-      .getUser(this.userService.getUsername())
-      .subscribe((response: any) => {
-        this.userFirstName = response.firstName;
-      });
+    if (this.auth.loggedInStatus$) {
+      this.userService
+        .getUser(this.userService.getUsername())
+        .subscribe((response: any) => {
+          this.userFirstName = response.body.firstName;
+        });
+    } else {
+      this.userFirstName = '';
+    }
   }
 }

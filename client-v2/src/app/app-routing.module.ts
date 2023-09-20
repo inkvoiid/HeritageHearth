@@ -10,10 +10,13 @@ import { SignuppageComponent } from './signuppage/signuppage.component';
 import { RecipeformComponent } from './recipeform/recipeform.component';
 import { AuditlogpageComponent } from './auditlogpage/auditlogpage.component';
 import { BrowserecipepageComponent } from './browserecipepage/browserecipepage.component';
+import { RecipepageComponent } from './recipepage/recipepage.component';
 
 // * Guards
 import { isAuthenticatedGuard } from './is-authenticated.guard';
 import { inverseIsAuthenticatedGuard } from './inverse-is-authenticated.guard';
+import { isAuthorisedRecipeGuard } from './is-authorised-recipe.guard';
+import { EditprofileformComponent } from './editprofileform/editprofileform.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -23,11 +26,11 @@ const routes: Routes = [
     component: RecipeformComponent,
     canActivate: [isAuthenticatedGuard],
   },
-  { path: 'recipes/:id', component: BrowserecipepageComponent },
+  { path: 'recipes/:recipeId', component: RecipepageComponent },
   {
-    path: 'recipes/:id/edit',
+    path: 'recipes/:recipeId/edit',
     component: RecipeformComponent,
-    canActivate: [isAuthenticatedGuard],
+    canActivate: [isAuthorisedRecipeGuard, isAuthenticatedGuard],
   },
   { path: 'logs', component: AuditlogpageComponent },
   {
@@ -41,6 +44,7 @@ const routes: Routes = [
     canActivate: [inverseIsAuthenticatedGuard],
   },
   { path: 'profile/:username', component: ProfilepageComponent },
+  { path: 'profile/:username/edit', component: EditprofileformComponent },
   { path: '**', component: PagenotfoundComponent },
 ];
 

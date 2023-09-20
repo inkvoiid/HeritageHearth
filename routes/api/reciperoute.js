@@ -42,7 +42,7 @@ router.get("/:recipeId?", function (req, res) {
       if (recipe) {
         res.json(recipe);
       } else {
-        res.json(`Error 404: Recipe ${requestedId} not found`);
+        res.status(404).json(`Error 404: Recipe ${requestedId} not found`);
       }
     })
     .catch((err) => {

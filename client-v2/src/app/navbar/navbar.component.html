@@ -1,71 +1,115 @@
-<div class="left">
-  <h1 class="title">
-    <span class="secondary">Our </span>
-    <span class="primary">Kitchen</span>
-  </h1>
-</div>
-
-<div class="nav-inner">
-  <div class="nav-items">
-    <button
-      mat-raised-button
-      routerLink="./"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <mat-icon>home</mat-icon>Home
-    </button>
-    <button mat-raised-button routerLink="./recipes" routerLinkActive="active">
-      <mat-icon>local_dining</mat-icon>Recipes
-    </button>
-
-    <button mat-raised-button routerLink="./logs" routerLinkActive="active">
-      <mat-icon>summarize</mat-icon>Audit Log
-    </button>
+<nav [class]="navbarVisible ? '' : 'hidden-fancy'">
+  <div class="header">
+    <h1 class="title">
+      <span class="secondary">Our </span>
+      <span class="primary">Kitchen</span>
+    </h1>
   </div>
 
-  <div class="user-info">
-    <!-- If the user is logged in, display the log out button -->
-    <div *ngIf="auth.loggedInStatus$ | async; else signInButtons">
-      <a
-        class="profile tertiary"
-        routerLink="./profile/{{ userService.getUsername() }}"
+  <div class="nav-inner">
+    <div class="nav-items">
+      <button
+        mat-raised-button
+        routerLink="./"
         routerLinkActive="active"
-        ><img
-          src="../../assets/media/images/profileimages/profile2.png"
-          class="avatar"
-        />
-        <p class="tertiary darktitleoverride">
-          {{ userFirstName }}
-        </p></a
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="toggleNavbar()"
       >
-
-      <button mat-raised-button class="bg-tertiary">
-        <mat-icon>settings</mat-icon>
-        Settings
+        <mat-icon>home</mat-icon>Home
+      </button>
+      <button
+        mat-raised-button
+        routerLink="./recipes"
+        routerLinkActive="active"
+        (click)="toggleNavbar()"
+      >
+        <mat-icon>local_dining</mat-icon>Recipes
       </button>
 
-      <button mat-raised-button class="bg-tertiary" (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        Log Out
+      <button
+        mat-raised-button
+        routerLink="./logs"
+        routerLinkActive="active"
+        (click)="toggleNavbar()"
+      >
+        <mat-icon>summarize</mat-icon>Audit Log
       </button>
     </div>
-    <!-- If the user is not logged in, display the sign up and login buttons -->
-    <ng-template #signInButtons>
-      <button mat-raised-button class="tertiary" routerLink="/signup">
-        <mat-icon>person_add</mat-icon>
-        Sign Up
-      </button>
-      <button mat-raised-button color="accent" routerLink="/login">
-        <mat-icon>login</mat-icon>
-        Login
-      </button>
-    </ng-template>
 
-    <!-- Theme button -->
-    <button mat-raised-button color="primary" (click)="toggleTheme()">
-      <mat-icon>{{ currentTheme === "light" ? "light" : "dark" }}_mode</mat-icon
-      >{{ currentTheme === "light" ? "Light" : "Dark" }} Mode
-    </button>
+    <div class="user-info">
+      <!-- If the user is logged in, display the log out button -->
+      <div *ngIf="auth.loggedInStatus$ | async; else signInButtons">
+        <a
+          class="profile tertiary"
+          routerLink="./profile/{{ userService.getUsername() }}"
+          routerLinkActive="active"
+          (click)="toggleNavbar()"
+          ><img
+            src="../../assets/media/images/profileimages/profile2.png"
+            class="avatar"
+          />
+          <p class="tertiary darktitleoverride">
+            {{ userFirstName }}
+          </p></a
+        >
+
+        <hr />
+
+        <button mat-raised-button class="bg-tertiary" (click)="toggleNavbar()">
+          <mat-icon>settings</mat-icon>
+          Settings
+        </button>
+
+        <button
+          mat-raised-button
+          class="bg-tertiary"
+          (click)="logout(); toggleNavbar()"
+        >
+          <mat-icon>logout</mat-icon>
+          Log Out
+        </button>
+      </div>
+      <!-- If the user is not logged in, display the sign up and login buttons -->
+      <ng-template #signInButtons>
+        <button
+          mat-raised-button
+          class="tertiary"
+          routerLink="/signup"
+          (click)="toggleNavbar()"
+        >
+          <mat-icon>person_add</mat-icon>
+          Sign Up
+        </button>
+        <button
+          mat-raised-button
+          color="accent"
+          routerLink="/login"
+          (click)="toggleNavbar()"
+        >
+          <mat-icon>login</mat-icon>
+          Login
+        </button>
+      </ng-template>
+
+      <!-- Theme button -->
+      <button mat-raised-button color="primary" (click)="toggleTheme()">
+        <mat-icon
+          >{{ currentTheme === "light" ? "light" : "dark" }}_mode</mat-icon
+        >{{ currentTheme === "light" ? "Light" : "Dark" }} Mode
+      </button>
+    </div>
   </div>
-</div>
+</nav>
+
+<div
+  [class]="navbarVisible ? 'mobile navBackdrop' : 'hidden mobile navBackdrop'"
+></div>
+
+<button
+  mat-mini-fab
+  color="primary"
+  [class]="navbarVisible ? 'mobile closeButton' : 'hidden mobile closeButton'"
+  (click)="toggleNavbar()"
+>
+  <mat-icon>close</mat-icon>
+</button>

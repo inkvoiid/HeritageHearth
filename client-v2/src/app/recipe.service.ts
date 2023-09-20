@@ -9,7 +9,7 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class RecipeService {
-  private baseURL = 'http://localhost:5000/api/recipes';
+  private baseURL = '/api/recipes';
   username: string = '';
 
   constructor(
@@ -28,12 +28,12 @@ export class RecipeService {
   }
 
   getRecipe(recipeId: string) {
-    return this.http.get(`${this.baseURL}/${recipeId}`);
+    return this.http.get(`${this.baseURL}/${recipeId}`, {
+      observe: 'response',
+    });
   }
 
-  getUserRecipes(userId: string) {
-    
-  }
+  getUserRecipes(userId: string) {}
 
   createNewRecipe(recipe: any) {
     return this.http

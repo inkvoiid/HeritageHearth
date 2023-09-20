@@ -89,14 +89,8 @@ main {
   text-align: center;
 }
 
-app-navbar {
-  top: 0;
-  width: 17.5rem;
-  background: var(--container);
-  position: fixed;
-  height: 100%;
-  box-shadow: var(--navshadow);
-  border-radius: 0 0.5rem 0.5rem 0;
+app-mobileheader {
+  display: none;
 }
 
 .container {
@@ -191,6 +185,15 @@ mat-hint {
   font-size: 12px; /* You can adjust the size as needed */
 }
 
+/* Title at the top */
+.title {
+  font-family: "Caprasimo", "Big Snow";
+  font-size: 2em;
+  font-weight: 400;
+  line-height: 2rem;
+  text-align: center;
+}
+
 .grid {
   display: grid;
   gap: 1rem;
@@ -213,19 +216,41 @@ mat-hint {
   object-position: center;
 }
 
+.link {
+  color: var(--text);
+}
+
+.link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--primary);
+  text-decoration-thickness: 4px;
+  text-underline-offset: 2.5px;
+  text-decoration-skip-ink: none;
+}
+
 @media screen and (max-width: 768px) {
   main {
     max-width: 90vw;
+    margin: 0 auto;
   }
-  /*
-  app-navbar {
-    position: sticky;
-    z-index: 100;
-    top: 0;
+
+  .angular {
+    height: 100%;
+  }
+
+  app-mobileheader {
     display: flex;
+    position: sticky;
+    top: 0;
+    left: 0;
     align-items: center;
-    justify-content: center;
+    padding-inline: 1rem;
+    justify-content: left;
+    text-align: center;
+    gap: 2rem;
+    width: 100%;
+    z-index: 80;
     background: var(--container);
-    box-shadow: var(--shadow);
-  } */
+    box-shadow: var(--navshadow);
+  }
 }

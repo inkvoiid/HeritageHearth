@@ -9,7 +9,7 @@ import { last, map, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class UserService {
-  private baseURL = 'http://localhost:5000/api/users';
+  private baseURL = '/api/users';
 
   private _username: string = '';
 
@@ -44,7 +44,9 @@ export class UserService {
   }
 
   getUser(username: string) {
-    return this.http.get(`${this.baseURL}/${username}`);
+    return this.http.get(`${this.baseURL}/${username}`, {
+      observe: 'response',
+    });
   }
 
   getFirstName(): Observable<string> {

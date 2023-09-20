@@ -14,4 +14,29 @@
   display: -webkit-box;
   -webkit-line-clamp: 1; /* number of lines to show */
   -webkit-box-orient: vertical;
+  margin-bottom: 0;
+}
+
+.recipetitle {
+  margin: 0;
+  margin-top: 0.5rem;
+}
+
+.recipeinfo {
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
+
+.recipeinfo span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.byline {
+  margin: 0;
+  opacity: 50%;
 }

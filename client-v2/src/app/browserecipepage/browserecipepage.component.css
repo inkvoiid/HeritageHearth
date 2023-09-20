@@ -1,0 +1,40 @@
+.recipegrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 1rem;
+  grid-auto-rows: minmax(100px, auto);
+  justify-items: center;
+  align-items: center;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+a {
+  transition: all 0.2s;
+  color: var(--text);
+}
+
+a:hover {
+  scale: 1.05;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  background: rgb(255, 226, 231);
+  color: var(--primary);
+  border-radius: 5px;
+}
+
+[data-theme="dark"] a:hover {
+  background: var(--secondary);
+  color: var(--text);
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  .recipegrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  a:hover {
+    scale: 1;
+  }
+}

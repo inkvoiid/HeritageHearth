@@ -1,13 +1,14 @@
-/* Title at the top */
-.title {
-  font-family: "Caprasimo", "Big Snow";
-  font-size: 2em;
-  line-height: 2rem;
-  text-align: center;
-  font-weight: 400;
-  margin: 1.5rem 0.5rem 0;
-  padding: 0;
-  transition: all 0.3s ease-in-out;
+nav {
+  top: 0;
+  width: 17.5rem;
+  z-index: 100;
+  background: var(--container);
+  position: fixed;
+  height: 100%;
+  box-shadow: var(--navshadow);
+  border-radius: 0 0.5rem 0.5rem 0;
+  opacity: 1;
+  transition: all 0.45s ease-in-out;
 }
 
 /* Inner green container that has the route links */
@@ -22,6 +23,12 @@
   grid-template-rows: 1fr auto;
 }
 
+.title {
+  margin: 1.5rem 0.5rem 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
 [data-theme="dark"] .nav-inner {
   background: var(--container);
 }
@@ -33,8 +40,32 @@
   gap: 0.5rem;
 }
 
+.navBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+  pointer-events: none;
+  transition: all 0.45s ease-in-out;
+  transform-origin: center;
+}
+
+.closeButton {
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  right: 1.5rem;
+  top: 1.5rem;
+  z-index: 110;
+}
+
 button {
+  justify-content: flex-start;
   box-shadow: none;
+  min-width: none;
 }
 
 .nav-items button {
@@ -79,8 +110,9 @@ button {
   display: flex;
   align-items: center;
   border-radius: 0.5rem;
-  padding: 0.15rem 0.5rem;
-  font-size: 1.1em;
+  padding: 0.25rem;
+  font-size: 1.25em;
+  font-weight: 600;
   background-color: transparent;
 }
 
@@ -90,6 +122,10 @@ button {
   background-color: var(--secondary);
   color: white;
   box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile p {
+  margin: 0;
 }
 
 .profile:hover:not(.active) p {
@@ -108,6 +144,19 @@ button {
   margin-inline-end: 0.5rem;
   border-radius: 10rem;
   box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+hr {
+  height: 2px;
+  width: 100%;
+  background-color: var(--text);
+  opacity: 10%;
+  margin: 0;
+  border: none;
+}
+
+.mobile {
+  display: none;
 }
 
 /* Bottom Buttons to go dark mode and settings */
@@ -145,4 +194,16 @@ button {
 }
 
 @media screen and (max-width: 768px) {
+  .mobile {
+    display: flex;
+  }
+  .hidden {
+    opacity: 0;
+  }
+
+  .hidden-fancy {
+    width: 0 !important;
+    overflow-x: hidden;
+    opacity: 0;
+  }
 }

@@ -6,8 +6,21 @@
       "
       width="100%"
     />
-    <h3>{{ recipe.name }}</h3>
-    <p class="description">{{ recipe.description }}</p>
+    <div class="recipeinfo byline">
+      <span
+        ><mat-icon>restaurant</mat-icon> {{ recipe.servingSize }} servings</span
+      >
+
+      <span
+        ><mat-icon>schedule</mat-icon> {{ recipe.cookingTime }} minutes</span
+      >
+    </div>
+    <h3 class="recipetitle">{{ recipe.name }}</h3>
+    <!-- <p class="byline">
+      by
+      {{ recipe.creator }}
+    </p> -->
+    <!-- <p class="description">{{ recipe.description }}</p> -->
   </div>
 
   <ng-template #strange>

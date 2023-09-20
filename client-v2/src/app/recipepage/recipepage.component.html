@@ -1,0 +1,64 @@
+<div class="flex-div" *ngIf="loading; else recipeDisplay">
+  <mat-spinner color="primary"></mat-spinner>
+</div>
+
+<ng-template #recipeDisplay>
+  <div *ngIf="recipe !== null; else recipeNotFound" class="recipe">
+    <div class="recipe-image">
+      <img
+        [src]="
+          '../../assets/media/images/recipeimages/' + recipe.recipeImage ||
+          '../../assets/media/images/recipeimages/default-recipe-pic.jpg'
+        "
+      />
+    </div>
+
+    <div class="container recipe-info">
+      <div>
+        <h1 id="recipe-name">
+          {{ recipe.name }}
+        </h1>
+        <p id="recipe-author">
+          by
+          <a class="link" [routerLink]="['/profile/' + recipe.creator]">{{
+            recipeCreatorName
+          }}</a>
+        </p>
+      </div>
+      <button
+        *ngIf="doesUserOwnRecipe()"
+        mat-raised-button
+        color="accent"
+        [routerLink]="['./edit']"
+      >
+        Edit Recipe
+      </button>
+    </div>
+
+    <div class="container">
+      <h2 class="darktitleoverride tertiary">Ingredients</h2>
+      <div class="ingredients">
+        <ul class="ingredientsList">
+          <li *ngFor="let ingredient of ingredientsLeft">{{ ingredient }}</li>
+        </ul>
+        <ul class="ingredientsList">
+          <li *ngFor="let ingredient of ingredientsRight">{{ ingredient }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2 class="darktitleoverride tertiary">Steps</h2>
+      <ul>
+        <li *ngFor="let instruction of recipe.instructions">
+          {{ instruction }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <ng-template #recipeNotFound>
+    <app-pagenotfound></app-pagenotfound>
+  </ng-template>
+
+  <app-addrecipebutton></app-addrecipebutton>
+</ng-template>

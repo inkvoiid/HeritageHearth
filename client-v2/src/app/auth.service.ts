@@ -18,7 +18,7 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiURL = 'http://localhost:5000/api/auth';
+  private apiURL = '/api/auth';
   private _loggedInStatus$ = new BehaviorSubject<boolean>(false);
   loggedInStatus$ = this._loggedInStatus$.asObservable();
 
@@ -30,7 +30,7 @@ export class AuthService {
     private userService: UserService
   ) {
     const token = localStorage.getItem('ourkitchen_auth');
-    console.log('Is the JWT expired? ' + this.jwtHelper.isTokenExpired(token));
+    // console.log('Is the JWT expired? ' + this.jwtHelper.isTokenExpired(token));
     this._loggedInStatus$.next(!!token);
   }
 

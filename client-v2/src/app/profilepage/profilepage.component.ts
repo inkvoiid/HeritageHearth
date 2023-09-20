@@ -1,3 +1,4 @@
+import { UserService } from './../user.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -14,10 +15,12 @@ export class ProfilepageComponent implements OnInit {
   user: any;
   recipes: any;
   loading: boolean = true;
+  isOwnProfile: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
+    private userService: UserService,
     private recipeService: RecipeService
   ) {}
 
@@ -33,14 +36,20 @@ export class ProfilepageComponent implements OnInit {
   }
 
   getUserData(username: string) {
-    this.http.get(`/api/users/${username}`).subscribe((response: any) => {
-      if (response === `Error 404: User ${username} not found`) {
+    this.userService.getUser(username).subscribe(
+      (response: any) => {
+        this.user = response.body;
+        this.loading = false;
+        if (this.userService.getUsername() === this.user.username) {
+          this.isOwnProfile = true;
+        } else {
+          this.isOwnProfile = false;
+        }
+      },
+      (error) => {
         this.user = null;
         this.loading = false;
-      } else {
-        this.user = response;
-        this.loading = false;
       }
-    });
+    );
   }
 }

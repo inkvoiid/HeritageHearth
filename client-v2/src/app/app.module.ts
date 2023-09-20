@@ -27,6 +27,9 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { RecipeformComponent } from './recipeform/recipeform.component';
 import { AuditlogpageComponent } from './auditlogpage/auditlogpage.component';
 import { BrowserecipepageComponent } from './browserecipepage/browserecipepage.component';
+import { RecipepageComponent } from './recipepage/recipepage.component';
+import { EditprofileformComponent } from './editprofileform/editprofileform.component';
+import { MobileheaderComponent } from './mobileheader/mobileheader.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,9 @@ import { BrowserecipepageComponent } from './browserecipepage/browserecipepage.c
     RecipeformComponent,
     AuditlogpageComponent,
     BrowserecipepageComponent,
+    RecipepageComponent,
+    EditprofileformComponent,
+    MobileheaderComponent,
   ],
   imports: [
     BrowserModule,
