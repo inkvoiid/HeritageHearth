@@ -1,0 +1,65 @@
+<div class="recipeform">
+  <div class="container">
+    <h1>Edit Profile</h1>
+    <form [formGroup]="updateUserForm" (ngSubmit)="onSubmit(updateUserForm)">
+      <div class="flex-div">
+        <!-- First Name -->
+        <mat-form-field color="primary" style="width: 100%">
+          <mat-label>First Name</mat-label>
+          <input
+            matInput
+            placeholder="eg. Joseph"
+            formControlName="firstName"
+            type="text"
+            required
+          />
+        </mat-form-field>
+
+        <!-- Last Name -->
+        <mat-form-field color="primary" style="width: 100%">
+          <mat-label>Last Name</mat-label>
+          <input
+            matInput
+            placeholder="eg. Biden"
+            formControlName="lastName"
+            type="text"
+            required
+          />
+        </mat-form-field>
+      </div>
+
+      <!-- Username -->
+      <mat-form-field color="primary">
+        <mat-label>Username</mat-label>
+        <input
+          matInput
+          placeholder="eg. joebiden"
+          formControlName="username"
+          type="text"
+          required
+          [disabled]="canEditUsername"
+        />
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="accent"
+        type="submit"
+        [disabled]="!updateUserForm.valid"
+      >
+        Update
+      </button>
+      <br />
+      <hr />
+      <br />
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="deleteUser()"
+        type="button"
+      >
+        Delete User
+      </button>
+    </form>
+  </div>
+</div>

@@ -5,6 +5,7 @@ const router = Router();
 
 // Import the user model schema from the models folder
 import users from "../../models/user.js";
+import recipeModel from "../../models/recipe.js";
 
 // Route for GET request to retrieve all users
 
@@ -116,11 +117,9 @@ router.post("/", async function (req, res) {
 
   if (user) {
     // If user is created successfully, send 201 response (created)
-    res
-      .status(201)
-      .json({
-        message: `New user ${firstName} ${lastName} (${username}) created`,
-      });
+    res.status(201).json({
+      message: `New user ${firstName} ${lastName} (${username}) created`,
+    });
   } else {
     res.status(400).json({ message: "Invalid user data received" });
   }
@@ -154,12 +153,12 @@ router.put("/:username?", async function (req, res) {
   }
 
   // If any of the required fields are missing, send 400 response (bad request)
-  if (!requestedUsername || !firstName || !lastName || !email) {
+  if (!requestedUsername || !firstName || !lastName || !username) {
     return res.status(400).json({ message: "Please enter all fields" });
   }
 
   // Doesn't use lean so that we can modify the user object, but does have exec to return a promise
-  const user = await users.findOne(requestedUsername).exec();
+  const user = await users.findOne({ username: requestedUsername }).exec();
 
   // If user doesn't exist, send 404 response (not found)
   if (!user) {
@@ -201,13 +200,24 @@ router.put("/:username?", async function (req, res) {
     user.lists = lists;
   }
 
+  if (req.params.username !== username) {
+    await users.updateMany(
+      { friends: { $elemMatch: { friendName: requestedUsername } } }, // Filter condition: users who have the requestedId as a friend
+      { $set: { "friends.$.friendName": username } } // Update operation: remove the friend with friendId equal to requestedId
+    );
+
+    // Change the username in recipe creator for each recipe in recipes
+    await recipeModel.updateMany(
+      { creator: requestedUsername },
+      { $set: { creator: username } }
+    );
+  }
+
   const updatedUser = await user.save();
 
-  res
-    .status(200)
-    .json({
-      message: `User ${updatedUser.firstName} ${updatedUser.lastName} (${updatedUser.username}) updated`,
-    });
+  res.status(200).json({
+    message: `User ${updatedUser.firstName} ${updatedUser.lastName} (${updatedUser.username}) updated`,
+  });
 });
 
 // Route for DELETE request to delete a user by id
@@ -220,7 +230,7 @@ router.delete("/:username?", async function (req, res) {
   var requestedUsername = req.params.username;
 
   // Get the user data from the request body
-  const { username } = req.body;
+  const { username, password } = req.body;
 
   // If no id is included in the request parameters, use the id from the request body
   if (!req.params.username) {
@@ -237,6 +247,16 @@ router.delete("/:username?", async function (req, res) {
   // If user doesn't exist, send 404 response (not found)
   if (!user) {
     return res.status(404).json({ message: "User not found" });
+  }
+
+  if (password) {
+    // Check if password is correct
+    const passwordCorrect = await bcrypt.compare(password, user.password);
+
+    // If password is incorrect, send 401 response (unauthorized)
+    if (!passwordCorrect) {
+      return res.status(401).json({ message: "Incorrect password" });
+    }
   }
 
   // Remove user from other users' friends array

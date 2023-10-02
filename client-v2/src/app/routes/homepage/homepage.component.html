@@ -1,0 +1,55 @@
+<div class="container">
+  <h1 class="tertiary darktitleoverride heading">Nau mai ki To Mātau Kītini</h1>
+  <h2 class="subheading">Welcome to Our Kitchen</h2>
+  <p>Hello, welcome to the family recipe site.</p>
+  <div *ngIf="!(auth.loggedInStatus$ | async)">
+    <p>To get started, login or sign up to add recipes.</p>
+    <div class="flex-div">
+      <a class="bg-primary button" routerLink="./login">Login</a>
+      <a class="button" routerLink="./signup">Sign Up</a>
+    </div>
+  </div>
+</div>
+<br />
+<div class="container">
+  <h1 class="tertiary darktitleoverride">Latest Recipes</h1>
+  <p>To be implemented...</p>
+</div>
+<br />
+<div class="container">
+  <h1 class="tertiary darktitleoverride">Current Members</h1>
+  <p>Who's already a part of Our Kitchen?</p>
+  <div class="grid">
+    <!-- for each user in the list of users, create a p tag -->
+    <div class="profile" *ngFor="let user of users">
+      <a [routerLink]="'/profile/' + user.username"
+        ><img
+          class="profileImage"
+          [src]="
+            '../../assets/media/images/profileimages/' + user.profilePic ||
+            '../../assets/media/images/profileimages/default-profile-pic.jpg'
+          "
+        />
+        <h3>{{ user.firstName }} {{ user.lastName }}</h3></a
+      >
+    </div>
+  </div>
+</div>
+<br />
+
+<div class="container">
+  <h1 class="tertiary darktitleoverride">About</h1>
+
+  <p>
+    This web app was my capstone project in my bachelor's degree in applied
+    information technology.
+  </p>
+  <p>
+    The aim of it is to provide one location for both sides of the family to
+    easily upload and share the old recipes they're hanging on to, so that
+    everyone can use them.
+  </p>
+  <p>Copyright Kaleb Dickson 2023 ©</p>
+</div>
+
+<app-addrecipebutton></app-addrecipebutton>

@@ -9,27 +9,30 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavbarComponent } from './navbar/navbar.component';
-import { HomepageComponent } from './homepage/homepage.component';
-import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
-import { RecipepreviewComponent } from './recipepreview/recipepreview.component';
-import { LoginpageComponent } from './loginpage/loginpage.component';
+import { NavbarComponent } from './partial/navbar/navbar.component';
+import { HomepageComponent } from './routes/homepage/homepage.component';
+import { PagenotfoundComponent } from './routes/pagenotfound/pagenotfound.component';
+import { RecipepreviewComponent } from './partial/recipepreview/recipepreview.component';
+import { LoginpageComponent } from './routes/loginpage/loginpage.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
-import { ProfilepageComponent } from './profilepage/profilepage.component';
-import { SignuppageComponent } from './signuppage/signuppage.component';
-import { AddrecipebuttonComponent } from './addrecipebutton/addrecipebutton.component';
+import { ProfilepageComponent } from './routes/profilepage/profilepage.component';
+import { SignuppageComponent } from './routes/forms/signuppage/signuppage.component';
+import { AddrecipebuttonComponent } from './partial/addrecipebutton/addrecipebutton.component';
 import { JwtModule } from '@auth0/angular-jwt';
-import { RecipeformComponent } from './recipeform/recipeform.component';
-import { AuditlogpageComponent } from './auditlogpage/auditlogpage.component';
-import { BrowserecipepageComponent } from './browserecipepage/browserecipepage.component';
-import { RecipepageComponent } from './recipepage/recipepage.component';
-import { EditprofileformComponent } from './editprofileform/editprofileform.component';
-import { MobileheaderComponent } from './mobileheader/mobileheader.component';
+import { RecipeformComponent } from './routes/forms/recipeform/recipeform.component';
+import { AuditlogpageComponent } from './routes/auditlogpage/auditlogpage.component';
+import { BrowserecipepageComponent } from './routes/browserecipepage/browserecipepage.component';
+import { RecipepageComponent } from './routes/recipepage/recipepage.component';
+import { EditprofileformComponent } from './routes/forms/editprofileform/editprofileform.component';
+import { MobileheaderComponent } from './partial/mobileheader/mobileheader.component';
+import { DeleterecipemodalComponent } from './partial/deleterecipemodal/deleterecipemodal.component';
+import { DeleteusermodalComponent } from './partial/deleteusermodal/deleteusermodal.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +51,8 @@ import { MobileheaderComponent } from './mobileheader/mobileheader.component';
     RecipepageComponent,
     EditprofileformComponent,
     MobileheaderComponent,
+    DeleterecipemodalComponent,
+    DeleteusermodalComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,6 +62,7 @@ import { MobileheaderComponent } from './mobileheader/mobileheader.component';
     MatInputModule,
     MatIconModule,
     MatCardModule,
+    MatDialogModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,

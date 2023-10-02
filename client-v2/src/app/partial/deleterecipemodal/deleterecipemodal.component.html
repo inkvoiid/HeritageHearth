@@ -1,0 +1,16 @@
+<div class="modal">
+  <h1 class="modal-title">Delete Recipe</h1>
+
+  <p>Are you sure you want to delete this recipe?</p>
+  <div class="flex-div" style="justify-content: space-between">
+    <button type="button" mat-raised-button (click)="close()">Cancel</button>
+    <button
+      type="button"
+      mat-raised-button
+      color="warn"
+      (click)="deleteRecipe()"
+    >
+      Delete
+    </button>
+  </div>
+</div>

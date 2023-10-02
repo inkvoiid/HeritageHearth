@@ -2,21 +2,21 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // * Views
-import { HomepageComponent } from './homepage/homepage.component';
-import { LoginpageComponent } from './loginpage/loginpage.component';
-import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
-import { ProfilepageComponent } from './profilepage/profilepage.component';
-import { SignuppageComponent } from './signuppage/signuppage.component';
-import { RecipeformComponent } from './recipeform/recipeform.component';
-import { AuditlogpageComponent } from './auditlogpage/auditlogpage.component';
-import { BrowserecipepageComponent } from './browserecipepage/browserecipepage.component';
-import { RecipepageComponent } from './recipepage/recipepage.component';
+import { HomepageComponent } from './routes/homepage/homepage.component';
+import { LoginpageComponent } from './routes/loginpage/loginpage.component';
+import { PagenotfoundComponent } from './routes/pagenotfound/pagenotfound.component';
+import { ProfilepageComponent } from './routes/profilepage/profilepage.component';
+import { SignuppageComponent } from './routes/forms/signuppage/signuppage.component';
+import { RecipeformComponent } from './routes/forms/recipeform/recipeform.component';
+import { AuditlogpageComponent } from './routes/auditlogpage/auditlogpage.component';
+import { BrowserecipepageComponent } from './routes/browserecipepage/browserecipepage.component';
+import { RecipepageComponent } from './routes/recipepage/recipepage.component';
 
 // * Guards
-import { isAuthenticatedGuard } from './is-authenticated.guard';
-import { inverseIsAuthenticatedGuard } from './inverse-is-authenticated.guard';
-import { isAuthorisedRecipeGuard } from './is-authorised-recipe.guard';
-import { EditprofileformComponent } from './editprofileform/editprofileform.component';
+import { isAuthenticatedGuard } from './routeguards/is-authenticated.guard';
+import { inverseIsAuthenticatedGuard } from './routeguards/inverse-is-authenticated.guard';
+import { isAuthorisedRecipeGuard } from './routeguards/is-authorised-recipe.guard';
+import { EditprofileformComponent } from './routes/forms/editprofileform/editprofileform.component';
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },

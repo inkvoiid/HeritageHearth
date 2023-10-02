@@ -1,9 +1,0 @@
-<div class="container">
-  <h1 class="darktitleoverride tertiary">Browse Recipes</h1>
-  <div class="recipegrid">
-    <a routerLink="./{{ recipe.recipeId }}" *ngFor="let recipe of recipes">
-      <app-recipepreview [recipe]="recipe"></app-recipepreview>
-    </a>
-  </div>
-</div>
-<app-addrecipebutton></app-addrecipebutton>

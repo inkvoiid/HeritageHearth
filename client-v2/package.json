@@ -23,6 +23,7 @@
     "@auth0/angular-jwt": "^5.1.2",
     "ngx-toastr": "^17.0.2",
     "rxjs": "~7.8.0",
+    "slugify": "^1.6.6",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },

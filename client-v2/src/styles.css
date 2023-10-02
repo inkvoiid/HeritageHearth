@@ -100,6 +100,17 @@ app-mobileheader {
   box-shadow: var(--shadow);
 }
 
+.recipegrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 1rem;
+  grid-auto-rows: minmax(100px, auto);
+  justify-items: center;
+  align-items: center;
+  margin: 1rem;
+  padding: 1rem;
+}
+
 img {
   border-radius: 0.3rem;
 }
@@ -252,5 +263,13 @@ mat-hint {
     z-index: 80;
     background: var(--container);
     box-shadow: var(--navshadow);
+  }
+
+  .container {
+    padding: 0.5rem;
+  }
+
+  .recipegrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }

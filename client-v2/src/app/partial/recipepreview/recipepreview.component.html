@@ -1,0 +1,30 @@
+<a routerLink="/recipes/{{ recipe.recipeId }}" class="preview">
+  <div *ngIf="recipe.name; else strange">
+    <img
+      [src]="
+        recipe.image || '../../assets/media/images/profileimages/profile1.png'
+      "
+      width="100%"
+    />
+    <div class="recipeinfo byline">
+      <span
+        ><mat-icon>restaurant</mat-icon> {{ recipe.servingSize }} servings</span
+      >
+
+      <span
+        ><mat-icon>schedule</mat-icon> {{ recipe.cookingTime }} minutes</span
+      >
+    </div>
+    <h3 class="recipetitle">{{ recipe.name }}</h3>
+    <!-- <p class="byline">
+      by
+      {{ recipe.creator }}
+    </p> -->
+    <!-- <p class="description">{{ recipe.description }}</p> -->
+  </div>
+
+  <ng-template #strange>
+    <mat-icon>question_mark</mat-icon>
+    <p>An unviewable recipe, how strange.</p>
+  </ng-template>
+</a>
