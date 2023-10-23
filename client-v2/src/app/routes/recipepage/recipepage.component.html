@@ -1,64 +1,154 @@
-<div class="flex-div" *ngIf="loading; else recipeDisplay">
+<div class="flex-div" *ngIf="loading; else pendingDisplay">
   <mat-spinner color="primary"></mat-spinner>
 </div>
+
+<ng-template #pendingDisplay>
+  <div
+    *ngIf="
+      recipe !== null &&
+        !(recipe.approved || doesUserOwnRecipe() || auth.getAdminStatus());
+      else recipeDisplay
+    "
+    class="container"
+  >
+    <h1>Recipe pending approval</h1>
+    <p>This recipe has not been approved by an admin yet.</p>
+    <p>Check back later!</p>
+    <button
+      mat-raised-button
+      color="accent"
+      [routerLink]="['/recipes']"
+      class="text-and-icon"
+    >
+      <mat-icon> keyboard_backspace </mat-icon>Back to recipes
+    </button>
+  </div>
+</ng-template>
 
 <ng-template #recipeDisplay>
   <div *ngIf="recipe !== null; else recipeNotFound" class="recipe">
     <div class="recipe-image">
-      <img
-        [src]="
-          '../../assets/media/images/recipeimages/' + recipe.recipeImage ||
-          '../../assets/media/images/recipeimages/default-recipe-pic.jpg'
-        "
-      />
+      <img [src]="recipeImageSrc" (error)="loadPlaceholderImage()" />
     </div>
+    <div id="title-card" class="container">
+      <div class="recipe-info">
+        <!-- Approval message -->
+        <div
+          *ngIf="
+            (doesUserOwnRecipe() || auth.getAdminStatus()) && !recipe.approved
+          "
+          class="hideOnPrintPreview warning-container"
+        >
+          <span *ngIf="auth.getAdminStatus()" class="text-and-icon"
+            ><mat-icon> warning </mat-icon>
+            <h3>Approve Recipe</h3></span
+          >
+          <span *ngIf="!auth.getAdminStatus()">
+            <mat-icon> warning </mat-icon>
+            <h3>Recipe Pending Approval</h3></span
+          >
 
-    <div class="container recipe-info">
-      <div>
+          <p *ngIf="auth.getAdminStatus()">This recipe is pending approval.</p>
+
+          <p
+            *ngIf="!auth.getAdminStatus()"
+            style="margin-bottom: 0; margin-top: 0.5rem"
+          >
+            This recipe is only visible to you until it has been approved.
+          </p>
+          <div
+            *ngIf="auth.getAdminStatus()"
+            class="flex-div"
+            style="justify-content: space-evenly"
+          >
+            <button (click)="approveRecipe()" class="text-and-icon link">
+              <mat-icon> check </mat-icon>Approve
+            </button>
+            <button (click)="rejectRecipe()" class="text-and-icon link">
+              <mat-icon> close </mat-icon>Reject
+            </button>
+          </div>
+        </div>
+
+        <!-- Recipe info -->
         <h1 id="recipe-name">
           {{ recipe.name }}
         </h1>
-        <p id="recipe-author">
-          by
-          <a class="link" [routerLink]="['/profile/' + recipe.creator]">{{
-            recipeCreatorName
-          }}</a>
-        </p>
-      </div>
-      <button
-        *ngIf="doesUserOwnRecipe()"
-        mat-raised-button
-        color="accent"
-        [routerLink]="['./edit']"
-      >
-        Edit Recipe
-      </button>
-    </div>
+        <div class="recipe-info-flex">
+          <div>
+            <p id="recipe-author">
+              by
+              <a
+                class="link"
+                [routerLink]="['/profile/' + recipe.creator]"
+                (error)="setUserNotFound()"
+                >{{ recipeCreatorName }}</a
+              >
+            </p>
+          </div>
+          <div class="byline">
+            <span
+              ><mat-icon>restaurant</mat-icon>
+              {{ recipe.servingSize }} servings</span
+            >
 
-    <div class="container">
-      <h2 class="darktitleoverride tertiary">Ingredients</h2>
-      <div class="ingredients">
-        <ul class="ingredientsList">
-          <li *ngFor="let ingredient of ingredientsLeft">{{ ingredient }}</li>
-        </ul>
-        <ul class="ingredientsList">
-          <li *ngFor="let ingredient of ingredientsRight">{{ ingredient }}</li>
-        </ul>
-      </div>
-    </div>
+            <span
+              ><mat-icon>schedule</mat-icon>
+              {{ recipe.cookingTime }} minutes</span
+            >
+          </div>
 
-    <div class="container">
-      <h2 class="darktitleoverride tertiary">Steps</h2>
-      <ul>
-        <li *ngFor="let instruction of recipe.instructions">
-          {{ instruction }}
-        </li>
-      </ul>
+          <div class="flex-div hideOnPrintPreview" style="gap: 0.5rem">
+            <!-- Edit button -->
+            <button
+              *ngIf="doesUserOwnRecipe() || auth.getAdminStatus()"
+              mat-raised-button
+              color="accent"
+              [routerLink]="['./edit']"
+            >
+              <mat-icon>edit</mat-icon>Edit
+            </button>
+
+            <!-- Print button -->
+            <button mat-raised-button color="accent" (click)="printPage()">
+              <mat-icon>print</mat-icon>Print
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <p class="description">{{ recipe.description }}</p>
+      <!-- <div class="byline">
+        <p>Last updated {{ timeSinceLastUpdated }}</p>
+        <p>Created {{ timeSinceCreated }}</p>
+      </div> -->
+    </div>
+    <div class="ingredients-and-steps">
+      <div class="container">
+        <h2 class="darktitleoverride tertiary">Ingredients</h2>
+        <div class="ingredients">
+          <ul class="ingredientsList">
+            <li *ngFor="let ingredient of ingredientsLeft">{{ ingredient }}</li>
+          </ul>
+          <ul class="ingredientsList">
+            <li *ngFor="let ingredient of ingredientsRight">
+              {{ ingredient }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="container">
+        <h2 class="darktitleoverride tertiary">Steps</h2>
+        <ol>
+          <li *ngFor="let instruction of recipe.instructions">
+            {{ instruction }}
+          </li>
+        </ol>
+      </div>
     </div>
   </div>
   <ng-template #recipeNotFound>
     <app-pagenotfound></app-pagenotfound>
   </ng-template>
-
-  <app-addrecipebutton></app-addrecipebutton>
 </ng-template>

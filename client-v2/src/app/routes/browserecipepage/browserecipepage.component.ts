@@ -7,7 +7,7 @@ import { RecipeService } from '../../services/recipe.service';
   styleUrls: ['./browserecipepage.component.css'],
 })
 export class BrowserecipepageComponent {
-  recipes = null;
+  recipes: any = [];
 
   constructor(private recipeService: RecipeService) {
     this.recipeService.getAllRecipes().subscribe((response: any) => {

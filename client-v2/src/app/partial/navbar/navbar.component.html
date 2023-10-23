@@ -1,4 +1,4 @@
-<nav [class]="navbarVisible ? '' : 'hidden-fancy'">
+<nav [class]="navbarVisible ? '' : 'hidden'">
   <div class="header">
     <h1 class="title">
       <span class="secondary">Our </span>
@@ -26,14 +26,27 @@
         <mat-icon>local_dining</mat-icon>Recipes
       </button>
 
-      <button
-        mat-raised-button
-        routerLink="./logs"
-        routerLinkActive="active"
-        (click)="toggleNavbar()"
-      >
-        <mat-icon>summarize</mat-icon>Audit Log
-      </button>
+      <div *ngIf="isAdmin" class="bottom-buttons">
+        <hr />
+        <h3>Admin</h3>
+        <button
+          mat-raised-button
+          routerLink="./admin"
+          routerLinkActive="active"
+          (click)="toggleNavbar()"
+        >
+          <mat-icon>security</mat-icon>Admin Dashboard
+        </button>
+
+        <button
+          mat-raised-button
+          routerLink="./logs"
+          routerLinkActive="active"
+          (click)="toggleNavbar()"
+        >
+          <mat-icon>summarize</mat-icon>Audit Log
+        </button>
+      </div>
     </div>
 
     <div class="user-info">
@@ -41,24 +54,28 @@
       <div *ngIf="auth.loggedInStatus$ | async; else signInButtons">
         <a
           class="profile tertiary"
-          routerLink="./profile/{{ userService.getUsername() }}"
+          routerLink="./profile/{{ auth.getUsername() }}"
           routerLinkActive="active"
           (click)="toggleNavbar()"
           ><img
-            src="../../assets/media/images/profileimages/profile2.png"
+            src="../../assets/media/images/profileimages/{{ userImage }}"
             class="avatar"
           />
-          <p class="tertiary darktitleoverride">
+          <p
+            class="tertiary darktitleoverride text-and-icon"
+            style="gap: 0.25rem"
+          >
             {{ userFirstName }}
+            <mat-icon *ngIf="isAdmin">local_police</mat-icon>
           </p></a
         >
 
         <hr />
 
-        <button mat-raised-button class="bg-tertiary" (click)="toggleNavbar()">
+        <!-- <button mat-raised-button class="bg-tertiary" (click)="toggleNavbar()">
           <mat-icon>settings</mat-icon>
           Settings
-        </button>
+        </button> -->
 
         <button
           mat-raised-button
@@ -92,7 +109,14 @@
       </ng-template>
 
       <!-- Theme button -->
-      <button mat-raised-button color="primary" (click)="toggleTheme()">
+      <button
+        mat-raised-button
+        class="theme-button"
+        [ngClass]="
+          currentTheme === 'light' ? 'light-theme-button' : 'dark-theme-button'
+        "
+        (click)="toggleTheme()"
+      >
         <mat-icon
           >{{ currentTheme === "light" ? "light" : "dark" }}_mode</mat-icon
         >{{ currentTheme === "light" ? "Light" : "Dark" }} Mode
@@ -102,13 +126,17 @@
 </nav>
 
 <div
-  [class]="navbarVisible ? 'mobile navBackdrop' : 'hidden mobile navBackdrop'"
+  [class]="
+    navbarVisible ? 'mobile navBackdrop' : 'hidden-fancy mobile navBackdrop'
+  "
 ></div>
 
 <button
   mat-mini-fab
   color="primary"
-  [class]="navbarVisible ? 'mobile closeButton' : 'hidden mobile closeButton'"
+  [class]="
+    navbarVisible ? 'mobile closeButton' : 'hidden-fancy mobile closeButton'
+  "
   (click)="toggleNavbar()"
 >
   <mat-icon>close</mat-icon>

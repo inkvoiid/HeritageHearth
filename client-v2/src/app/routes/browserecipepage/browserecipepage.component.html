@@ -1,9 +1,15 @@
 <div class="container">
   <h1 class="darktitleoverride tertiary">Browse Recipes</h1>
-  <div class="recipegrid">
-    <a *ngFor="let recipe of recipes">
-      <app-recipepreview [recipe]="recipe"></app-recipepreview>
-    </a>
+  <div *ngIf="recipes.length > 0; else noRecipes">
+    <div class="recipegrid">
+      <app-recipepreview
+        *ngFor="let recipe of recipes"
+        [recipe]="recipe"
+      ></app-recipepreview>
+    </div>
   </div>
+  <ng-template #noRecipes>
+    <p>No recipes no cry.</p>
+  </ng-template>
 </div>
 <app-addrecipebutton></app-addrecipebutton>

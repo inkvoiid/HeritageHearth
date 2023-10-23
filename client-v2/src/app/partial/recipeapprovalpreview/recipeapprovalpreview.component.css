@@ -1,0 +1,137 @@
+.preview {
+  max-width: 300px;
+  height: 100%;
+  aspect-ratio: 1/1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  transition: all 0.2s;
+  border: 2px solid var(--table-bg);
+  border-radius: 5px;
+  text-align: left;
+}
+
+.preview > div {
+  padding: 1rem;
+}
+
+a {
+  color: var(--text);
+}
+
+.byline {
+  padding-left: 0.5rem;
+}
+
+.recipetitle:hover {
+  color: var(--primary);
+}
+
+.description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  -webkit-box-orient: vertical;
+  margin: 0;
+  opacity: 80%;
+  padding-top: 0.5rem;
+}
+
+.recipetitle {
+  margin: 0;
+  transition: color 0.2s;
+  text-align: center;
+}
+
+.recipeinfo {
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
+
+.recipeinfo span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.byline {
+  margin: 0;
+  opacity: 50%;
+}
+
+.recipe-preview-image {
+  width: 100%;
+  /* aspect-ratio: 3/2; */
+  object-fit: cover;
+}
+
+.approval-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  padding: 0 !important;
+  width: 100%;
+  border-top: 2px solid var(--table-bg);
+}
+
+.approval-buttons button {
+  flex-grow: 1;
+  background: none;
+  padding-block: 0.5rem;
+}
+
+.approval-buttons #approve,
+.approval-buttons #reject {
+  color: var(--text);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.approval-buttons #approve {
+  border-right: 1px solid var(--table-bg);
+  border-bottom-left-radius: 5px;
+}
+
+.approval-buttons #reject {
+  border-left: 1px solid var(--table-bg);
+  border-bottom-right-radius: 5px;
+}
+
+.approval-buttons #approve:hover mat-icon,
+.approval-buttons #reject:hover mat-icon {
+  color: var(--buttontext);
+}
+
+.approval-buttons #approve:hover {
+  background-color: rgb(61, 189, 61);
+  color: var(--buttontext);
+}
+
+.approval-buttons #reject:hover {
+  background-color: rgb(236, 57, 57);
+  color: var(--buttontext);
+}
+
+.approval-buttons #approve mat-icon {
+  color: rgb(61, 189, 61);
+  transition: color 0.2s;
+}
+
+.approval-buttons #reject mat-icon {
+  color: rgb(236, 57, 57);
+  transition: color 0.2s;
+}
+
+@media screen and (max-width: 768px) {
+  .preview {
+    aspect-ratio: 3/1;
+  }
+
+  .recipe-preview-image {
+    aspect-ratio: 3/2;
+  }
+}

@@ -34,7 +34,8 @@ a:hover {
   display: -webkit-box;
   -webkit-line-clamp: 1; /* number of lines to show */
   -webkit-box-orient: vertical;
-  margin-bottom: 0;
+  margin: 0;
+  opacity: 80%;
 }
 
 .recipetitle {
@@ -61,8 +62,22 @@ a:hover {
   opacity: 50%;
 }
 
+.recipe-preview-image {
+  width: 100%;
+  /* aspect-ratio: 3/2; */
+  object-fit: cover;
+}
+
 @media screen and (max-width: 768px) {
+  .preview {
+    aspect-ratio: 3/1;
+  }
+
   a:hover {
     scale: 1;
+  }
+
+  .recipe-preview-image {
+    aspect-ratio: 3/2;
   }
 }

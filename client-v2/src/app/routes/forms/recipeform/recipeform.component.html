@@ -3,173 +3,249 @@
     <h1 *ngIf="!editMode; else editRecipeTitle">Add Recipe</h1>
     <ng-template #editRecipeTitle>
       <h1>Edit Recipe</h1>
-      <h2>{{ editRecipeName }}</h2>
+      <p><b>Now Editing: </b>{{ editRecipeName }}</p>
     </ng-template>
-    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit(recipeForm)">
-      <!-- Recipe Name -->
-      <mat-form-field color="primary">
-        <mat-label>Recipe Name</mat-label>
-        <input
-          matInput
-          placeholder="eg. Burnt Toast ala Dickson"
-          formControlName="name"
-          type="text"
-          required
-        />
-      </mat-form-field>
 
-      <div class="flex-div">
-        <!-- Serving Size -->
-        <mat-form-field color="primary" style="width: 100%" class="flex-item">
-          <mat-label>Servings</mat-label>
-          <input
-            matInput
-            placeholder="eg. 1"
-            formControlName="servingSize"
-            type="number"
-            required
-          />
-        </mat-form-field>
+    <mat-stepper orientation="vertical" linear #stepper>
+      <form [formGroup]="recipeForm" enctype="multipart/form-data">
+        <mat-step>
+          <ng-template matStepLabel>Basic Info</ng-template>
 
-        <!-- Cooking Time -->
-        <mat-form-field color="primary" style="width: 100%" class="flex-item">
-          <mat-label>Cooking Time</mat-label>
-          <input
-            matInput
-            placeholder="eg. 1"
-            formControlName="cookingTime"
-            type="number"
-          />
-          <mat-suffix matSuffix>min</mat-suffix>
-        </mat-form-field>
-      </div>
+          <div class="formstep">
+            <!-- Recipe Name -->
+            <mat-form-field color="primary">
+              <mat-label>Recipe Name</mat-label>
+              <input
+                matInput
+                placeholder="eg. Burnt Toast ala Dickson"
+                formControlName="name"
+                type="text"
+                required
+              />
+            </mat-form-field>
 
-      <!-- Recipe Description -->
-      <mat-form-field color="primary">
-        <mat-label>Description</mat-label>
-        <textarea
-          matInput
-          placeholder="eg. This is a recipe for burnt toast."
-          formControlName="description"
-          type="text"
-          required
-        ></textarea>
-      </mat-form-field>
+            <div class="flex-div" style="gap: 1rem">
+              <!-- Serving Size -->
+              <mat-form-field
+                color="primary"
+                style="width: 100%"
+                class="flex-item"
+              >
+                <mat-label>Servings</mat-label>
+                <input
+                  matInput
+                  placeholder="eg. 1"
+                  formControlName="servingSize"
+                  type="number"
+                  required
+                />
+              </mat-form-field>
 
-      <!-- Recipe Image -->
-      <mat-label>Attach Image</mat-label>
-      <input
-        mat-raised-button
-        formControlName="recipeImage"
-        type="file"
-        accept="image/*"
-      />
+              <!-- Cooking Time -->
+              <mat-form-field
+                color="primary"
+                style="width: 100%"
+                class="flex-item"
+              >
+                <mat-label>Cooking Time</mat-label>
+                <input
+                  matInput
+                  placeholder="eg. 1"
+                  formControlName="cookingTime"
+                  type="number"
+                />
+                <mat-suffix matSuffix>min</mat-suffix>
+              </mat-form-field>
+            </div>
 
-      <!-- Ingredients -->
-      <h2>Ingredients</h2>
-      <div
-        class="flex-div"
-        formArrayName="ingredients"
-        *ngFor="let ingredient of ingredients.controls; let i = index"
-      >
-        <mat-form-field color="primary" style="width: 100%">
-          <mat-label>Ingredient #{{ i + 1 }}</mat-label>
-          <input
-            matInput
-            required
-            type="text"
-            class="form-control"
-            id="ingredient{{ i }}"
-            [formControlName]="i"
-            placeholder="Enter ingredient"
-          />
-        </mat-form-field>
-        <button
-          [disabled]="!shouldDisplayIngredientRemoveButton()"
-          mat-raised-button
-          color="warn"
-          type="button"
-          (click)="removeIngredient(i)"
-        >
-          Remove
-        </button>
-      </div>
+            <!-- Recipe Description -->
+            <mat-form-field color="primary">
+              <mat-label>Description</mat-label>
+              <textarea
+                cdkTextareaAutosize
+                matInput
+                placeholder="eg. This is a recipe for burnt toast."
+                formControlName="description"
+                type="text"
+                required
+              ></textarea>
+            </mat-form-field>
 
-      <button
-        type="button"
-        mat-raised-button
-        color="primary"
-        (click)="addIngredient()"
-      >
-        <mat-icon>add</mat-icon>Add Ingredient
-      </button>
+            <!-- Recipe Image -->
+            <mat-form-field
+              ><mat-label>Recipe Image</mat-label>
+              <mat-icon matPrefix>image</mat-icon>
+              <ngx-mat-file-input
+                #removableInput
+                formControlName="recipeImage"
+                placeholder="Select an image"
+                accept="image/*"
+              ></ngx-mat-file-input>
+              <button
+                mat-icon-button
+                matSuffix
+                *ngIf="!removableInput.empty"
+                (click)="removableInput.clear($event)"
+              >
+                <mat-icon>clear</mat-icon>
+              </button>
+            </mat-form-field>
 
-      <!-- instructions -->
-      <h2>Steps</h2>
-      <div
-        class="flex-div"
-        formArrayName="instructions"
-        *ngFor="let instruction of instructions.controls; let i = index"
-      >
-        <mat-form-field color="primary" style="width: 100%">
-          <mat-label>Step #{{ i + 1 }}</mat-label>
-          <textarea
-            matInput
-            required
-            type="text"
-            id="instruction{{ i }}"
-            placeholder="Enter instruction"
-            [formControlName]="i"
-          ></textarea>
-        </mat-form-field>
-        <button
-          [disabled]="!shouldDisplayinstructionRemoveButton()"
-          mat-raised-button
-          color="warn"
-          type="button"
-          (click)="removeinstruction(i)"
-        >
-          Remove
-        </button>
-      </div>
+            <div *ngIf="preserveOriginalImage">
+              <img
+                src="../../../../assets/media/images/recipeimages/uploaded/{{
+                  preserveOriginalImage
+                }}"
+                alt="Recipe Image"
+                style="max-width: 100%; max-height: 100%"
+              />
+            </div>
+          </div>
 
-      <button
-        type="button"
-        mat-raised-button
-        color="primary"
-        (click)="addinstruction()"
-      >
-        <mat-icon>add</mat-icon>Add Step
-      </button>
+          <button mat-button matStepperNext>Next</button>
+        </mat-step>
 
-      <br />
-      <br />
+        <mat-step>
+          <ng-template matStepLabel>List Ingredients</ng-template>
 
-      <button
-        *ngIf="editMode; else createRecipeSubmitButton"
-        mat-raised-button
-        color="accent"
-        type="submit"
-        [disabled]="!recipeForm.valid"
-      >
-        Update
-      </button>
+          <!-- Ingredients -->
+          <h2>Ingredients</h2>
+          <div
+            class="flex-div"
+            formArrayName="ingredients"
+            *ngFor="let ingredient of ingredients.controls; let i = index"
+          >
+            <mat-form-field color="primary" style="width: 100%">
+              <mat-label>Ingredient #{{ i + 1 }}</mat-label>
+              <input
+                matInput
+                required
+                type="text"
+                class="form-control"
+                id="ingredient{{ i }}"
+                [formControlName]="i"
+                placeholder="Enter ingredient"
+              />
 
-      <ng-template #createRecipeSubmitButton>
-        <button
-          mat-raised-button
-          color="accent"
-          type="submit"
-          [disabled]="!recipeForm.valid"
-        >
-          Submit
-        </button>
-      </ng-template>
+              <button
+                *ngIf="shouldDisplayIngredientRemoveButton()"
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="removeIngredient(i)"
+              >
+                <mat-icon>clear</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="addIngredient()"
+          >
+            <mat-icon>add</mat-icon>Add Ingredient
+          </button>
+
+          <br />
+          <br />
+
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>List Recipe Steps</ng-template>
+
+          <!-- instructions -->
+          <h2>Steps</h2>
+          <div
+            class="flex-div"
+            formArrayName="instructions"
+            *ngFor="let instruction of instructions.controls; let i = index"
+          >
+            <mat-form-field color="primary" style="width: 100%">
+              <mat-label>Step #{{ i + 1 }}</mat-label>
+              <textarea
+                cdkTextareaAutosize
+                matInput
+                required
+                type="text"
+                id="instruction{{ i }}"
+                placeholder="Enter instruction"
+                [formControlName]="i"
+              ></textarea>
+
+              <button
+                *ngIf="shouldDisplayinstructionRemoveButton()"
+                mat-icon-button
+                matSuffix
+                type="button"
+                (click)="removeinstruction(i)"
+              >
+                <mat-icon>clear</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            (click)="addinstruction()"
+          >
+            <mat-icon>add</mat-icon>Add Step
+          </button>
+
+          <br />
+          <br />
+
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>Finish</ng-template>
+          <br />
+          <p *ngIf="!recipeForm.valid" style="color: red">
+            Please fill in all the required fields.
+          </p>
+          <button
+            *ngIf="editMode; else createRecipeSubmitButton"
+            mat-raised-button
+            color="accent"
+            type="submit"
+            [disabled]="!recipeForm.valid"
+            (click)="onSubmit(recipeForm)"
+          >
+            Update Recipe
+          </button>
+
+          <ng-template #createRecipeSubmitButton>
+            <button
+              mat-raised-button
+              color="accent"
+              type="submit"
+              [disabled]="!recipeForm.valid"
+              (click)="onSubmit(recipeForm)"
+            >
+              Create Recipe
+            </button>
+          </ng-template>
+
+          <br />
+          <br />
+
+          <button mat-button matStepperPrevious>Back</button>
+        </mat-step>
+      </form>
+    </mat-stepper>
+    <div *ngIf="editMode">
       <br />
       <hr />
       <br />
       <button
-        *ngIf="editMode"
         mat-raised-button
         color="warn"
         (click)="deleteRecipe()"
@@ -177,6 +253,8 @@
       >
         Delete Recipe
       </button>
-    </form>
+    </div>
   </div>
 </div>
+
+<p>{{ recipeForm.value | json }}</p>

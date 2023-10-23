@@ -1,0 +1,11 @@
+<div class="container">
+  <h1 class="darktitleoverride tertiary">Admin Dashboard</h1>
+
+  <h2>Pending Recipes: {{ pendingRecipes.length }}</h2>
+  <div class="recipegrid">
+    <app-recipeapprovalpreview
+      *ngFor="let recipe of pendingRecipes"
+      [recipe]="recipe"
+    ></app-recipeapprovalpreview>
+  </div>
+</div>

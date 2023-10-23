@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" style="max-width: 500px; margin-inline: auto">
   <h1>Log In</h1>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
     <mat-form-field color="primary">
@@ -43,6 +43,8 @@
     </button>
   </form>
 
-  <p>Don't have an account?</p>
-  <button mat-flat-button routerLink="/signup">Sign Up</button>
+  <p>
+    Don't have an account?
+    <a class="link-underline" routerLink="/signup">Sign Up</a>
+  </p>
 </div>

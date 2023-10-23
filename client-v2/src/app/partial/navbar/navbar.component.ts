@@ -14,6 +14,8 @@ import { UserService } from '../../services/user.service';
 export class NavbarComponent {
   username: string = '';
   userFirstName: string = '';
+  userImage: string = 'default-profile-pic.jpg';
+  isAdmin: boolean = false;
   navbarVisible = false;
 
   constructor(
@@ -43,30 +45,56 @@ export class NavbarComponent {
       this.navbarVisible = visible;
     });
 
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.updateFirstName();
-      }
+    // this.router.events.subscribe((event) => {
+    //   if (event instanceof NavigationEnd) {
+    //     this.updateDisplayedUser();
+    //   }
+    // });
+
+    this.auth.loginEvent.subscribe(() => {
+      this.updateDisplayedUser();
+    });
+
+    this.auth.logoutEvent.subscribe(() => {
+      this.userFirstName = '';
+      this.userImage = 'default-profile-pic.jpg';
+      this.isAdmin = false;
+      this.auth.setAdminStatus(false);
     });
 
     const theme = this.themeService.getCurrentTheme();
     this.renderer.setAttribute(document.documentElement, 'data-theme', theme);
-    this.username = this.userService.getUsername();
+    this.username = this.auth.getUsername();
 
-    this.updateFirstName();
+    this.updateDisplayedUser();
   }
 
   toggleNavbar(): void {
     this.navbarService.toggleNavbarVisibility();
-    console.log('navbarVisible: ' + this.navbarVisible);
   }
 
-  updateFirstName() {
+  updateDisplayedUser() {
     if (this.auth.loggedInStatus$) {
       this.userService
-        .getUser(this.userService.getUsername())
+        .getUser(this.auth.getUsername(), true)
         .subscribe((response: any) => {
           this.userFirstName = response.body.firstName;
+          this.userImage = response.body.profilePic;
+          if (response.body.roles !== undefined) {
+            if (response.body.roles.includes('admin')) {
+              console.log(1);
+              this.auth.setAdminStatus(true);
+              this.isAdmin = true;
+            } else {
+              console.log(2);
+              this.auth.setAdminStatus(false);
+              this.isAdmin = false;
+            }
+          } else {
+            console.log(3);
+            this.auth.setAdminStatus(false);
+            this.isAdmin = false;
+          }
         });
     } else {
       this.userFirstName = '';

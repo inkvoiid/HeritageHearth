@@ -13,9 +13,24 @@ import recipeModel from "../../models/recipe.js";
 // @route   GET /api/users
 // @access  Private
 router.get("/", function (req, res) {
+  const { minimal } = req.query;
+  var selectFields = {
+    password: 0,
+  };
+
+  if (minimal === "true") {
+    selectFields = {
+      username: 1,
+      profilePic: 1,
+      firstName: 1,
+      lastName: 1,
+      roles: 1,
+    };
+  }
+
   users
     .find()
-    .select("-password")
+    .select(selectFields)
     .lean()
     .then(function (user) {
       // If the users collection doesn't contain users, send 400 response
@@ -34,9 +49,25 @@ router.get("/", function (req, res) {
 // Route for GET request to retrieve a user by id
 router.get("/:username?", function (req, res) {
   var requestedUsername = req.params.username;
+
+  const { minimal } = req.query;
+  var selectFields = {
+    password: 0,
+  };
+
+  if (minimal === "true") {
+    selectFields = {
+      username: 1,
+      profilePic: 1,
+      firstName: 1,
+      lastName: 1,
+      roles: 1,
+    };
+  }
+
   users
     .findOne({ username: requestedUsername })
-    .select("-password")
+    .select(selectFields)
     .lean()
     .then(function (user) {
       if (user) {
@@ -46,7 +77,7 @@ router.get("/:username?", function (req, res) {
       }
     })
     .catch((err) => {
-      res.send("Error retrieving user ");
+      res.send("Error retrieving user: " + err);
     });
 });
 
@@ -140,6 +171,8 @@ router.put("/:username?", async function (req, res) {
     firstName,
     lastName,
     password,
+    roles,
+    theme,
     friends,
     savedRecipes,
     recipes,
@@ -178,6 +211,14 @@ router.put("/:username?", async function (req, res) {
   if (password) {
     // Hash password
     user.password = bcrypt.hashSync(password, 10); // salt rounds
+  }
+
+  if (roles && Array.isArray(roles)) {
+    user.roles = roles;
+  }
+
+  if (theme) {
+    user.theme = theme;
   }
 
   if (friends && Array.isArray(friends)) {

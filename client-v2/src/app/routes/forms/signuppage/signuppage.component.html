@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" style="max-width: 600px; margin-inline: auto">
   <h1>Sign Up</h1>
   <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
     <div class="flex-div">
@@ -94,6 +94,8 @@
     </button>
   </form>
 
-  <p>Already have an account?</p>
-  <button mat-flat-button color="accent" routerLink="/login">Login</button>
+  <p>
+    Already have an account?
+    <a class="link-underline" routerLink="/login">Login</a>
+  </p>
 </div>

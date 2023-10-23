@@ -1,0 +1,18 @@
+table {
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid var(--table-bg);
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: var(--table-bg);
+}
+
+.recipegrid {
+  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+}

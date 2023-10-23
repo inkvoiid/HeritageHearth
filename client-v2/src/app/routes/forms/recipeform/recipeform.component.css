@@ -3,6 +3,11 @@
   margin: 0 auto;
 }
 
+.formstep {
+  display: flex;
+  flex-direction: column;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 1rem;

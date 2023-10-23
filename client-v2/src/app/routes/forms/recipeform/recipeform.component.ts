@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { RecipeService } from '../../../services/recipe.service';
-import { UserService } from '../../../services/user.service';
 import { firstValueFrom } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleterecipemodalComponent } from '../../../partial/deleterecipemodal/deleterecipemodal.component';
+import { DeleterecipemodalComponent } from '../../../partial/modals/deleterecipemodal/deleterecipemodal.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-recipeform',
@@ -24,13 +24,14 @@ export class RecipeformComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private recipeService: RecipeService,
-    private userService: UserService,
+    private auth: AuthService,
     private dialog: MatDialog
   ) {
-    this.username = this.userService.getUsername();
+    this.username = this.auth.getUsername();
     this.recipeForm = this.formBuilder.group({
       name: '',
       creator: this.username,
+      approved: false,
       servingSize: '',
       cookingTime: '',
       description: '',
@@ -43,7 +44,9 @@ export class RecipeformComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.recipeId = params['recipeId'];
-      this.getRecipeData(this.recipeId);
+      if (this.recipeId != null || this.recipeId != undefined) {
+        this.getRecipeData(this.recipeId);
+      }
     });
   }
 
@@ -56,6 +59,7 @@ export class RecipeformComponent implements OnInit {
         this.recipeForm = this.formBuilder.group({
           name: response.body.name,
           creator: response.body.creator,
+          approved: response.body.approved,
           servingSize: response.body.servingSize,
           cookingTime: response.body.cookingTime,
           description: response.body.description,
@@ -68,7 +72,7 @@ export class RecipeformComponent implements OnInit {
           response.body.recipeImage === null ||
           response.body.recipeImage === ''
         ) {
-          this.preserveOriginalImage = 'Not Sure';
+          this.preserveOriginalImage = 'default-recipe-pic.png';
         } else {
           this.preserveOriginalImage = response.body.recipeImage;
         }

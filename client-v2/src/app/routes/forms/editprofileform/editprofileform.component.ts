@@ -4,7 +4,7 @@ import { UserService } from '../../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
-import { DeleteusermodalComponent } from '../../../partial/deleteusermodal/deleteusermodal.component';
+import { DeleteusermodalComponent } from '../../../partial/modals/deleteusermodal/deleteusermodal.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -29,6 +29,7 @@ export class EditprofileformComponent implements OnInit {
       firstName: '',
       lastName: '',
       username: '',
+      theme: '',
     });
   }
 
@@ -47,6 +48,7 @@ export class EditprofileformComponent implements OnInit {
           firstName: response.body.firstName,
           lastName: response.body.lastName,
           username: response.body.username,
+          theme: response.body.theme,
         });
         this.ogUsername = response.body.username;
       },

@@ -7,4 +7,12 @@ import { Component, Input } from '@angular/core';
 })
 export class RecipepreviewComponent {
   @Input() recipe: any;
+  recipeImageSrc: string =
+    '../../assets/media/images/recipeimages/default-recipe-pic.png';
+
+  constructor() {
+    if (this.recipe != null) {
+      this.recipeImageSrc = this.recipe.recipeImage;
+    }
+  }
 }

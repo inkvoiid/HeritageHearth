@@ -1,0 +1,39 @@
+<div
+  class="preview"
+  style="display: flex; justify-content: space-between"
+  *ngIf="recipe.name; else strange"
+>
+  <div>
+    <a routerLink="/recipes/{{ recipe.recipeId }}">
+      <img
+        class="recipe-preview-image"
+        [src]="recipeImageSrc"
+        (error)="loadPlaceholderImage()"
+      />
+    </a>
+    <a routerLink="/recipes/{{ recipe.recipeId }}">
+      <h3 class="recipetitle">{{ recipe.name }}</h3>
+    </a>
+    <p class="byline">
+      Creator:
+      <a class="link-underline" routerLink="/profile/{{ recipe.creator }}">{{
+        creatorName
+      }}</a>
+    </p>
+    <p class="byline">Last Updated: {{ timeSinceLastUpdated }}</p>
+    <p class="description">{{ recipe.description }}</p>
+  </div>
+  <div class="approval-buttons flex-div">
+    <button id="approve" (click)="approveRecipe()" class="text-and-icon">
+      <mat-icon> check </mat-icon>Approve
+    </button>
+    <button id="reject" (click)="rejectRecipe()" class="text-and-icon">
+      <mat-icon> close </mat-icon>Reject
+    </button>
+  </div>
+</div>
+
+<ng-template #strange>
+  <mat-icon>question_mark</mat-icon>
+  <p>An unviewable recipe, how strange.</p>
+</ng-template>

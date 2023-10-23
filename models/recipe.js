@@ -19,7 +19,11 @@ const recipeSchema = new Schema(
     },
     recipeImage: {
       type: String,
-      default: "default-recipe-pic.jpg",
+      default: "default-recipe-pic.png",
+    },
+    approved: {
+      type: Boolean,
+      default: false,
     },
     userLikes: [
       {

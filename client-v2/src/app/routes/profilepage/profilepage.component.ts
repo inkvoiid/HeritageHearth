@@ -1,4 +1,5 @@
 import { UserService } from '../../services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -8,11 +9,16 @@ import { RecipeService } from '../../services/recipe.service';
 @Component({
   selector: 'app-profilepage',
   templateUrl: './profilepage.component.html',
-  styleUrls: ['./profilepage.component.css'],
+  styleUrls: [
+    './profilepage.component.css',
+    '../../../assets/styles/profilethemes.css',
+  ],
 })
 export class ProfilepageComponent implements OnInit {
   username: string = '';
   user: any;
+  allRecipes: any = [];
+  pendingRecipes: any = [];
   recipes: any = [];
   loading: boolean = true;
   isOwnProfile: boolean = false;
@@ -20,7 +26,8 @@ export class ProfilepageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private userService: UserService,
+    protected userService: UserService,
+    protected auth: AuthService,
     private recipeService: RecipeService
   ) {}
 
@@ -36,23 +43,33 @@ export class ProfilepageComponent implements OnInit {
   }
 
   getUserData(username: string) {
-    this.userService.getUser(username).subscribe((response: any) => {
-      this.user = response.body;
-      this.loading = false;
-      if (this.userService.getUsername() === this.user.username) {
-        this.isOwnProfile = true;
-      } else {
-        this.isOwnProfile = false;
+    this.userService.getUser(username).subscribe(
+      (response: any) => {
+        this.user = response.body;
+        this.loading = false;
+        if (this.auth.getUsername() === this.user.username) {
+          this.isOwnProfile = true;
+        } else {
+          this.isOwnProfile = false;
+        }
+        this.recipeService
+          .getUserRecipes(this.user.username, true)
+          .subscribe((recipes) => {
+            this.allRecipes = recipes;
+
+            for (let recipe of this.allRecipes) {
+              if (recipe.approved === false) {
+                this.pendingRecipes.push(recipe);
+              } else {
+                this.recipes.push(recipe);
+              }
+            }
+          });
+      },
+      (error) => {
+        this.user = null;
+        this.loading = false;
       }
-      response.body.recipes.forEach((recipe: any) => {
-        this.recipeService.getRecipe(recipe).subscribe((recipe) => {
-          if (this.recipes) {
-            this.recipes.push(recipe.body);
-          } else {
-            this.recipes = [recipe.body];
-          }
-        });
-      });
-    });
+    );
   }
 }

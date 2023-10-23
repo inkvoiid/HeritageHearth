@@ -29,6 +29,10 @@ const userSchema = new Schema(
       type: [String],
       default: [],
     },
+    theme: {
+      type: String,
+      default: "",
+    },
     friends: [
       {
         _id: false,

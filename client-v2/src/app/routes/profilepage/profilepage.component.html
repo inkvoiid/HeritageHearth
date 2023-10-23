@@ -3,7 +3,11 @@
 </div>
 
 <ng-template #profile>
-  <div *ngIf="user !== null; else userNotFound" class="profile">
+  <div
+    *ngIf="user !== null; else userNotFound"
+    class="profile"
+    ngClass="{{ user.theme }}"
+  >
     <div class="container profile-info">
       <div class="profile-info">
         <img
@@ -14,9 +18,15 @@
           "
         />
         <div>
-          <h1 id="profile-name">
+          <h1 id="profile-name" class="text-and-icon">
             {{ user.firstName }} {{ user.lastName }}
-            <mat-icon *ngIf="user.roles[0] === 'admin'">local_police</mat-icon>
+            <span
+              *ngIf="user.roles.includes('admin')"
+              style="font-size: 1rem; gap: 0.25rem"
+              class="badge text-and-icon"
+            >
+              <mat-icon>local_police</mat-icon>Admin</span
+            >
           </h1>
           <p id="profile-username">
             {{ user.username }}
@@ -95,6 +105,35 @@
           {{ user.firstName }} hasn't written any recipes.
         </p>
         <p *ngIf="isOwnProfile">You haven't written any recipes.</p>
+      </ng-template>
+    </div>
+
+    <div
+      *ngIf="user.username === auth.getUsername() || auth.getAdminStatus()"
+      class="container"
+    >
+      <div class="pending-recipes-header">
+        <h2 class="darktitleoverride tertiary">Pending Recipes</h2>
+        <span class="badge">Only visible to you</span>
+      </div>
+
+      <div
+        *ngIf="pendingRecipes.length > 0; else noPendingRecipes"
+        class="recipegrid"
+      >
+        <div *ngFor="let recipe of pendingRecipes">
+          <app-recipepreview
+            [id]="recipe"
+            [recipe]="recipe"
+          ></app-recipepreview>
+        </div>
+      </div>
+
+      <ng-template #noPendingRecipes>
+        <p *ngIf="!isOwnProfile">
+          {{ user.firstName }} has no pending recipes.
+        </p>
+        <p *ngIf="isOwnProfile">You have no pending recipes.</p>
       </ng-template>
     </div>
   </div>

@@ -1,11 +1,6 @@
 <a routerLink="/recipes/{{ recipe.recipeId }}" class="preview">
   <div *ngIf="recipe.name; else strange">
-    <img
-      [src]="
-        recipe.image || '../../assets/media/images/profileimages/profile1.png'
-      "
-      width="100%"
-    />
+    <img class="recipe-preview-image" [src]="recipeImageSrc" />
     <div class="recipeinfo byline">
       <span
         ><mat-icon>restaurant</mat-icon> {{ recipe.servingSize }} servings</span
@@ -20,7 +15,7 @@
       by
       {{ recipe.creator }}
     </p> -->
-    <!-- <p class="description">{{ recipe.description }}</p> -->
+    <p class="description">{{ recipe.description }}</p>
   </div>
 
   <ng-template #strange>

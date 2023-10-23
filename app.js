@@ -39,6 +39,28 @@ mongoose
     console.log(err);
   });
 
+// * Add new field to all existing recipes
+
+// import Recipe from "./models/recipe.js";
+// (async () => {
+//   try {
+//     // Fetch all recipes
+//     const recipes = await Recipe.find({});
+
+//     // Update each recipe by adding the new field
+//     for (const recipe of recipes) {
+//       recipe.approved = false; // Add the new field here
+//       await recipe.save(); // Save the updated recipe
+//     }
+
+//     console.log("Migration complete.");
+//   } catch (err) {
+//     console.error("Migration failed:", err);
+//   } finally {
+//     mongoose.disconnect();
+//   }
+// })();
+
 var port = process.env.PORT || 5000;
 
 app.use("/api/auth", authroute);

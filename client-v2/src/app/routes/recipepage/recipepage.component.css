@@ -12,7 +12,22 @@
   gap: 1rem;
 }
 
+.ingredients-and-steps {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+}
+
 .recipe-info {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: space-between;
+}
+
+.recipe-info-flex {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -21,13 +36,13 @@
 }
 
 .recipe-image {
-  height: 25%;
   width: 100%;
 }
 
 .recipe-image img {
   object-fit: cover;
   width: 100%;
+  aspect-ratio: 2.5/1;
 }
 
 .ingredients {
@@ -36,12 +51,14 @@
   grid-gap: 1rem;
 }
 
-ul {
+ul,
+ol {
   padding-left: 0;
   margin: 0 auto;
 }
 
-ul li {
+ul li,
+ol li {
   font-weight: 400;
   margin-bottom: 0.5rem;
 }
@@ -50,31 +67,56 @@ ul li {
   text-align: left;
   font-size: 1.5em;
   font-weight: bold;
+  margin-bottom: 0;
+  margin-top: 0.5rem;
 }
 
 #recipe-author {
   text-align: left;
   font-weight: 400;
-  margin-top: 0;
   opacity: 50%;
+  margin: 0;
 }
 
 li {
   text-align: left;
 }
 
-@media screen and (max-width: 768px) {
-  .recipe-info {
-    flex-direction: column;
-  }
+.description {
+  margin-bottom: 0;
+}
 
-  .recipe-image {
-    width: 100px;
-    height: 100px;
+.byline span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.byline {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  opacity: 50%;
+  gap: 1rem;
+}
+
+#title-card {
+  margin-top: -2.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .recipe-info-flex {
+    flex-direction: column;
   }
 
   #recipe-name {
     font-size: 1.25em;
+  }
+
+  #recipe-author {
+    align-self: left;
   }
 
   .ingredients {
@@ -84,18 +126,21 @@ li {
   }
 
   .ingredientsList {
-    margin: auto 0;
+    margin: auto;
+    width: 95%;
   }
 
   .container {
-    padding: 1rem;
+    padding: 1.25rem;
   }
 
-  ul {
+  ul,
+  ol {
     padding-left: 0.75rem;
   }
 
-  ul li {
-    margin-bottom: 1rem;
+  ul li,
+  ol li {
+    margin-bottom: 0.5rem;
   }
 }

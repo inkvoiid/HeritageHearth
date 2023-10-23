@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 // Material
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +9,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,8 +34,11 @@ import { BrowserecipepageComponent } from './routes/browserecipepage/browserecip
 import { RecipepageComponent } from './routes/recipepage/recipepage.component';
 import { EditprofileformComponent } from './routes/forms/editprofileform/editprofileform.component';
 import { MobileheaderComponent } from './partial/mobileheader/mobileheader.component';
-import { DeleterecipemodalComponent } from './partial/deleterecipemodal/deleterecipemodal.component';
-import { DeleteusermodalComponent } from './partial/deleteusermodal/deleteusermodal.component';
+import { DeleterecipemodalComponent } from './partial/modals/deleterecipemodal/deleterecipemodal.component';
+import { DeleteusermodalComponent } from './partial/modals/deleteusermodal/deleteusermodal.component';
+import { AdmindashpageComponent } from './routes/admindashpage/admindashpage.component';
+import { RecipeapprovalpreviewComponent } from './partial/recipeapprovalpreview/recipeapprovalpreview.component';
+import { RejectrecipemodalComponent } from './partial/modals/rejectrecipemodal/rejectrecipemodal.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +59,9 @@ import { DeleteusermodalComponent } from './partial/deleteusermodal/deleteusermo
     MobileheaderComponent,
     DeleterecipemodalComponent,
     DeleteusermodalComponent,
+    AdmindashpageComponent,
+    RecipeapprovalpreviewComponent,
+    RejectrecipemodalComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,6 +85,9 @@ import { DeleteusermodalComponent } from './partial/deleteusermodal/deleteusermo
         },
       },
     }),
+    MaterialFileInputModule,
+    MatStepperModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

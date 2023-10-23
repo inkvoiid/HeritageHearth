@@ -23,6 +23,14 @@
   height: 150px;
 }
 
+.pending-recipes-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
 #profile-name {
   text-align: left;
   font-size: 1.5em;
@@ -45,6 +53,14 @@
   .profileImage {
     width: 100px;
     height: 100px;
+  }
+
+  .pending-recipes-header {
+    flex-direction: column;
+  }
+
+  .pending-recipes-header h2 {
+    margin-bottom: 0;
   }
 
   #profile-name {

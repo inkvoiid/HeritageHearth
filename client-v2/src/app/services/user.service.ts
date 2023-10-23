@@ -1,9 +1,10 @@
+import { SharedUserService } from './shareduser.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, lastValueFrom } from 'rxjs';
-import { last, map, tap } from 'rxjs/operators';
+import { Observable, lastValueFrom, of } from 'rxjs';
+import { last, map, tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -11,47 +12,27 @@ import { last, map, tap } from 'rxjs/operators';
 export class UserService {
   private baseURL = '/api/users';
 
-  private _username: string = '';
-
   constructor(
     private http: HttpClient,
     private toastr: ToastrService,
-    private router: Router
-  ) {
-    this.updateUsernameFromToken();
-  }
+    private router: Router,
+    private sharedUserService: SharedUserService
+  ) {}
 
-  updateUsernameFromToken() {
-    const token = localStorage.getItem('ourkitchen_auth');
-    if (token) {
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      this._username = decodedToken.UserInfo.username;
-    } else {
-      this._username = ''; // Clear username if there's no token (logged out)
+  getAllUsers(minimal: boolean = false) {
+    var url = this.baseURL;
+
+    if (minimal) {
+      url += '?minimal=true';
     }
-  }
 
-  getUsername(): string {
-    return this._username;
-  }
-
-  setUsername(username: string) {
-    this._username = username;
-  }
-
-  getAllUsers() {
-    return this.http.get(`${this.baseURL}`);
-  }
-
-  getUser(username: string) {
-    return this.http.get(`${this.baseURL}/${username}`, {
+    return this.http.get(url, {
       observe: 'response',
     });
   }
 
-  getFirstName(): Observable<string> {
-    const user = this.getUser(this._username);
-    return user.pipe(map((user: any) => user.firstName));
+  getUser(username: string, minimal: boolean = false) {
+    return this.sharedUserService.getUser(username, minimal);
   }
 
   createNewUser(user: any) {
@@ -75,7 +56,7 @@ export class UserService {
       .pipe(
         tap((response: any) => {
           if (response.status === 200) {
-            this.setUsername(user.username);
+            this.sharedUserService.setUsername(user.username);
             this.toastr.success('User account updated successfully', 'Success');
             this.router.navigate(['/profile/' + user.username]);
           } else {
@@ -119,6 +100,21 @@ export class UserService {
           }
         })
       );
+  }
+
+  isUserAdmin(username: string): Observable<boolean> {
+    const response = this.getUser(username, true).subscribe((response: any) => {
+      const user = response.body;
+      console.log(user);
+      if (user && user.roles) {
+        console.log(user.roles);
+        return user.roles.includes('admin');
+      }
+      console.log('No roles found');
+      return false;
+    });
+
+    return of(false);
   }
 
   showError(error: any): void {

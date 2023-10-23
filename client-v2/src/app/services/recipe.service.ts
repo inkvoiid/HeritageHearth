@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs/operators';
 import { UserService } from './user.service';
 import slugify from 'slugify';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,15 +18,34 @@ export class RecipeService {
     private http: HttpClient,
     private toastr: ToastrService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private auth: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.username = this.userService.getUsername();
+    this.username = this.auth.getUsername();
   }
 
-  getAllRecipes() {
-    return this.http.get(`${this.baseURL}`);
+  getAllRecipes(showPending: boolean = false) {
+    let url = `${this.baseURL}/previews`;
+    if (showPending) {
+      url += '?showPending=true';
+    }
+    return this.http.get(url);
+  }
+
+  getAllPendingRecipes() {
+    let url = `${this.baseURL}/pending`;
+
+    return this.http.get(url);
+  }
+
+  getLatestRecipes(showPending: boolean = false) {
+    let url = `${this.baseURL}/latest`;
+    if (showPending) {
+      url += '?showPending=true';
+    }
+    return this.http.get(url);
   }
 
   getRecipe(recipeId: string) {
@@ -34,9 +54,35 @@ export class RecipeService {
     });
   }
 
-  getUserRecipes(userId: string) {}
+  getUserRecipes(userId: string, showPending: boolean = false) {
+    let url = `${this.baseURL}/previews?creator=${userId}`;
+    if (showPending) {
+      url += '&showPending=true';
+    }
+    return this.http.get(url);
+  }
 
   createNewRecipe(creator: string, recipe: any) {
+    // If the current user is the creator, incase an admin is editing a recipe
+    if (recipe.creator === this.auth.getUsername()) {
+      this.toastr.info("You're the creator of this recipe", 'Info');
+      this.userService
+        .getUser(this.auth.getUsername(), true)
+        .subscribe((response: any) => {
+          if (response.status === 200) {
+            // If the user is an admin or verified, automatically approve the recipe
+            this.toastr.info("You're an admin or verified user", 'Info');
+            if (
+              response.body.roles.includes('admin') ||
+              response.body.roles.includes('verified')
+            ) {
+              this.toastr.info('Recipe approved automatically', 'Info');
+              recipe.approved = true;
+            }
+          }
+        });
+    }
+    console.log(recipe);
     return this.http
       .post(`${this.baseURL}`, recipe, { observe: 'response' })
       .pipe(
@@ -70,6 +116,30 @@ export class RecipeService {
       );
   }
 
+  approveRecipe(recipeId: string): boolean {
+    this.getRecipe(recipeId).subscribe((getResponse: any) => {
+      if (getResponse.status === 200) {
+        getResponse.body.approved = true;
+        console.log(getResponse.body);
+        this.http
+          .put(`${this.baseURL}/${recipeId}`, getResponse.body, {
+            observe: 'response',
+          })
+          .subscribe((response: any) => {
+            if (response.status === 200) {
+              this.toastr.success(
+                'Recipe approved successfully',
+                'Recipe Approved'
+              );
+            } else {
+              this.toastr.error(response.status, 'Error');
+            }
+          });
+      }
+    });
+    return false;
+  }
+
   deleteRecipe(recipeId: string) {
     return this.http
       .delete(`${this.baseURL}/${recipeId}`, {
@@ -80,6 +150,28 @@ export class RecipeService {
           if (response.status === 200) {
             this.toastr.success('Recipe deleted successfully', 'Success');
             this.router.navigate(['/recipes']);
+          } else {
+            this.toastr.error(response.status, 'An error occurred');
+          }
+        })
+      );
+  }
+
+  rejectRecipe(recipeId: string, redirect: boolean = false) {
+    return this.http
+      .delete(`${this.baseURL}/${recipeId}`, {
+        observe: 'response',
+      })
+      .pipe(
+        tap((response: any) => {
+          if (response.status === 200) {
+            this.toastr.success(
+              'Recipe deleted successfully',
+              'Recipe Rejected'
+            );
+            if (redirect) {
+              this.router.navigate(['/recipes']);
+            }
           } else {
             this.toastr.error(response.status, 'An error occurred');
           }

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import mongoose from "mongoose";
+import multer from "multer";
 import slugify from "slugify";
 const router = Router();
 
@@ -15,7 +16,124 @@ import users from "../../models/user.js";
 router.get("/", function (req, res) {
   recipes
     .find()
+    .sort({ name: "asc" })
     .select()
+    .lean()
+    .then(function (recipe) {
+      // If the recipes collection doesn't contain recipes, send 400 response
+      if (!recipe?.length) {
+        return res.status(400).json({ message: "No recipes found" });
+      }
+
+      // Else, return the recipes collection
+      res.json(recipe);
+    })
+    .catch((err) => {
+      res.send("Error retrieving recipes");
+    });
+});
+
+// ? Get recipe previews
+// @desc    Get latest recipes
+// @route   GET /api/recipes/latest
+// @access  Private
+router.get("/previews", function (req, res) {
+  const { creator, showPending } = req.query;
+  const query = {};
+
+  if (creator) {
+    query.creator = creator;
+  }
+
+  if (showPending === undefined || showPending === "false") {
+    query.approved = true;
+  }
+
+  recipes
+    .find(query)
+    .sort({ name: "asc" })
+    .select({
+      recipeId: 1,
+      name: 1,
+      approved: 1,
+      description: 1,
+      recipeImage: 1,
+      creator: 1,
+      servingSize: 1,
+      cookingTime: 1,
+    })
+    .lean()
+    .then(function (recipe) {
+      // If the recipes collection doesn't contain recipes, send 400 response
+      if (!recipe?.length) {
+        return res.status(400).json({ message: "No recipes found" });
+      }
+
+      // Else, return the recipes collection
+      res.json(recipe);
+    })
+    .catch((err) => {
+      res.send("Error retrieving recipes");
+    });
+});
+
+// ? Get pending recipes
+// @desc    Get latest recipes
+// @route   GET /api/recipes/pending
+// @access  Private
+router.get("/pending", function (req, res) {
+  recipes
+    .find({ approved: false })
+    .sort({ updatedAt: "desc" })
+    .select({
+      recipeId: 1,
+      name: 1,
+      approved: 1,
+      description: 1,
+      recipeImage: 1,
+      creator: 1,
+      servingSize: 1,
+      cookingTime: 1,
+      createdAt: 1,
+      updatedAt: 1,
+    })
+    .lean()
+    .then(function (recipe) {
+      // If the recipes collection doesn't contain recipes, send 400 response
+      if (!recipe?.length) {
+        return res.status(400).json({ message: "No recipes found" });
+      }
+
+      // Else, return the recipes collection
+      res.json(recipe);
+    })
+    .catch((err) => {
+      res.send("Error retrieving recipes");
+    });
+});
+
+// ? Get latest recipes
+// @desc    Get latest recipes
+// @route   GET /api/recipes/latest
+// @access  Private
+router.get("/latest", function (req, res) {
+  const showPending = req.query.showPending === "true";
+
+  const filter = showPending ? {} : { approved: true };
+
+  recipes
+    .find(filter)
+    .sort({ updatedAt: "desc" })
+    .limit(4)
+    .select({
+      recipeId: 1,
+      name: 1,
+      description: 1,
+      recipeImage: 1,
+      creator: 1,
+      servingSize: 1,
+      cookingTime: 1,
+    })
     .lean()
     .then(function (recipe) {
       // If the recipes collection doesn't contain recipes, send 400 response
@@ -60,6 +178,7 @@ router.post("/", async function (req, res) {
     name,
     creator,
     recipeImage,
+    approved,
     description,
     forkedFrom,
     forkRecipeIds,
@@ -107,11 +226,15 @@ router.post("/", async function (req, res) {
   }
 
   const recipeId = slugify(name + " by " + creator, { lower: true });
+
+  const recipeImageFiles = recipeImage?._fileNames;
+
   const recipeObject = {
     recipeId: recipeId,
     name,
     creator,
-    recipeImage,
+    recipeImage: recipeImageFiles,
+    approved,
     description,
     forkedFrom,
     forkRecipeIds,
@@ -149,6 +272,7 @@ router.put("/:recipeId?", async function (req, res) {
     name,
     creator,
     recipeImage,
+    approved,
     userLikes,
     description,
     forkedFrom,
@@ -170,7 +294,7 @@ router.put("/:recipeId?", async function (req, res) {
     !requestedId ||
     !name ||
     !creator ||
-    !recipeImage ||
+    !approved ||
     !description ||
     !servingSize ||
     !cookingTime ||
@@ -207,9 +331,12 @@ router.put("/:recipeId?", async function (req, res) {
       .json({ message: "Duplicate recipe content from the same user" });
   }
 
+  const recipeImageFiles = recipeImage?._fileNames;
+
   recipe.name = name;
   recipe.creator = creator;
-  recipe.recipeImage = recipeImage;
+  recipe.recipeImage = recipeImageFiles;
+  recipe.approved = approved;
   recipe.description = description;
   recipe.servingSize = servingSize;
   recipe.cookingTime = cookingTime;

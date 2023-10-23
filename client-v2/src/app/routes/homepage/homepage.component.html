@@ -1,6 +1,6 @@
 <div class="container">
-  <h1 class="tertiary darktitleoverride heading">Nau mai ki To Mātau Kītini</h1>
-  <h2 class="subheading">Welcome to Our Kitchen</h2>
+  <h1 class="tertiary darktitleoverride heading">Welcome to Our Kitchen</h1>
+  <h2 class="subheading">Nau mai ki To Mātau Kītini</h2>
   <p>Hello, welcome to the family recipe site.</p>
   <div *ngIf="!(auth.loggedInStatus$ | async)">
     <p>To get started, login or sign up to add recipes.</p>
@@ -13,7 +13,15 @@
 <br />
 <div class="container">
   <h1 class="tertiary darktitleoverride">Latest Recipes</h1>
-  <p>To be implemented...</p>
+  <div *ngIf="latestrecipes.length > 0; else noRecipes" class="recipegrid">
+    <div *ngFor="let recipe of latestrecipes">
+      <app-recipepreview [id]="recipe" [recipe]="recipe"></app-recipepreview>
+    </div>
+  </div>
+
+  <ng-template #noRecipes>
+    <p>No recent recipes.</p>
+  </ng-template>
 </div>
 <br />
 <div class="container">
@@ -21,7 +29,7 @@
   <p>Who's already a part of Our Kitchen?</p>
   <div class="grid">
     <!-- for each user in the list of users, create a p tag -->
-    <div class="profile" *ngFor="let user of users">
+    <div class="userPreview" *ngFor="let user of users">
       <a [routerLink]="'/profile/' + user.username"
         ><img
           class="profileImage"
@@ -30,7 +38,7 @@
             '../../assets/media/images/profileimages/default-profile-pic.jpg'
           "
         />
-        <h3>{{ user.firstName }} {{ user.lastName }}</h3></a
+        <p>{{ user.firstName }} {{ user.lastName }}</p></a
       >
     </div>
   </div>
@@ -49,7 +57,7 @@
     easily upload and share the old recipes they're hanging on to, so that
     everyone can use them.
   </p>
-  <p>Copyright Kaleb Dickson 2023 ©</p>
+  <p>© Kaleb Dickson 2023</p>
 </div>
 
 <app-addrecipebutton></app-addrecipebutton>
