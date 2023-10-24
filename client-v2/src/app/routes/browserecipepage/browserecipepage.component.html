@@ -1,13 +1,51 @@
 <div class="container">
   <h1 class="darktitleoverride tertiary">Browse Recipes</h1>
-  <div *ngIf="recipes.length > 0; else noRecipes">
-    <div class="recipegrid">
-      <app-recipepreview
-        *ngFor="let recipe of recipes"
-        [recipe]="recipe"
-      ></app-recipepreview>
-    </div>
+
+  <!-- Loading -->
+  <div
+    class="flex-div"
+    style="padding-block: 3rem"
+    *ngIf="loading; else recipeGrid"
+  >
+    <mat-spinner
+      style="width: 50px; height: 50px"
+      mode="indeterminate"
+    ></mat-spinner>
   </div>
+
+  <!-- Recipe Search and Grid -->
+  <ng-template #recipeGrid>
+    <div *ngIf="recipes.length > 0; else noRecipes">
+      <mat-form-field class="searchbar">
+        <mat-icon class="search-icon" matPrefix>search</mat-icon>
+        <input
+          matInput
+          type="text"
+          placeholder="Search"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="search()"
+        />
+        <button
+          type="button"
+          *ngIf="searchTerm"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="clearSearch()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <div class="recipegrid" [@listAnimation]="filteredRecipes.length">
+        <app-recipepreview
+          *ngFor="let recipe of filteredRecipes"
+          [recipe]="recipe"
+        ></app-recipepreview>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- No Recipes -->
   <ng-template #noRecipes>
     <p>No recipes no cry.</p>
   </ng-template>

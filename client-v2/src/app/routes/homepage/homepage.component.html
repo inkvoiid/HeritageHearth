@@ -13,7 +13,11 @@
 <br />
 <div class="container">
   <h1 class="tertiary darktitleoverride">Latest Recipes</h1>
-  <div *ngIf="latestrecipes.length > 0; else noRecipes" class="recipegrid">
+  <div
+    *ngIf="latestrecipes.length > 0; else noRecipes"
+    class="recipegrid"
+    [@listAnimation]="latestrecipes.length"
+  >
     <div *ngFor="let recipe of latestrecipes">
       <app-recipepreview [id]="recipe" [recipe]="recipe"></app-recipepreview>
     </div>
@@ -27,7 +31,7 @@
 <div class="container">
   <h1 class="tertiary darktitleoverride">Current Members</h1>
   <p>Who's already a part of Our Kitchen?</p>
-  <div class="grid">
+  <div class="grid" [@listAnimation]="users.length">
     <!-- for each user in the list of users, create a p tag -->
     <div class="userPreview" *ngFor="let user of users">
       <app-userpreview [user]="user"></app-userpreview>

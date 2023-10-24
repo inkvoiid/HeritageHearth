@@ -8,7 +8,7 @@ nav {
   box-shadow: var(--navshadow);
   border-radius: 0 0.5rem 0.5rem 0;
   opacity: 1;
-  transition: background-color 0.01ms ease-in-out, all 0.45s ease-in-out;
+  transition: background-color none, all 0.45s ease-in-out;
 }
 
 /* Inner green container that has the route links */
@@ -116,6 +116,7 @@ button {
   font-size: 1.25em;
   font-weight: 600;
   background-color: transparent;
+  transition: background-color 0.15s ease-in-out;
 }
 
 .profile:hover:not(.active) {

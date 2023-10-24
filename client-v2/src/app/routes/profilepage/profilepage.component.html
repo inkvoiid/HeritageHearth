@@ -10,6 +10,7 @@
   >
     <div class="container profile-info">
       <div class="profile-info">
+        <!-- Profile Picture -->
         <img
           class="profileImage"
           [src]="
@@ -18,7 +19,9 @@
           "
           (error)="loadPlaceholderImage()"
         />
+
         <div>
+          <!-- Name -->
           <h1 id="profile-name" class="text-and-icon">
             {{ user.firstName }} {{ user.lastName }}
             <span
@@ -74,7 +77,11 @@
 
     <div class="container">
       <h2 class="darktitleoverride tertiary">Favourite Recipes</h2>
-      <div *ngIf="user.savedRecipes.length > 0; else noFavourites">
+      <div
+        *ngIf="user.savedRecipes.length > 0; else noFavourites"
+        class="recipegrid"
+        [@listAnimation]="user.savedRecipes.length"
+      >
         <div *ngFor="let recipe of user.savedRecipes">
           <app-recipepreview
             [id]="recipe"
@@ -92,7 +99,11 @@
 
     <div class="container">
       <h2 class="darktitleoverride tertiary">Recipes</h2>
-      <div *ngIf="recipes.length > 0; else noRecipes" class="recipegrid">
+      <div
+        *ngIf="recipes.length > 0; else noRecipes"
+        class="recipegrid"
+        [@listAnimation]="recipes.length"
+      >
         <div *ngFor="let recipe of recipes">
           <app-recipepreview
             [id]="recipe"
@@ -121,6 +132,7 @@
       <div
         *ngIf="pendingRecipes.length > 0; else noPendingRecipes"
         class="recipegrid"
+        [@listAnimation]="pendingRecipes.length"
       >
         <div *ngFor="let recipe of pendingRecipes">
           <app-recipepreview

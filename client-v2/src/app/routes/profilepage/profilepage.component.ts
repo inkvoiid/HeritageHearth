@@ -5,6 +5,14 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RecipeService } from '../../services/recipe.service';
+import {
+  animate,
+  query,
+  stagger,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-profilepage',
@@ -12,6 +20,20 @@ import { RecipeService } from '../../services/recipe.service';
   styleUrls: [
     './profilepage.component.css',
     '../../../assets/styles/profilethemes.css',
+  ],
+  animations: [
+    trigger('listAnimation', [
+      transition('* <=> *', [
+        query(
+          ':enter',
+          [
+            style({ opacity: 0 }),
+            stagger('60ms', animate('600ms ease-out', style({ opacity: 1 }))),
+          ],
+          { optional: true }
+        ),
+      ]),
+    ]),
   ],
 })
 export class ProfilepageComponent implements OnInit {
