@@ -22,6 +22,7 @@ export class ProfilepageComponent implements OnInit {
   recipes: any = [];
   loading: boolean = true;
   isOwnProfile: boolean = false;
+  userProfilePic: string = 'egg_blue.jpg';
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +47,7 @@ export class ProfilepageComponent implements OnInit {
     this.userService.getUser(username).subscribe(
       (response: any) => {
         this.user = response.body;
+        this.userProfilePic = this.user.profilePic;
         this.loading = false;
         if (this.auth.getUsername() === this.user.username) {
           this.isOwnProfile = true;
@@ -71,5 +73,9 @@ export class ProfilepageComponent implements OnInit {
         this.loading = false;
       }
     );
+  }
+
+  loadPlaceholderImage() {
+    this.userProfilePic = 'egg_blue.jpg';
   }
 }

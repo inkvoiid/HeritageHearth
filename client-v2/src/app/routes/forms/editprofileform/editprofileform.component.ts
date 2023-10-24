@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
@@ -29,6 +29,7 @@ export class EditprofileformComponent implements OnInit {
       firstName: '',
       lastName: '',
       username: '',
+      profilePic: '',
       theme: '',
     });
   }
@@ -48,6 +49,7 @@ export class EditprofileformComponent implements OnInit {
           firstName: response.body.firstName,
           lastName: response.body.lastName,
           username: response.body.username,
+          profilePic: response.body.profilePic,
           theme: response.body.theme,
         });
         this.ogUsername = response.body.username;
@@ -72,6 +74,8 @@ export class EditprofileformComponent implements OnInit {
         const response = await firstValueFrom(
           this.userService.updateUser(this.ogUsername, user)
         );
+
+        this.userService.updateUserEvent.emit();
         if (this.ogUsername !== user.username) {
           this.auth.logout();
         }

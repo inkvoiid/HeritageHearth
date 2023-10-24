@@ -19,7 +19,7 @@ const userSchema = new Schema(
     },
     profilePic: {
       type: String,
-      default: "default-profile-pic.jpg",
+      default: "egg_blue.jpg",
     },
     password: {
       type: String,

@@ -1,0 +1,21 @@
+/* mat-radio-button div div div input:checked ~ label img {
+  border: 4px solid var(--primary);
+  box-shadow: 0 0 0 4px var(--primary) inset;
+} */
+
+.mdc-radio {
+  display: none !important;
+  background-color: red;
+}
+
+mat-radio-button div.mdc-form-field div.mdc-radio {
+  display: none !important;
+}
+
+mat-radio-button img {
+  width: 100%;
+  height: 100%;
+  max-width: 100px;
+  border-radius: 50%;
+  border: 4px solid transparent;
+}

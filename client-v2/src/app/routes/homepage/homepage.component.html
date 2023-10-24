@@ -30,16 +30,7 @@
   <div class="grid">
     <!-- for each user in the list of users, create a p tag -->
     <div class="userPreview" *ngFor="let user of users">
-      <a [routerLink]="'/profile/' + user.username"
-        ><img
-          class="profileImage"
-          [src]="
-            '../../assets/media/images/profileimages/' + user.profilePic ||
-            '../../assets/media/images/profileimages/default-profile-pic.jpg'
-          "
-        />
-        <p>{{ user.firstName }} {{ user.lastName }}</p></a
-      >
+      <app-userpreview [user]="user"></app-userpreview>
     </div>
   </div>
 </div>

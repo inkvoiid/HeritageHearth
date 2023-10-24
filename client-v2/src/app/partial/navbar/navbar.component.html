@@ -60,6 +60,7 @@
           ><img
             src="../../assets/media/images/profileimages/{{ userImage }}"
             class="avatar"
+            (error)="loadPlaceholderImage()"
           />
           <p
             class="tertiary darktitleoverride text-and-icon"

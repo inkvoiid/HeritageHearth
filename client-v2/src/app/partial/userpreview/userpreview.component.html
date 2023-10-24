@@ -1,0 +1,11 @@
+<a [routerLink]="'/profile/' + user.username"
+  ><img
+    class="profileImage"
+    [src]="
+      '../../assets/media/images/profileimages/' + this.userImage ||
+      '../../assets/media/images/profileimages/egg_blue.jpg'
+    "
+    (error)="loadPlaceholderImage()"
+  />
+  <p>{{ user.firstName }} {{ user.lastName }}</p></a
+>

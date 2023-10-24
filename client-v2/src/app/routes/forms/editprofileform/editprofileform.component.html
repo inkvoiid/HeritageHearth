@@ -41,6 +41,66 @@
         />
       </mat-form-field>
 
+      <!-- Select Profile Pic -->
+      <mat-label>Profile Picture</mat-label>
+      <mat-radio-group formControlName="profilePic" color="primary">
+        <mat-radio-button value="egg_blue.jpg">
+          <img
+            src="../../../../assets/media/images/profileimages/egg_blue.jpg"
+          />
+        </mat-radio-button>
+        <mat-radio-button value="egg_green.png"
+          ><img
+            src="../../../../assets/media/images/profileimages/egg_green.png"
+          />
+        </mat-radio-button>
+        <mat-radio-button value="egg_purple.png"
+          ><img
+            src="../../../../assets/media/images/profileimages/egg_purple.png"
+          />
+        </mat-radio-button>
+        <mat-radio-button value="egg_red.png"
+          ><img
+            src="../../../../assets/media/images/profileimages/egg_red.png"
+          />
+        </mat-radio-button>
+        <mat-radio-button value="egg_yellow.png"
+          ><img
+            src="../../../../assets/media/images/profileimages/egg_yellow.png"
+          />
+        </mat-radio-button>
+        <mat-radio-button value="egg_orange.png"
+          ><img
+            src="../../../../assets/media/images/profileimages/egg_orange.png"
+          />
+        </mat-radio-button>
+        <mat-radio-button value="egg_grey.png"
+          ><img
+            src="../../../../assets/media/images/profileimages/egg_grey.png"
+          />
+        </mat-radio-button>
+        <mat-radio-button value="profile1.png"
+          ><img
+            src="../../../../assets/media/images/profileimages/profile1.png"
+          />
+        </mat-radio-button>
+        <mat-radio-button value="profile2.png"
+          ><img
+            src="../../../../assets/media/images/profileimages/profile2.png"
+          />
+        </mat-radio-button>
+        <mat-radio-button value="profile3.png"
+          ><img
+            src="../../../../assets/media/images/profileimages/profile3.png"
+          />
+        </mat-radio-button>
+        <mat-radio-button value="profile4.png"
+          ><img
+            src="../../../../assets/media/images/profileimages/profile4.png"
+          />
+        </mat-radio-button>
+      </mat-radio-group>
+
       <!-- Profile Theme -->
       <mat-form-field color="primary">
         <mat-label>Profile Theme</mat-label>
@@ -50,6 +110,7 @@
         </mat-select>
       </mat-form-field>
 
+      <!-- Update Button -->
       <button
         mat-raised-button
         color="accent"
@@ -58,9 +119,12 @@
       >
         Update
       </button>
+
       <br />
       <hr />
       <br />
+
+      <!-- Delete User Button -->
       <button
         mat-raised-button
         color="warn"
@@ -70,5 +134,6 @@
         Delete User
       </button>
     </form>
+    <p>{{ updateUserForm.value | json }}</p>
   </div>
 </div>

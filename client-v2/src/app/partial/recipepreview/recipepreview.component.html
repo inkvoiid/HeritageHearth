@@ -1,6 +1,10 @@
 <a routerLink="/recipes/{{ recipe.recipeId }}" class="preview">
   <div *ngIf="recipe.name; else strange">
-    <img class="recipe-preview-image" [src]="recipeImageSrc" />
+    <img
+      class="recipe-preview-image"
+      [src]="recipeImageSrc"
+      (error)="loadPlaceholderImage()"
+    />
     <div class="recipeinfo byline">
       <span
         ><mat-icon>restaurant</mat-icon> {{ recipe.servingSize }} servings</span

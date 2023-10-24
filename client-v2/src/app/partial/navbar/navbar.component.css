@@ -138,16 +138,6 @@ button {
   color: white;
 }
 
-.avatar {
-  width: 100%;
-  max-width: 50px;
-  aspect-ratio: 1/1;
-  object-fit: cover;
-  margin-inline-end: 0.5rem;
-  border-radius: 10rem;
-  box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.1);
-}
-
 hr {
   height: 2px;
   width: 100%;

@@ -13,9 +13,10 @@
         <img
           class="profileImage"
           [src]="
-            '../../assets/media/images/profileimages/' + user.profilePic ||
-            '../../assets/media/images/profileimages/default-profile-pic.jpg'
+            '../../assets/media/images/profileimages/' + userProfilePic ||
+            '../../assets/media/images/profileimages/egg_blue.jpg'
           "
+          (error)="loadPlaceholderImage()"
         />
         <div>
           <h1 id="profile-name" class="text-and-icon">
@@ -54,7 +55,7 @@
                 [src]="
                   '../../assets/media/images/profileimages/' +
                     friend.profilePic ||
-                  '../../assets/media/images/profileimages/default-profile-pic.jpg'
+                  '../../assets/media/images/profileimages/egg_blue.jpg'
                 "
               />
               <h3>{{ friend.firstName }} {{ friend.lastName }}</h3>

@@ -172,6 +172,7 @@ router.put("/:username?", async function (req, res) {
     lastName,
     password,
     roles,
+    profilePic,
     theme,
     friends,
     savedRecipes,
@@ -215,6 +216,10 @@ router.put("/:username?", async function (req, res) {
 
   if (roles && Array.isArray(roles)) {
     user.roles = roles;
+  }
+
+  if (profilePic) {
+    user.profilePic = profilePic;
   }
 
   if (theme) {

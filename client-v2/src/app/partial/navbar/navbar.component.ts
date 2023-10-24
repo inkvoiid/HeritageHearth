@@ -14,7 +14,7 @@ import { UserService } from '../../services/user.service';
 export class NavbarComponent {
   username: string = '';
   userFirstName: string = '';
-  userImage: string = 'default-profile-pic.jpg';
+  userImage: string = 'egg_blue.jpg';
   isAdmin: boolean = false;
   navbarVisible = false;
 
@@ -55,9 +55,13 @@ export class NavbarComponent {
       this.updateDisplayedUser();
     });
 
+    this.userService.updateUserEvent.subscribe(() => {
+      this.updateDisplayedUser();
+    });
+
     this.auth.logoutEvent.subscribe(() => {
       this.userFirstName = '';
-      this.userImage = 'default-profile-pic.jpg';
+      this.userImage = 'egg_blue.jpg';
       this.isAdmin = false;
       this.auth.setAdminStatus(false);
     });
@@ -99,5 +103,9 @@ export class NavbarComponent {
     } else {
       this.userFirstName = '';
     }
+  }
+
+  loadPlaceholderImage() {
+    this.userImage = 'egg_blue.jpg';
   }
 }

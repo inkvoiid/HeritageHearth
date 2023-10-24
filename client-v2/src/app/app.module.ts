@@ -13,6 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,6 +40,7 @@ import { DeleteusermodalComponent } from './partial/modals/deleteusermodal/delet
 import { AdmindashpageComponent } from './routes/admindashpage/admindashpage.component';
 import { RecipeapprovalpreviewComponent } from './partial/recipeapprovalpreview/recipeapprovalpreview.component';
 import { RejectrecipemodalComponent } from './partial/modals/rejectrecipemodal/rejectrecipemodal.component';
+import { UserpreviewComponent } from './partial/userpreview/userpreview.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,7 @@ import { RejectrecipemodalComponent } from './partial/modals/rejectrecipemodal/r
     AdmindashpageComponent,
     RecipeapprovalpreviewComponent,
     RejectrecipemodalComponent,
+    UserpreviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -88,6 +91,7 @@ import { RejectrecipemodalComponent } from './partial/modals/rejectrecipemodal/r
     MaterialFileInputModule,
     MatStepperModule,
     MatSelectModule,
+    MatRadioModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

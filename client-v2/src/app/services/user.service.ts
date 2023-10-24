@@ -1,6 +1,6 @@
 import { SharedUserService } from './shareduser.service';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, lastValueFrom, of } from 'rxjs';
@@ -11,6 +11,7 @@ import { last, map, tap, catchError } from 'rxjs/operators';
 })
 export class UserService {
   private baseURL = '/api/users';
+  public updateUserEvent: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(
     private http: HttpClient,
