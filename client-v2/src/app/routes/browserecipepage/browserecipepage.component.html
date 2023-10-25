@@ -16,6 +16,7 @@
   <!-- Recipe Search and Grid -->
   <ng-template #recipeGrid>
     <div *ngIf="recipes.length > 0; else noRecipes">
+      <!-- Searchbar -->
       <mat-form-field class="searchbar">
         <mat-icon class="search-icon" matPrefix>search</mat-icon>
         <input
@@ -36,10 +37,17 @@
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
-      <div class="recipegrid" [@listAnimation]="filteredRecipes.length">
+
+      <p *ngIf="filteredRecipes.length === 0">
+        No recipes match that search criteria.
+      </p>
+
+      <!-- Recipe Grid -->
+      <div class="recipegrid">
         <app-recipepreview
           *ngFor="let recipe of filteredRecipes"
           [recipe]="recipe"
+          [@itemAnimation]
         ></app-recipepreview>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <h1 class="darktitleoverride tertiary">Admin Dashboard</h1>
 
   <h2>Pending Recipes: {{ pendingRecipes.length }}</h2>
-  <div class="recipegrid">
+  <div class="recipegrid" [@listAnimation]="pendingRecipes.length">
     <app-recipeapprovalpreview
       *ngFor="let recipe of pendingRecipes"
       [recipe]="recipe"

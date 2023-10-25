@@ -7,6 +7,7 @@
     *ngIf="user !== null; else userNotFound"
     class="profile"
     ngClass="{{ user.theme }}"
+    [@fader]
   >
     <div class="container profile-info">
       <div class="profile-info">

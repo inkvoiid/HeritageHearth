@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { formatTimeAgo } from '../../utils';
+import { listAnimation } from 'src/app/animations';
 
 @Component({
   templateUrl: './admindashpage.component.html',
   styleUrls: ['./admindashpage.component.css'],
+  animations: [listAnimation],
 })
 export class AdmindashpageComponent implements OnInit {
   pendingRecipes: any = [];

@@ -5,14 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RecipeService } from '../../services/recipe.service';
-import {
-  animate,
-  query,
-  stagger,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { fader, listAnimation } from 'src/app/animations';
 
 @Component({
   selector: 'app-profilepage',
@@ -21,20 +14,7 @@ import {
     './profilepage.component.css',
     '../../../assets/styles/profilethemes.css',
   ],
-  animations: [
-    trigger('listAnimation', [
-      transition('* <=> *', [
-        query(
-          ':enter',
-          [
-            style({ opacity: 0 }),
-            stagger('60ms', animate('600ms ease-out', style({ opacity: 1 }))),
-          ],
-          { optional: true }
-        ),
-      ]),
-    ]),
-  ],
+  animations: [listAnimation, fader],
 })
 export class ProfilepageComponent implements OnInit {
   username: string = '';

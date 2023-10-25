@@ -1,32 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { RecipeService } from '../../services/recipe.service';
-import {
-  animate,
-  query,
-  stagger,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { itemAnimation } from 'src/app/animations';
 
 @Component({
   selector: 'app-browserecipepage',
   templateUrl: './browserecipepage.component.html',
   styleUrls: ['./browserecipepage.component.css'],
-  animations: [
-    trigger('listAnimation', [
-      transition('* <=> *', [
-        query(
-          ':enter',
-          [
-            style({ opacity: 0 }),
-            stagger('60ms', animate('600ms ease-out', style({ opacity: 1 }))),
-          ],
-          { optional: true }
-        ),
-      ]),
-    ]),
-  ],
+  animations: [itemAnimation],
 })
 export class BrowserecipepageComponent implements OnInit {
   recipes: any = [];
