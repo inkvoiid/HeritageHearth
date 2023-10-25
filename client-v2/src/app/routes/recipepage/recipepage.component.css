@@ -113,10 +113,7 @@ li {
 
   #recipe-name {
     font-size: 1.25em;
-  }
-
-  #recipe-author {
-    align-self: left;
+    text-align: center;
   }
 
   .ingredients {
