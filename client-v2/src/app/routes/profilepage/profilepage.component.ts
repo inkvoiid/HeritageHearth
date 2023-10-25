@@ -56,6 +56,8 @@ export class ProfilepageComponent implements OnInit {
         } else {
           this.isOwnProfile = false;
         }
+
+        this.auth.setSavedRecipes();
         this.recipeService
           .getUserRecipes(this.user.username, true)
           .subscribe((recipes) => {

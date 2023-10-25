@@ -6,24 +6,22 @@
   flex-direction: column;
   align-items: center;
   vertical-align: middle;
-}
-
-a {
   transition: all 0.2s;
   color: var(--text);
+  position: relative;
 }
 
-a:hover {
+.preview:hover {
   scale: 1.05;
-  cursor: pointer;
-  box-shadow: var(--shadow);
+
   background: rgb(255, 226, 231);
   color: var(--primary);
   border-radius: 5px;
 }
 
-[data-theme="dark"] a:hover {
+[data-theme="dark"] article:hover {
   background: var(--secondary);
+  box-shadow: var(--shadow);
   color: var(--text);
   border-radius: 5px;
 }
@@ -39,6 +37,7 @@ a:hover {
 }
 
 .recipetitle {
+  cursor: pointer;
   margin: 0;
   margin-top: 0.5rem;
 }
@@ -66,6 +65,16 @@ a:hover {
   width: 100%;
   /* aspect-ratio: 3/2; */
   object-fit: cover;
+  cursor: pointer;
+}
+
+.bookmark-icon {
+  scale: 1.75;
+  position: absolute;
+  right: 1.5rem;
+  top: 1.1rem;
+  color: var(--primary);
+  background-color: transparent;
 }
 
 @media screen and (max-width: 768px) {

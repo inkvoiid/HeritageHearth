@@ -47,6 +47,9 @@
         <app-recipepreview
           *ngFor="let recipe of filteredRecipes"
           [recipe]="recipe"
+          [saved]="
+            auth.loggedInStatus$ && auth.isRecipeSavedByUser(recipe.recipeId)
+          "
           [@itemAnimation]
         ></app-recipepreview>
       </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RecipeService } from '../../services/recipe.service';
 import { itemAnimation } from 'src/app/animations';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-browserecipepage',
@@ -14,7 +15,10 @@ export class BrowserecipepageComponent implements OnInit {
   filteredRecipes: any = [];
   searchTerm: string = '';
 
-  constructor(private recipeService: RecipeService) {
+  constructor(
+    private recipeService: RecipeService,
+    protected auth: AuthService
+  ) {
     this.recipeService.getAllRecipes().subscribe((response: any) => {
       this.recipes = response;
       this.filteredRecipes = this.recipes;
@@ -23,7 +27,7 @@ export class BrowserecipepageComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Initialize filteredRecipes with all recipes
+    this.auth.setSavedRecipes();
   }
 
   search() {

@@ -19,11 +19,15 @@ import { SharedUserService } from './shareduser.service';
 })
 export class AuthService {
   private apiURL = '/api/auth';
+  private userURL = '/api/users';
   private _loggedInStatus$ = new BehaviorSubject<boolean>(false);
   loggedInStatus$ = this._loggedInStatus$.asObservable();
 
   private _adminStatus$ = new BehaviorSubject<boolean>(false);
   adminStatus$ = this._adminStatus$.asObservable();
+
+  private _savedRecipes$ = new BehaviorSubject<string[]>([]);
+  savedRecipes$ = this._savedRecipes$.asObservable();
 
   public loginEvent: EventEmitter<void> = new EventEmitter<void>();
   public logoutEvent: EventEmitter<void> = new EventEmitter<void>();
@@ -150,5 +154,98 @@ export class AuthService {
   // Returns the admin status of the user
   getAdminStatus() {
     return this._adminStatus$.value;
+  }
+
+  // Set the saved recipes of the user
+  setSavedRecipes(recipes: string[] = []) {
+    if (recipes && recipes.length > 0) {
+      this._savedRecipes$.next(recipes);
+    } else {
+      const user = this.sharedUserService.getUser(this.getUsername(), false);
+      user.subscribe((response: any) => {
+        this._savedRecipes$.next(response.body.savedRecipes);
+      });
+    }
+  }
+
+  // Returns the saved recipes of the user
+  getSavedRecipes(): Observable<string[]> {
+    return this._savedRecipes$.asObservable();
+  }
+
+  // Save a recipe to the user's saved recipes
+  saveRecipe(recipeId: string): void {
+    // Set the path for updating the user
+    const path = `${this.userURL}/${this.getUsername()}`;
+
+    // Get the current user's data
+    this.sharedUserService
+      .getUser(this.getUsername(), false)
+      .subscribe((response: any) => {
+        const savedRecipes = response.body.savedRecipes;
+
+        // Check if the recipe is already saved
+        if (savedRecipes.includes(recipeId)) {
+          this.toastr.warning('Recipe already saved');
+          return;
+        }
+
+        // If the recipe is not already saved, add it to the saved recipes
+        else {
+          savedRecipes.push(recipeId);
+
+          // Update the user's saved recipes
+          const updatedUser = { ...response.body, savedRecipes };
+
+          // Send a request to update the user
+          this.http.put(path, updatedUser).subscribe((response: any) => {
+            this.toastr.success('Favourited recipe');
+
+            // Update the saved recipes
+            this.setSavedRecipes(savedRecipes);
+          });
+        }
+      });
+  }
+
+  // Save a recipe to the user's saved recipes
+  unsaveRecipe(recipeId: string): void {
+    // Set the path for updating the user
+    const path = `${this.userURL}/${this.getUsername()}`;
+
+    // Get the current user's data
+    this.sharedUserService
+      .getUser(this.getUsername(), false)
+      .subscribe((response: any) => {
+        const savedRecipes = response.body.savedRecipes;
+
+        // Check if the recipe is already saved
+        if (!savedRecipes.includes(recipeId)) {
+          this.toastr.warning('Unfavourited recipe');
+          return;
+        }
+
+        // If the recipe is not already saved, add it to the saved recipes
+        else {
+          savedRecipes.splice(savedRecipes.indexOf(recipeId), 1);
+
+          // Update the user's saved recipes
+          const updatedUser = { ...response.body, savedRecipes };
+
+          // Send a request to update the user
+          this.http.put(path, updatedUser).subscribe((response: any) => {
+            this.toastr.success('Recipe unsaved');
+
+            // Update the saved recipes
+            this.setSavedRecipes(savedRecipes);
+          });
+        }
+      });
+  }
+
+  // Determines if a recipe is saved by the user
+  isRecipeSavedByUser(recipeId: string): boolean {
+    const savedRecipes = this._savedRecipes$.value;
+    return savedRecipes.includes(recipeId);
   }
 }

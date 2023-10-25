@@ -64,6 +64,7 @@ export class NavbarComponent {
       this.userImage = 'egg_blue.jpg';
       this.isAdmin = false;
       this.auth.setAdminStatus(false);
+      this.auth.setSavedRecipes([]);
     });
 
     const theme = this.themeService.getCurrentTheme();
@@ -99,6 +100,7 @@ export class NavbarComponent {
             this.auth.setAdminStatus(false);
             this.isAdmin = false;
           }
+          this.auth.setSavedRecipes();
         });
     } else {
       this.userFirstName = '';

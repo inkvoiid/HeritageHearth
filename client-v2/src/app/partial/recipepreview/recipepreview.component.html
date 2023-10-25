@@ -1,7 +1,8 @@
-<a routerLink="/recipes/{{ recipe.recipeId }}" class="preview">
+<article class="preview">
   <div *ngIf="recipe.name; else strange">
     <img
       class="recipe-preview-image"
+      routerLink="/recipes/{{ recipe.recipeId }}"
       [src]="recipeImageSrc"
       (error)="loadPlaceholderImage()"
     />
@@ -14,16 +15,38 @@
         ><mat-icon>schedule</mat-icon> {{ recipe.cookingTime }} minutes</span
       >
     </div>
-    <h3 class="recipetitle">{{ recipe.name }}</h3>
+    <h3 class="recipetitle" routerLink="/recipes/{{ recipe.recipeId }}">
+      {{ recipe.name }}
+    </h3>
     <!-- <p class="byline">
       by
       {{ recipe.creator }}
     </p> -->
     <p class="description">{{ recipe.description }}</p>
+
+    <!-- Recipe Saved Toggle -->
+    <button
+      *ngIf="showSaveRecipeButton()"
+      (click)="saveRecipe()"
+      class="bookmark-icon"
+    >
+      <mat-icon matTooltip="Save Recipe" matTooltipPosition="above"
+        >bookmark_border</mat-icon
+      >
+    </button>
+    <button
+      *ngIf="showUnsaveRecipeButton()"
+      (click)="unsaveRecipe()"
+      class="bookmark-icon"
+    >
+      <mat-icon matTooltip="Unsave Recipe" matTooltipPosition="above"
+        >bookmark</mat-icon
+      >
+    </button>
   </div>
 
   <ng-template #strange>
     <mat-icon>question_mark</mat-icon>
     <p>An unviewable recipe, how strange.</p>
   </ng-template>
-</a>
+</article>

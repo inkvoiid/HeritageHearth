@@ -19,7 +19,13 @@
     [@listAnimation]="latestrecipes.length"
   >
     <div *ngFor="let recipe of latestrecipes">
-      <app-recipepreview [id]="recipe" [recipe]="recipe"></app-recipepreview>
+      <app-recipepreview
+        [id]="recipe"
+        [recipe]="recipe"
+        [saved]="
+          auth.loggedInStatus$ && auth.isRecipeSavedByUser(recipe.recipeId)
+        "
+      ></app-recipepreview>
     </div>
   </div>
 

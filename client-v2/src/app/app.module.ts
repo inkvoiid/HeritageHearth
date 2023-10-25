@@ -14,6 +14,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -92,6 +93,7 @@ import { UserpreviewComponent } from './partial/userpreview/userpreview.componen
     MatStepperModule,
     MatSelectModule,
     MatRadioModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

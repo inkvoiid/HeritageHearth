@@ -128,6 +128,7 @@ router.get("/latest", function (req, res) {
     .select({
       recipeId: 1,
       name: 1,
+      approved: 1,
       description: 1,
       recipeImage: 1,
       creator: 1,

@@ -37,4 +37,20 @@ export class HomepageComponent implements OnInit {
       this.latestrecipes = response;
     });
   }
+
+  // isRecipeSavedByUser(recipeId: string): boolean {
+  //   if (this.auth.loggedInStatus$) {
+  //     let savedRecipes: string[] = [];
+  //     this.auth
+  //       .getSavedRecipes()
+  //       .subscribe(
+  //         (response) => (
+  //           console.log('response:' + response), (savedRecipes = response)
+  //         )
+  //       );
+  //     console.log('savedRecipes:' + savedRecipes);
+  //     return savedRecipes.includes(recipeId); // move return statement inside subscribe callback
+  //   }
+  //   return false; // return false outside of subscribe callback
+  // }
 }
