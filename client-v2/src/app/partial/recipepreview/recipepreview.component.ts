@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 
@@ -19,8 +18,7 @@ export class RecipepreviewComponent implements OnInit {
 
   constructor(
     protected auth: AuthService,
-    private recipeService: RecipeService,
-    private toastr: ToastrService
+    private recipeService: RecipeService
   ) {}
 
   ngOnInit(): void {
@@ -58,7 +56,7 @@ export class RecipepreviewComponent implements OnInit {
   }
 
   showSaveRecipeButton(): boolean {
-    if (this.auth.loggedInStatus$) {
+    if (this.auth.getLoggedInStatus()) {
       if (this.recipe.approved) {
         if (!this.isRecipeSavedByUser()) {
           return true;
@@ -69,7 +67,7 @@ export class RecipepreviewComponent implements OnInit {
   }
 
   showUnsaveRecipeButton(): boolean {
-    if (this.auth.loggedInStatus$) {
+    if (this.auth.getLoggedInStatus()) {
       if (this.recipe.approved) {
         if (this.isRecipeSavedByUser()) {
           return true;

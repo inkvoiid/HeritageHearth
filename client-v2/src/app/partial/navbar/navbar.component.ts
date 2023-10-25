@@ -79,7 +79,7 @@ export class NavbarComponent {
   }
 
   updateDisplayedUser() {
-    if (this.auth.loggedInStatus$) {
+    if (this.auth.getLoggedInStatus()) {
       this.userService
         .getUser(this.auth.getUsername(), true)
         .subscribe((response: any) => {

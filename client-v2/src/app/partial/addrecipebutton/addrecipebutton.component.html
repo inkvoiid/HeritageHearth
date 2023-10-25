@@ -1,5 +1,5 @@
 <button
-  *ngIf="auth.loggedInStatus$ | async"
+  *ngIf="auth.getLoggedInStatus()"
   id="addrecipebutton"
   mat-raised-button
   class="button bg-secondary"

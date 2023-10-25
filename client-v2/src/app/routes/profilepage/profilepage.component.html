@@ -87,7 +87,7 @@
           <app-recipepreview
             [id]="recipe"
             [recipe]="recipe"
-            [saved]="auth.loggedInStatus$ && auth.isRecipeSavedByUser(recipe)"
+            [saved]="isRecipeSavedByUser(recipe.recipeId)"
           ></app-recipepreview>
         </div>
       </div>
@@ -111,7 +111,8 @@
             [id]="recipe"
             [recipe]="recipe"
             [saved]="
-              auth.loggedInStatus$ && auth.isRecipeSavedByUser(recipe.recipeId)
+              auth.getLoggedInStatus() &&
+              auth.isRecipeSavedByUser(recipe.recipeId)
             "
           ></app-recipepreview>
         </div>

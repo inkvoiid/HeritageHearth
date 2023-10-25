@@ -51,7 +51,7 @@
 
     <div class="user-info">
       <!-- If the user is logged in, display the log out button -->
-      <div *ngIf="auth.loggedInStatus$ | async; else signInButtons">
+      <div *ngIf="auth.getLoggedInStatus(); else signInButtons">
         <a
           class="profile tertiary"
           routerLink="./profile/{{ auth.getUsername() }}"

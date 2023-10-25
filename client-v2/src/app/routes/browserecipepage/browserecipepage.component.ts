@@ -27,7 +27,10 @@ export class BrowserecipepageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.setSavedRecipes();
+    if (this.auth.getLoggedInStatus()) {
+      console.log(this.auth.getLoggedInStatus());
+      this.auth.setSavedRecipes();
+    }
   }
 
   search() {
@@ -48,5 +51,9 @@ export class BrowserecipepageComponent implements OnInit {
     this.filteredRecipes = this.recipes;
   }
 
-  // Populate the recipes array with the response from the getAllRecipes() method in the RecipeService
+  isRecipeSavedByUser(recipeId: string): boolean {
+    return (
+      this.auth.getLoggedInStatus() && this.auth.isRecipeSavedByUser(recipeId)
+    );
+  }
 }

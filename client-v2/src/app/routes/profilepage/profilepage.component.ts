@@ -57,7 +57,9 @@ export class ProfilepageComponent implements OnInit {
           this.isOwnProfile = false;
         }
 
-        this.auth.setSavedRecipes();
+        if (this.auth.getLoggedInStatus()) {
+          this.auth.setSavedRecipes();
+        }
         this.recipeService
           .getUserRecipes(this.user.username, true)
           .subscribe((recipes) => {
@@ -81,5 +83,11 @@ export class ProfilepageComponent implements OnInit {
 
   loadPlaceholderImage() {
     this.userProfilePic = 'egg_blue.jpg';
+  }
+
+  isRecipeSavedByUser(recipeId: string): boolean {
+    return (
+      this.auth.getLoggedInStatus() && this.auth.isRecipeSavedByUser(recipeId)
+    );
   }
 }

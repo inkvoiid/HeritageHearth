@@ -38,19 +38,9 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  // isRecipeSavedByUser(recipeId: string): boolean {
-  //   if (this.auth.loggedInStatus$) {
-  //     let savedRecipes: string[] = [];
-  //     this.auth
-  //       .getSavedRecipes()
-  //       .subscribe(
-  //         (response) => (
-  //           console.log('response:' + response), (savedRecipes = response)
-  //         )
-  //       );
-  //     console.log('savedRecipes:' + savedRecipes);
-  //     return savedRecipes.includes(recipeId); // move return statement inside subscribe callback
-  //   }
-  //   return false; // return false outside of subscribe callback
-  // }
+  isRecipeSavedByUser(recipeId: string): boolean {
+    return (
+      this.auth.getLoggedInStatus() && this.auth.isRecipeSavedByUser(recipeId)
+    );
+  }
 }

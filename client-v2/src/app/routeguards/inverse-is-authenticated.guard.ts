@@ -7,19 +7,11 @@ import { map, tap } from 'rxjs';
 export const inverseIsAuthenticatedGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
-  return inject(AuthService).loggedInStatus$.pipe(
-    map((loggedIn) => {
-      if (!loggedIn) {
-        return true; // Allow access if the user is not logged in
-      } else {
-        router.navigate(['/']);
-        return false; // Deny access if the user is logged in
-      }
-    }),
-    tap((canActivate) => {
-      if (!canActivate) {
-        router.navigate(['/']);
-      }
-    })
-  );
+  const loggedIn = inject(AuthService).getLoggedInStatus();
+  if (!loggedIn) {
+    return true; // Allow access if the user is not logged in
+  } else {
+    router.navigate(['/']);
+    return false; // Deny access if the user is logged in
+  }
 };

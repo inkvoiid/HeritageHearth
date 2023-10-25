@@ -110,6 +110,7 @@ export class AuthService {
   // Logs the user out
   logout(): void {
     this.setUsername('');
+    this.setSavedRecipes([]);
 
     // Check if the user has a valid token
     const token = localStorage.getItem('ourkitchen_auth');
@@ -156,15 +157,25 @@ export class AuthService {
     return this._adminStatus$.value;
   }
 
+  setLoggedInStatus(status: boolean) {
+    this._loggedInStatus$.next(status);
+  }
+
+  getLoggedInStatus() {
+    return this._loggedInStatus$.value;
+  }
+
   // Set the saved recipes of the user
   setSavedRecipes(recipes: string[] = []) {
-    if (recipes && recipes.length > 0) {
-      this._savedRecipes$.next(recipes);
-    } else {
-      const user = this.sharedUserService.getUser(this.getUsername(), false);
-      user.subscribe((response: any) => {
-        this._savedRecipes$.next(response.body.savedRecipes);
-      });
+    if (this.loggedInStatus$) {
+      if (recipes && recipes.length > 0) {
+        this._savedRecipes$.next(recipes);
+      } else {
+        const user = this.sharedUserService.getUser(this.getUsername(), false);
+        user.subscribe((response: any) => {
+          this._savedRecipes$.next(response.body.savedRecipes);
+        });
+      }
     }
   }
 
@@ -245,7 +256,10 @@ export class AuthService {
 
   // Determines if a recipe is saved by the user
   isRecipeSavedByUser(recipeId: string): boolean {
-    const savedRecipes = this._savedRecipes$.value;
-    return savedRecipes.includes(recipeId);
+    if (this.getLoggedInStatus()) {
+      const savedRecipes = this._savedRecipes$.value;
+      return savedRecipes.includes(recipeId);
+    }
+    return false;
   }
 }
