@@ -1,54 +1,25 @@
-.windowsxp {
-  --background: url("../../assets/media/images/themes/windowsxp.jpg");
+body.windowsxp {
   background-image: url("../../assets/media/images/themes/windowsxp.jpg");
-  border: 1px solid #000;
-  border-radius: 5px;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-y: 15%;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
   color: #000;
-}
-
-.windowsxp body {
-  background-image: url("../../assets/media/images/themes/windowsxp.jpg");
 }
 
 .windowsxp .darktitleoverride.tertiary {
   color: #000;
 }
 
-nav .windowsxp {
-  background-color: #1e1e1e;
-  color: #fff;
-  border-bottom: 1px solid #000;
+.windowsxp nav {
+  background-color: #ece9d8;
+  border: 3px solid #003bda;
+  border-image: linear-gradient(to bottom, #003bda, #da00b2) 1;
   padding: 5px;
-  font-size: 12px;
-  font-weight: bold;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-family: Arial, Helvetica, sans-serif;
-  position: relative;
-  z-index: 1;
-}
-
-.windowxp nav {
-  background-color: #1e1e1e;
-  color: #fff;
-  border-bottom: 1px solid #000;
-  padding: 5px;
-  font-size: 12px;
-  font-weight: bold;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-family: Arial, Helvetica, sans-serif;
-  position: relative;
-  z-index: 1;
+  height: 100%;
+  overflow: auto;
+  color: #000;
 }
 
 .windowsxp .container {
@@ -95,4 +66,40 @@ nav .windowsxp {
   background-color: #fff;
   width: 150px;
   height: 150px;
+}
+
+.windowsxp app-recipepreview article {
+  border: 1px solid #000;
+  background-color: #fff;
+}
+
+.windowsxp app-recipepreview:hover article {
+  background-color: #ece9d8;
+}
+
+body.glass {
+  background-image: url("../../assets/media/images/themes/glass.png") !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.glass .container {
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 8px 32px 0 rgba(135, 31, 73, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+[data-theme="dark"] .glass .container {
+  background: rgba(23, 23, 23, 0.75);
+}
+
+@media screen and (max-width: 768px) {
+  .windowsxp .recipegrid {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }

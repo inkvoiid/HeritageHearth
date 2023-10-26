@@ -3,12 +3,7 @@
 </div>
 
 <ng-template #profile>
-  <div
-    *ngIf="user !== null; else userNotFound"
-    class="profile"
-    ngClass="{{ user.theme }}"
-    [@fader]
-  >
+  <div *ngIf="user !== null; else userNotFound" class="profile" [@fader]>
     <div class="container profile-info">
       <div class="profile-info">
         <!-- Profile Picture -->

@@ -1,7 +1,7 @@
 import { UserService } from '../../services/user.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RecipeService } from '../../services/recipe.service';
@@ -10,10 +10,7 @@ import { fader, listAnimation } from 'src/app/animations';
 @Component({
   selector: 'app-profilepage',
   templateUrl: './profilepage.component.html',
-  styleUrls: [
-    './profilepage.component.css',
-    '../../../assets/styles/profilethemes.css',
-  ],
+  styleUrls: ['./profilepage.component.css'],
   animations: [listAnimation, fader],
 })
 export class ProfilepageComponent implements OnInit {
@@ -31,7 +28,8 @@ export class ProfilepageComponent implements OnInit {
     private http: HttpClient,
     protected userService: UserService,
     protected auth: AuthService,
-    private recipeService: RecipeService
+    private recipeService: RecipeService,
+    private router: Router
   ) {
     console.log(this.recipes);
   }
@@ -66,6 +64,21 @@ export class ProfilepageComponent implements OnInit {
         this.recipes = [];
         this.pendingRecipes = [];
         this.allRecipes = [];
+
+        if (this.user.theme) {
+          // Add the theme class to the body
+          document.body.classList.add(this.user.theme);
+          // Subscribe to router events
+          this.router.events.subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+              // Check if you're leaving the profile route
+              if (event.urlAfterRedirects !== '/profile') {
+                // Reset the theme to the default theme or remove the class
+                document.body.classList.remove(this.user.theme);
+              }
+            }
+          });
+        }
 
         this.recipeService
           .getUserRecipes(this.user.username, true)
