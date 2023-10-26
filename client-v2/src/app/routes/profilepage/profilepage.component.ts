@@ -32,7 +32,9 @@ export class ProfilepageComponent implements OnInit {
     protected userService: UserService,
     protected auth: AuthService,
     private recipeService: RecipeService
-  ) {}
+  ) {
+    console.log(this.recipes);
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(
@@ -60,6 +62,11 @@ export class ProfilepageComponent implements OnInit {
         if (this.auth.getLoggedInStatus()) {
           this.auth.setSavedRecipes();
         }
+        // Clear the arrays
+        this.recipes = [];
+        this.pendingRecipes = [];
+        this.allRecipes = [];
+
         this.recipeService
           .getUserRecipes(this.user.username, true)
           .subscribe((recipes) => {
