@@ -102,7 +102,7 @@
             </div>
           </div>
 
-          <button mat-button matStepperNext>Next</button>
+          <button mat-raised-button color="accent" matStepperNext>Next</button>
         </mat-step>
 
         <mat-step>
@@ -151,8 +151,12 @@
           <br />
           <br />
 
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <div class="flex-div" style="gap: 0.5rem">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button color="accent" matStepperNext>
+              Next
+            </button>
+          </div>
         </mat-step>
 
         <mat-step>
@@ -201,13 +205,33 @@
           <br />
           <br />
 
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <div class="flex-div" style="gap: 0.5rem">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button color="accent" matStepperNext>
+              Next
+            </button>
+          </div>
         </mat-step>
 
         <mat-step>
           <ng-template matStepLabel>Finish</ng-template>
+
           <br />
+          <button
+            *ngIf="!recipeForm.valid"
+            mat-raised-button
+            color="accent"
+            matStepperPrevious
+          >
+            Back
+          </button>
+          <button *ngIf="recipeForm.valid" mat-button matStepperPrevious>
+            Back
+          </button>
+
+          <br />
+          <br />
+
           <p *ngIf="!recipeForm.valid" style="color: red">
             Please fill in all the required fields.
           </p>
@@ -233,11 +257,6 @@
               Create Recipe
             </button>
           </ng-template>
-
-          <br />
-          <br />
-
-          <button mat-button matStepperPrevious>Back</button>
         </mat-step>
       </form>
     </mat-stepper>
@@ -257,4 +276,4 @@
   </div>
 </div>
 
-<p>{{ recipeForm.value | json }}</p>
+<!-- <p>{{ recipeForm.value | json }}</p> -->
