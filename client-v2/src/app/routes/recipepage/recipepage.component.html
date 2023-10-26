@@ -71,11 +71,33 @@
         </div>
 
         <!-- Recipe info -->
-        <h1 id="recipe-name">
-          {{ recipe.name }}
-        </h1>
+        <div class="name-and-bookmark">
+          <h1 id="recipe-name">
+            {{ recipe.name }}
+          </h1>
+          <!-- Recipe Saved Toggle -->
+          <button
+            *ngIf="showSaveRecipeButton()"
+            (click)="saveRecipe()"
+            class="hideOnPrintPreview bookmark-icon"
+          >
+            <mat-icon matTooltip="Save Recipe" matTooltipPosition="above"
+              >bookmark_border</mat-icon
+            >
+          </button>
+          <button
+            *ngIf="showUnsaveRecipeButton()"
+            (click)="unsaveRecipe()"
+            class="hideOnPrintPreview bookmark-icon"
+          >
+            <mat-icon matTooltip="Unsave Recipe" matTooltipPosition="above"
+              >bookmark</mat-icon
+            >
+          </button>
+        </div>
         <div class="recipe-info-flex">
           <div>
+            <!-- Recipe Author -->
             <p id="recipe-author">
               by
               <a
@@ -86,6 +108,7 @@
               >
             </p>
           </div>
+          <!-- Servings and Cooking Time -->
           <div class="byline">
             <span
               ><mat-icon>restaurant</mat-icon>

@@ -25,6 +25,8 @@ export class RecipepageComponent implements OnInit {
   ingredientsLeft: string[] = [];
   ingredientsRight: string[] = [];
 
+  saved: boolean = false;
+
   private currentUtterance: SpeechSynthesisUtterance;
   speechIngredientsParagraph: string = '';
   speechInstructionsParagraph: string = '';
@@ -40,21 +42,23 @@ export class RecipepageComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.currentUtterance = new SpeechSynthesisUtterance();
-    enum SpeakingWhat {
-      Ingredients,
-      Instructions,
-    }
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(
-      (params) => {
-        this.recipeId = params['recipeId'];
-        this.getRecipeData(this.recipeId);
-      }
-      // this.recipeService.getUserRecipes(userId).subscribe((recipes) => {
-      // this.recipes = recipes;
-    );
+    this.route.params.subscribe((params) => {
+      this.recipeId = params['recipeId'];
+      this.getRecipeData(this.recipeId);
+    });
+    // Check if recipe is saved by user
+    if (this.auth.getLoggedInStatus()) {
+      this.auth.getSavedRecipes().subscribe((savedRecipes: any) => {
+        if (savedRecipes.includes(this.recipeId)) {
+          this.saved = true;
+        } else {
+          this.saved = false;
+        }
+      });
+    }
   }
 
   doesUserOwnRecipe(): boolean {
@@ -145,6 +149,7 @@ export class RecipepageComponent implements OnInit {
 
   approveRecipe() {
     if (this.recipeService.approveRecipe(this.recipe.recipeId)) {
+      this.recipe.approved = true;
     }
   }
 
@@ -153,6 +158,46 @@ export class RecipepageComponent implements OnInit {
       data: { recipeIdToDelete: this.recipe.recipeId, redirect: true },
     });
   }
+
+  // Save recipe methods
+
+  isRecipeSavedByUser(): boolean {
+    return this.saved;
+  }
+
+  saveRecipe(): void {
+    // Save the recipe to the user's saved recipes
+    this.auth.saveRecipe(this.recipe.recipeId);
+  }
+
+  unsaveRecipe(): void {
+    // Unsave the recipe from the user's saved recipes
+    this.auth.unsaveRecipe(this.recipe.recipeId);
+  }
+
+  showSaveRecipeButton(): boolean {
+    if (this.auth.getLoggedInStatus()) {
+      if (this.recipe.approved) {
+        if (!this.isRecipeSavedByUser()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  showUnsaveRecipeButton(): boolean {
+    if (this.auth.getLoggedInStatus()) {
+      if (this.recipe.approved) {
+        if (this.isRecipeSavedByUser()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  // Speech synthesis methods
 
   speakIngredients() {
     this.stopSpeaking();

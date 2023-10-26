@@ -197,7 +197,7 @@ export class AuthService {
 
         // Check if the recipe is already saved
         if (savedRecipes.includes(recipeId)) {
-          this.toastr.warning('Recipe already favourited');
+          this.toastr.warning('Recipe already added to favourites');
           return;
         }
 
@@ -210,7 +210,7 @@ export class AuthService {
 
           // Send a request to update the user
           this.http.put(path, updatedUser).subscribe((response: any) => {
-            this.toastr.success('Favourited recipe');
+            this.toastr.success('Added recipe to favourites');
 
             // Update the saved recipes
             this.setSavedRecipes(savedRecipes);
@@ -232,7 +232,7 @@ export class AuthService {
 
         // Check if the recipe is already saved
         if (!savedRecipes.includes(recipeId)) {
-          this.toastr.warning('Recipe already unfavourited');
+          this.toastr.warning('Recipe already removed from favourites');
           return;
         }
 
@@ -245,7 +245,7 @@ export class AuthService {
 
           // Send a request to update the user
           this.http.put(path, updatedUser).subscribe((response: any) => {
-            this.toastr.success('Unfavourited recipe');
+            this.toastr.success('Removed recipe from favourites');
 
             // Update the saved recipes
             this.setSavedRecipes(savedRecipes);
