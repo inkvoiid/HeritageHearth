@@ -1,5 +1,9 @@
-<div class="flex-div" *ngIf="loading; else profile">
-  <mat-spinner color="primary"></mat-spinner>
+<div
+  class="container flex-div"
+  style="padding-block: 3rem"
+  *ngIf="loading; else profile"
+>
+  <app-loading></app-loading>
 </div>
 
 <ng-template #profile>

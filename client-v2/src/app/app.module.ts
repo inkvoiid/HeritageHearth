@@ -42,6 +42,7 @@ import { AdmindashpageComponent } from './routes/admindashpage/admindashpage.com
 import { RecipeapprovalpreviewComponent } from './partial/recipeapprovalpreview/recipeapprovalpreview.component';
 import { RejectrecipemodalComponent } from './partial/modals/rejectrecipemodal/rejectrecipemodal.component';
 import { UserpreviewComponent } from './partial/userpreview/userpreview.component';
+import { LoadingComponent } from './partial/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { UserpreviewComponent } from './partial/userpreview/userpreview.componen
     RecipeapprovalpreviewComponent,
     RejectrecipemodalComponent,
     UserpreviewComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,
