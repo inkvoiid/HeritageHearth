@@ -6,5 +6,7 @@ import { tap } from 'rxjs';
 export const isAuthenticatedGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
-  return inject(AuthService).getLoggedInStatus() && router.navigate(['/login']);
+  return inject(AuthService).getLoggedInStatus()
+    ? true
+    : false && router.navigate(['/login']);
 };
