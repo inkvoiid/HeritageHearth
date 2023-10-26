@@ -125,7 +125,19 @@
     </div>
     <div class="ingredients-and-steps">
       <div class="container">
-        <h2 class="darktitleoverride tertiary">Ingredients</h2>
+        <h2 class="darktitleoverride tertiary">
+          Ingredients
+          <button
+            mat-mini-fab
+            color="accent"
+            class="hideOnPrintPreview"
+            (click)="speakingIngredients ? stopSpeaking() : speakIngredients()"
+          >
+            <mat-icon>{{
+              speakingIngredients ? "stop" : "record_voice_over"
+            }}</mat-icon>
+          </button>
+        </h2>
         <div class="ingredients">
           <ul class="ingredientsList">
             <li *ngFor="let ingredient of ingredientsLeft">{{ ingredient }}</li>
@@ -139,7 +151,22 @@
       </div>
 
       <div class="container">
-        <h2 class="darktitleoverride tertiary">Steps</h2>
+        <h2 class="darktitleoverride tertiary">
+          Steps
+          <button
+            mat-mini-fab
+            color="accent"
+            class="hideOnPrintPreview"
+            (click)="
+              speakingInstructions ? stopSpeaking() : speakInstructions()
+            "
+          >
+            <mat-icon>{{
+              speakingInstructions ? "stop" : "record_voice_over"
+            }}</mat-icon>
+          </button>
+        </h2>
+
         <ol>
           <li *ngFor="let instruction of recipe.instructions">
             {{ instruction }}

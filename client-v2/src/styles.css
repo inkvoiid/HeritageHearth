@@ -429,6 +429,6 @@ mat-hint {
   }
 
   .hideOnPrintPreview {
-    display: none;
+    display: none !important;
   }
 }
