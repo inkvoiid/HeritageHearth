@@ -125,9 +125,9 @@ li {
     flex-direction: column;
   }
 
-  #recipe-name {
-    font-size: 1.25em;
+  .name-and-bookmark {
     text-align: center;
+    justify-content: center;
   }
 
   .ingredients {
