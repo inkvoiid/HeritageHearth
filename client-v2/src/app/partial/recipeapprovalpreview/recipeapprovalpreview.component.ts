@@ -16,6 +16,8 @@ export class RecipeapprovalpreviewComponent implements OnInit {
     '../../../assets/media/images/recipeimages/default-recipe-pic.png';
   creatorName: string = '';
   isHidden: boolean = false;
+  rejected: boolean = false;
+  accepted: boolean = false;
 
   timeSinceLastUpdated: string = '';
 
@@ -57,11 +59,17 @@ export class RecipeapprovalpreviewComponent implements OnInit {
     let dialogRef = this.dialog.open(RejectrecipemodalComponent, {
       data: { recipeIdToDelete: this.recipe.recipeId },
     });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'deleted') {
+        this.rejected = true;
+      }
+    });
   }
 
   approveRecipe() {
-    if (this.recipeService.approveRecipe(this.recipe.recipeId)) {
-      this.isHidden = true;
-    }
+    this.recipeService.approveRecipe(this.recipe.recipeId);
+
+    this.accepted = true;
   }
 }

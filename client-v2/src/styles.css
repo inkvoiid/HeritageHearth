@@ -111,8 +111,8 @@ app-mobileheader {
   grid-auto-rows: minmax(100px, auto);
   justify-items: center;
   align-items: center;
-  margin: 1rem;
-  padding: 1rem;
+  margin: 0;
+  padding: 0;
 }
 
 .recipegrid > * {

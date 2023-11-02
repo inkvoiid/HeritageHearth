@@ -8,7 +8,7 @@
     "client-install": "npm install --prefix client",
     "start": "node app.js",
     "server": "nodemon app.js",
-    "client": "cd client-v2 && ng serve --host 0.0.0.0",
+    "client": "cd client-v2 && ng serve",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "inkvoiid",

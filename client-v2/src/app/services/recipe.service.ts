@@ -65,18 +65,18 @@ export class RecipeService {
   createNewRecipe(creator: string, recipe: any) {
     // If the current user is the creator, incase an admin is editing a recipe
     if (recipe.creator === this.auth.getUsername()) {
-      this.toastr.info("You're the creator of this recipe", 'Info');
+      // this.toastr.info("You're the creator of this recipe", 'Info');
       this.userService
         .getUser(this.auth.getUsername(), true)
         .subscribe((response: any) => {
           if (response.status === 200) {
             // If the user is an admin or verified, automatically approve the recipe
-            this.toastr.info("You're an admin or verified user", 'Info');
+            // this.toastr.info("You're an admin or verified user", 'Info');
             if (
               response.body.roles.includes('admin') ||
               response.body.roles.includes('verified')
             ) {
-              this.toastr.info('Recipe approved automatically', 'Info');
+              // this.toastr.info('Recipe approved automatically', 'Info');
               recipe.approved = true;
             }
           }
@@ -116,8 +116,9 @@ export class RecipeService {
       );
   }
 
-  approveRecipe(recipeId: string): boolean {
+  approveRecipe(recipeId: string) {
     this.getRecipe(recipeId).subscribe((getResponse: any) => {
+      this.toastr.info('Approving recipe', 'Info');
       if (getResponse.status === 200) {
         getResponse.body.approved = true;
         console.log(getResponse.body);
@@ -137,7 +138,6 @@ export class RecipeService {
           });
       }
     });
-    return false;
   }
 
   deleteRecipe(recipeId: string) {

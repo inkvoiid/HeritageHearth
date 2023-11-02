@@ -28,7 +28,7 @@ export class BrowserecipepageComponent implements OnInit {
 
   ngOnInit() {
     if (this.auth.getLoggedInStatus()) {
-      console.log(this.auth.getLoggedInStatus());
+      // console.log(this.auth.getLoggedInStatus());
       this.auth.setSavedRecipes();
     }
   }

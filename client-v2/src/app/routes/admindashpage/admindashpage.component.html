@@ -1,11 +1,26 @@
 <div class="container">
   <h1 class="darktitleoverride tertiary">Admin Dashboard</h1>
 
+  <!-- Recipe Approval -->
   <h2>Pending Recipes: {{ pendingRecipes.length }}</h2>
-  <div class="recipegrid" [@listAnimation]="pendingRecipes.length">
+  <div
+    *ngIf="pendingRecipes.length > 0"
+    class="recipegrid"
+    [@listAnimation]="pendingRecipes.length"
+  >
     <app-recipeapprovalpreview
       *ngFor="let recipe of pendingRecipes"
       [recipe]="recipe"
     ></app-recipeapprovalpreview>
   </div>
+  <div *ngIf="pendingRecipes.length <= 0">
+    <p>No pending recipes.</p>
+  </div>
+
+  <!-- Verify Users -->
+  <h2>Verify Users</h2>
+  <p>To be implemented</p>
+  <!-- Promote Users to Admin -->
+  <h2>Promote Users to Admin</h2>
+  <p>To be implemented</p>
 </div>

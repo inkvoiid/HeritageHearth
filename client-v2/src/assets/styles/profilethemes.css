@@ -1,3 +1,5 @@
+/* Windows XP Theme */
+
 body.windowsxp {
   background-image: url("../../assets/media/images/themes/windowsxp.jpg");
   background-repeat: no-repeat;
@@ -73,9 +75,15 @@ body.windowsxp {
   background-color: #fff;
 }
 
+[data-theme="dark"] .windowsxp app-recipepreview article {
+  color: #000;
+}
+
 .windowsxp app-recipepreview:hover article {
   background-color: #ece9d8;
 }
+
+/* Glass Theme */
 
 body.glass {
   background-image: url("../../assets/media/images/themes/glass.png") !important;

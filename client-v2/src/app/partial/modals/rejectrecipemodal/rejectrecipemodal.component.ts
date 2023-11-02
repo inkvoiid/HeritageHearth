@@ -31,7 +31,7 @@ export class RejectrecipemodalComponent implements OnInit {
       .rejectRecipe(this.recipeIdToDelete, this.redirect)
       .subscribe((response: any) => {
         if (response.status === 200) {
-          this.dialogRef.close();
+          this.dialogRef.close('deleted');
         }
       });
   }

@@ -23,7 +23,13 @@
     <p class="byline">Last Updated: {{ timeSinceLastUpdated }}</p>
     <p class="description">{{ recipe.description }}</p>
   </div>
-  <div class="approval-buttons flex-div">
+  <div style="padding-block: 0" *ngIf="accepted">
+    <p style="margin-top: 0">Recipe Accepted</p>
+  </div>
+  <div style="padding-block: 0" *ngIf="rejected">
+    <p style="margin-top: 0">Recipe Rejected</p>
+  </div>
+  <div *ngIf="!accepted && !rejected" class="approval-buttons flex-div">
     <button id="approve" (click)="approveRecipe()" class="text-and-icon">
       <mat-icon> check </mat-icon>Approve
     </button>

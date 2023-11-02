@@ -31,7 +31,7 @@ export class ProfilepageComponent implements OnInit {
     private recipeService: RecipeService,
     private router: Router
   ) {
-    console.log(this.recipes);
+    // console.log(this.recipes);
   }
 
   ngOnInit(): void {

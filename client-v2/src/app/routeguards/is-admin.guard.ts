@@ -8,11 +8,11 @@ export const isAdminGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   if (adminStatus) {
-    console.log(1 + 'a');
+    // console.log(1 + 'a');
     return true;
   } else {
     router.navigate(['/']);
-    console.log(2 + 'a');
+    // console.log(2 + 'a');
     return false;
   }
 };

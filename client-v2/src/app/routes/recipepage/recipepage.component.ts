@@ -2,7 +2,7 @@ import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../../services/recipe.service';
 import { formatTimeAgo } from '../../utils';
 import { RejectrecipemodalComponent } from 'src/app/partial/modals/rejectrecipemodal/rejectrecipemodal.component';
@@ -39,7 +39,8 @@ export class RecipepageComponent implements OnInit {
     private userService: UserService,
     protected auth: AuthService,
     private recipeService: RecipeService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {
     this.currentUtterance = new SpeechSynthesisUtterance();
   }
@@ -148,14 +149,19 @@ export class RecipepageComponent implements OnInit {
   }
 
   approveRecipe() {
-    if (this.recipeService.approveRecipe(this.recipe.recipeId)) {
-      this.recipe.approved = true;
-    }
+    this.recipeService.approveRecipe(this.recipe.recipeId);
+    this.recipe.approved = true;
   }
 
   rejectRecipe() {
     let dialogRef = this.dialog.open(RejectrecipemodalComponent, {
       data: { recipeIdToDelete: this.recipe.recipeId, redirect: true },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'deleted') {
+        this.router.navigate(['/recipes']);
+      }
     });
   }
 

@@ -19,6 +19,7 @@ import { isAuthenticatedGuard } from './routeguards/is-authenticated.guard';
 import { inverseIsAuthenticatedGuard } from './routeguards/inverse-is-authenticated.guard';
 import { isAuthorisedRecipeGuard } from './routeguards/is-authorised-recipe.guard';
 import { isAdminGuard } from './routeguards/is-admin.guard';
+import { isSpecificUserGuard } from './routeguards/is-specific-user.guard';
 
 // * Resolvers
 import { adminstatusResolver } from './resolvers/adminstatus.resolver';
@@ -73,7 +74,7 @@ const routes: Routes = [
     path: 'profile/:username/edit',
     component: EditprofileformComponent,
     title: 'Edit Profile - Our Kitchen',
-    // TODO - Add guard to check if user is logged in and is the same user as the profile they're trying to edit
+    canActivate: [isSpecificUserGuard],
   },
   {
     path: '**',

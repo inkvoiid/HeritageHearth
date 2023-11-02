@@ -87,16 +87,16 @@ export class NavbarComponent {
           this.userImage = response.body.profilePic;
           if (response.body.roles !== undefined) {
             if (response.body.roles.includes('admin')) {
-              console.log(1);
+              // console.log(1);
               this.auth.setAdminStatus(true);
               this.isAdmin = true;
             } else {
-              console.log(2);
+              // console.log(2);
               this.auth.setAdminStatus(false);
               this.isAdmin = false;
             }
           } else {
-            console.log(3);
+            // console.log(3);
             this.auth.setAdminStatus(false);
             this.isAdmin = false;
           }
