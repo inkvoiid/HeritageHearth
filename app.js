@@ -6,6 +6,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import helmet from "helmet";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,22 +22,23 @@ import listroute from "./routes/api/listroute.js";
 
 var app = express();
 
-// Add body parser middleware to handle JSON data
-app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cookieParser());
 
 app.use(cors());
 
+app.use(helmet());
+
 var db = process.env.DB_CONNECTION_STRING;
 
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(function () {
+  .then(() => {
     console.log("MongoDB connected successfully");
   })
-  .catch(function (err) {
-    console.log(err);
+  .catch((err) => {
+    console.error("MongoDB connection error: " + err);
   });
 
 // * Add new field to all existing recipes
@@ -87,6 +89,6 @@ app.all("*", function (req, res) {
 });
 
 // Start server
-app.listen(port, function () {
-  console.log("Server running on port " + port);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
