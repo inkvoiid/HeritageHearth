@@ -190,20 +190,23 @@ router.post("/", async function (req, res) {
   } = req.body;
   console.log(req.body);
   // If any of the required fields are missing, send 400 response (bad request)
-  if (
-    !name ||
-    !creator ||
-    !description ||
-    !servingSize ||
-    !cookingTime ||
-    !ingredients ||
-    !instructions ||
-    !Array.isArray(ingredients) ||
-    !Array.isArray(instructions) ||
-    !ingredients.length ||
-    !instructions.length
-  ) {
-    return res.status(400).json({ message: "Please enter all fields" });
+  const missingFields = [];
+  if (!name) missingFields.push("name");
+  if (!creator) missingFields.push("creator");
+  if (!description) missingFields.push("description");
+  if (!servingSize) missingFields.push("servingSize");
+  if (!cookingTime) missingFields.push("cookingTime");
+  if (!ingredients || !Array.isArray(ingredients) || !ingredients.length) {
+    missingFields.push("ingredients");
+  }
+  if (!instructions || !Array.isArray(instructions) || !instructions.length) {
+    missingFields.push("instructions");
+  }
+
+  if (missingFields.length > 0) {
+    return res.status(400).json({
+      message: `Please enter missing fields: ${missingFields.join(", ")}`,
+    });
   }
 
   // Check if the creator exists
@@ -291,22 +294,37 @@ router.put("/:recipeId?", async function (req, res) {
   }
 
   // If any of the required fields are missing, send 400 response (bad request)
-  if (
-    !requestedId ||
-    !name ||
-    !creator ||
-    !approved ||
-    !description ||
-    !servingSize ||
-    !cookingTime ||
-    !ingredients ||
-    !instructions ||
-    !Array.isArray(ingredients) ||
-    !Array.isArray(instructions) ||
-    !ingredients.length ||
-    !instructions.length
-  ) {
-    return res.status(400).json({ message: "Please enter all fields" });
+  const missingFields = [];
+
+  if (!requestedId) {
+    missingFields.push("recipeId");
+  }
+  if (!name) {
+    missingFields.push("name");
+  }
+  if (!creator) {
+    missingFields.push("creator");
+  }
+  if (!description) {
+    missingFields.push("description");
+  }
+  if (!servingSize) {
+    missingFields.push("servingSize");
+  }
+  if (!cookingTime) {
+    missingFields.push("cookingTime");
+  }
+  if (!ingredients || !Array.isArray(ingredients) || !ingredients.length) {
+    missingFields.push("ingredients");
+  }
+  if (!instructions || !Array.isArray(instructions) || !instructions.length) {
+    missingFields.push("instructions");
+  }
+
+  if (missingFields.length > 0) {
+    return res.status(400).json({
+      message: `Please enter all fields: ${missingFields.join(", ")}`,
+    });
   }
 
   // Doesn't use lean so that we can modify the recipe object, but does have exec to return a promise
