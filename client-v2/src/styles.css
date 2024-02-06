@@ -341,6 +341,22 @@ mat-hint {
     padding: 0.75rem;
   }
 
+  .mat-vertical-content-container.mat-stepper-vertical-line {
+    margin-left: 21px;
+  }
+
+  .mat-vertical-content.mat-vertical-content {
+    padding-inline: 21px;
+  }
+
+  mat-step-header.mat-step-header {
+    padding-inline: 10px;
+  }
+
+  .recipeform .container {
+    padding-inline: 0 !important;
+  }
+
   .recipegrid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     padding: 0;
