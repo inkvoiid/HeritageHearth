@@ -6,7 +6,11 @@ import path from "path";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import corsOptions from "./config/corsOptions.js";
 import helmet from "helmet";
+
+import { logger } from "./middleware/logger.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,13 +26,15 @@ import listroute from "./routes/api/listroute.js";
 
 var app = express();
 
+app.use(logger);
+
+app.use(cors(corsOptions));
+
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cookieParser());
-
-app.use(cors());
 
 app.use(helmet());
 
@@ -89,6 +95,8 @@ app.all("*", function (req, res) {
     res.type("txt").send("404 Not found");
   }
 });
+
+app.use(errorHandler);
 
 // Start server
 app.listen(port, () => {
