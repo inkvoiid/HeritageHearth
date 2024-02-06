@@ -20,11 +20,11 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 // Import routes
-import authroute from "./routes/api/authroute.js";
-import userroute from "./routes/api/userroute.js";
-import reciperoute from "./routes/api/reciperoute.js";
-import pantryroute from "./routes/api/pantryroute.js";
-import listroute from "./routes/api/listroute.js";
+import authRoute from "./routes/api/authRoute.js";
+import userRoute from "./routes/api/userRoute.js";
+import recipeRoute from "./routes/api/recipeRoute.js";
+import pantryRoute from "./routes/api/pantryRoute.js";
+import listRoute from "./routes/api/listRoute.js";
 
 var app = express();
 
@@ -66,11 +66,11 @@ app.use(helmet());
 
 var port = process.env.PORT || 5000;
 
-app.use("/api/auth", authroute);
-app.use("/api/users", userroute);
-app.use("/api/recipes", reciperoute);
-app.use("/api/pantries", pantryroute);
-app.use("/api/lists", listroute);
+app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
+app.use("/api/recipes", recipeRoute);
+app.use("/api/pantries", pantryRoute);
+app.use("/api/lists", listRoute);
 
 // Route for HOME
 app.get("/", function (req, res) {
