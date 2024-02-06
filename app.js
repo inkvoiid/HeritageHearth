@@ -9,7 +9,9 @@ import cors from "cors";
 import corsOptions from "./config/corsOptions.js";
 import helmet from "helmet";
 
-import { logger } from "./middleware/logger.js";
+import connectDB from "./config/dbConnect.js";
+
+import { logger, logEvents } from "./middleware/logger.js";
 import errorHandler from "./middleware/errorHandler.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -28,6 +30,8 @@ var app = express();
 
 app.use(logger);
 
+connectDB();
+
 app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
@@ -37,17 +41,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
 app.use(helmet());
-
-var db = process.env.DB_CONNECTION_STRING;
-
-mongoose
-  .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log("MongoDB connected successfully");
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error: " + err);
-  });
 
 // * Add new field to all existing recipes
 
@@ -98,7 +91,16 @@ app.all("*", function (req, res) {
 
 app.use(errorHandler);
 
-// Start server
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+mongoose.connection.once("open", () => {
+  console.log("Connected to MongoDB successfully");
+  // Start server
+  app.listen(port, () => console.log(`Server running on port ${port}`));
+});
+
+mongoose.connection.on("error", (err) => {
+  console.log(err);
+  logEvents(
+    `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
+    "mongoErrLog.log"
+  );
 });
