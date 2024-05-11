@@ -21,7 +21,6 @@
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
     "@auth0/angular-jwt": "^5.1.2",
-    "ngx-material-file-input": "^4.0.1",
     "ngx-toastr": "^17.0.2",
     "rxjs": "~7.8.0",
     "slugify": "^1.6.6",
