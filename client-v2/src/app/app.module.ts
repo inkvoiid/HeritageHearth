@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 // Material
 import { MatButtonModule } from '@angular/material/button';
@@ -91,7 +90,6 @@ import { LoadingComponent } from './partial/loading/loading.component';
         },
       },
     }),
-    MaterialFileInputModule,
     MatStepperModule,
     MatSelectModule,
     MatRadioModule,
