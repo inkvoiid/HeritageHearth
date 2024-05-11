@@ -1,31 +1,12 @@
-import { Router } from "express";
-import mongoose from "mongoose";
+import User from "../models/user.js";
+import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import rateLimit from "express-rate-limit";
-const router = Router();
-
-// Import the user model schema from the models folder
-import users from "../../models/user.js";
-
-const loginLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 5, // limit each IP to 5 requests per windowMs
-  message: {
-    message:
-      "Too many login attempts from this IP, please try again after 15 minutes",
-  },
-  handler: (req, res, next, options) => {
-    res.status(options.statusCode).json(options.message);
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
 
 // @desc login
 // @route POST /api/auth
 // @access Public
-router.post("/", loginLimiter, async function (req, res) {
+const login = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
 
   // If any of the required fields are missing, send 400 response (bad request)
@@ -34,7 +15,7 @@ router.post("/", loginLimiter, async function (req, res) {
   }
 
   // Check if user exists
-  const foundUser = await users.findOne({ username: username }).exec();
+  const foundUser = await User.findOne({ username }).exec();
 
   if (!foundUser) {
     return res.status(401).json({ message: "Unauthorised" });
@@ -48,37 +29,36 @@ router.post("/", loginLimiter, async function (req, res) {
 
   const accessToken = jwt.sign(
     {
-      UserInfo: {
-        username: foundUser.username,
-      },
+      username: foundUser.username,
+      roles: foundUser.roles,
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "1m" }
+    { expiresIn: "10s" }
   );
 
   const refreshToken = jwt.sign(
     { username: foundUser.username },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "1d" }
+    { expiresIn: "20s" }
   );
 
   res.cookie("jwt", refreshToken, {
     httpOnly: true, // Accessible only by the server
-    // secure: true, // Only sent with HTTPS // Turned off for dev
+    // secure: true, // Only sent with HTTPS // TODO: Reenable this for deployment
     sameSite: "None", // Cross-site cookie
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
-  res.json({ accessToken: accessToken });
+  res.json({ accessToken });
 });
 
 // @desc Refresh
 // @route GET /api/auth/refresh
 // @access Public - because access token has expired
-router.get("/refresh", function (req, res) {
+const refresh = asyncHandler(async (req, res) => {
   const cookies = req.cookies;
 
-  if (!cookies.jwt) {
+  if (!cookies?.jwt) {
     return res.status(401).json({ message: "Unauthorised" });
   }
 
@@ -87,14 +67,14 @@ router.get("/refresh", function (req, res) {
   jwt.verify(
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET,
-    async (err, decoded) => {
+    asyncHandler(async (err, decoded) => {
       if (err) {
         return res.status(403).json({ message: "Forbidden" });
       }
 
-      const foundUser = await users
-        .findOne({ username: decoded.username })
-        .exec();
+      const foundUser = await User.findOne({
+        username: decoded.username,
+      }).exec();
 
       if (!foundUser) {
         return res.status(401).json({ message: "Unauthorised" });
@@ -102,32 +82,34 @@ router.get("/refresh", function (req, res) {
 
       const accessToken = jwt.sign(
         {
-          UserInfo: {
-            username: foundUser.username,
-          },
+          username: foundUser.username,
+          roles: foundUser.roles,
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "1m" }
+        { expiresIn: "10s" }
       );
 
-      res.json({ accessToken: accessToken });
-    }
+      res.json({ accessToken });
+    })
   );
 });
 
 // @desc Logout
 // @route POST /api/auth/logout
 // @access Public - just to clear the cookie if it exists
-router.post("/logout", async function (req, res) {
+const logout = asyncHandler(async (req, res) => {
   const cookies = req.cookies;
 
-  if (cookies.jwt) {
-    res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "None" });
-
-    res.json({ message: "Cookie cleared" });
-  } else {
+  if (!cookies?.jwt) {
     return res.status(204).send(); // No content
   }
+  //   TODO: Add secure: true back to this on deployment
+  res.clearCookie("jwt", { httpOnly: true, sameSite: "None" });
+  res.json({ message: "Cookie cleared" });
 });
 
-export default router;
+export default {
+  login,
+  refresh,
+  logout,
+};

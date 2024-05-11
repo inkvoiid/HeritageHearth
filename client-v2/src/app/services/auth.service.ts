@@ -51,7 +51,7 @@ export class AuthService {
     const token = localStorage.getItem('ourkitchen_auth');
     if (token) {
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      this.setUsername(decodedToken.UserInfo.username);
+      this.setUsername(decodedToken.username);
     } else {
       this.setUsername(''); // Clear username if there's no token (logged out)
     }
