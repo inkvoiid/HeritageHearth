@@ -44,7 +44,7 @@ const login = asyncHandler(async (req, res) => {
 
   res.cookie("jwt", refreshToken, {
     httpOnly: true, // Accessible only by the server
-    // secure: true, // Only sent with HTTPS // TODO: Reenable this for deployment
+    secure: process.env.NODE_ENV === "production",
     sameSite: "None", // Cross-site cookie
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
