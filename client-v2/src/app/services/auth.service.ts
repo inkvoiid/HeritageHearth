@@ -81,7 +81,7 @@ export class AuthService {
       tap((response: any) => {
         if (response.accessToken != null) {
           this._loggedInStatus$.next(true);
-          localStorage.setItem('ourkitchen_auth', response.accessToken);
+          // localStorage.setItem('ourkitchen_auth', response.accessToken);
           this.updateUsernameFromToken();
           this.toastr.success('Login successful');
           this.loginEvent.emit();
@@ -131,7 +131,7 @@ export class AuthService {
         tap(() => {
           // Successfully logged out on the server
           this._loggedInStatus$.next(false);
-          localStorage.removeItem('ourkitchen_auth');
+          // localStorage.removeItem('ourkitchen_auth');
           this.toastr.success('Logout successful');
           this.logoutEvent.emit();
           this.router.navigate(['/']);

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import recipesController from "../../controllers/recipesController.js";
+import verifyJWT from "../../middleware/verifyJWT.js";
 const router = Router();
 
 router
@@ -16,7 +17,7 @@ router.route("/previews").get(recipesController.getAllRecipePreviews);
 router
   .route("/:recipeId?")
   .get(recipesController.getRecipe)
-  .put(recipesController.updateRecipe)
-  .delete(recipesController.deleteRecipe);
+  .put(verifyJWT, recipesController.updateRecipe)
+  .delete(verifyJWT, recipesController.deleteRecipe);
 
 export default router;

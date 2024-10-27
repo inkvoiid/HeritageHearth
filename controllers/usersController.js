@@ -41,14 +41,15 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
 // Route for GET request to retrieve a user by id
 const getUser = asyncHandler(async (req, res) => {
-  var requestedUsername = req.params.username;
+  const requestedUsername = req.params.username;
 
-  const { minimal } = req.query;
-  var selectFields = {
-    password: 0,
-  };
+  // Convert the minimal query param to a boolean
+  const minimal = req.query.minimal === "true";
 
-  if (minimal === "true") {
+  // Define selectFields based on the 'minimal' flag
+  let selectFields = { password: 0 };
+
+  if (minimal) {
     selectFields = {
       username: 1,
       profilePic: 1,
@@ -58,19 +59,46 @@ const getUser = asyncHandler(async (req, res) => {
     };
   }
 
-  User.findOne({ username: requestedUsername })
-    .select(selectFields)
-    .lean()
-    .then(function (user) {
-      if (user) {
-        res.json(user);
-      } else {
-        res.status(404).json(`Error 404: User ${requestedUsername} not found`);
+  try {
+    const user = await User.findOne({ username: requestedUsername })
+      .select(selectFields)
+      .lean();
+
+    // Only populate savedRecipes and recipes if minimal is false
+    if (!minimal) {
+      // Populate savedRecipes if they exist
+      if (user && user.savedRecipes) {
+        const populatedSavedRecipes = await Recipe.find({
+          recipeId: { $in: user.savedRecipes },
+        }).select(
+          "recipeId name approved description recipeImage creator servingSize cookingTime"
+        );
+
+        // Assign the populated saved recipes to user.savedRecipes
+        user.savedRecipes = populatedSavedRecipes;
       }
-    })
-    .catch((err) => {
-      res.send("Error retrieving user: " + err);
-    });
+
+      // Populate user recipes if they exist
+      if (user && user.recipes) {
+        const populatedUserRecipes = await Recipe.find({
+          recipeId: { $in: user.recipes },
+        }).select(
+          "recipeId name approved description recipeImage creator servingSize cookingTime"
+        );
+
+        // Assign the populated user recipes to user.recipes
+        user.recipes = populatedUserRecipes;
+      }
+    }
+
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ error: `User ${requestedUsername} not found` });
+    }
+  } catch (err) {
+    res.status(500).send("Error retrieving user: " + err.message);
+  }
 });
 
 // Route for POST request to create a user

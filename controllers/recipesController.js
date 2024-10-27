@@ -77,33 +77,40 @@ const getAllRecipePreviews = asyncHandler(async (req, res) => {
 // @route   GET /api/recipes/pending
 // @access  Private
 const getAllPendingRecipes = asyncHandler(async (req, res) => {
-  Recipe.find({ approved: false })
-    .sort({ updatedAt: "desc" })
-    .select({
-      recipeId: 1,
-      name: 1,
-      approved: 1,
-      description: 1,
-      recipeImage: 1,
-      creator: 1,
-      servingSize: 1,
-      cookingTime: 1,
-      createdAt: 1,
-      updatedAt: 1,
-    })
-    .lean()
-    .then(function (recipe) {
-      // If the recipes collection doesn't contain recipes, send 400 response
-      if (!recipe?.length) {
-        return res.status(400).json({ message: "No recipes found" });
-      }
+  try {
+    const recipe = await Recipe.find({ approved: false })
+      .sort({ updatedAt: "desc" })
+      .select({
+        recipeId: 1,
+        name: 1,
+        approved: 1,
+        description: 1,
+        recipeImage: 1,
+        creator: 1,
+        servingSize: 1,
+        cookingTime: 1,
+        createdAt: 1,
+        updatedAt: 1,
+      })
+      .lean();
 
+    if (recipe && recipe.creator) {
+      const creatorIdAndName = await User.findOne({
+        username: { $in: recipe.creator },
+      }).select("username firstName lastName");
+
+      recipe.creator = creatorIdAndName;
+    }
+    // If the recipes collection doesn't contain recipes, send 400 response
+    if (!recipe?.length) {
+      return res.status(400).json({ message: "No recipes found" });
+    } else {
       // Else, return the recipes collection
       res.json(recipe);
-    })
-    .catch((err) => {
-      res.send("Error retrieving recipes");
-    });
+    }
+  } catch (err) {
+    res.send("Error retrieving recipes");
+  }
 });
 
 // ? Get latest recipes
@@ -148,20 +155,28 @@ const getLatestRecipes = asyncHandler(async (req, res) => {
 // @desc    Get a recipe
 // @route   GET /api/recipes/:recipeId
 const getRecipe = asyncHandler(async (req, res) => {
-  var requestedId = req.params.recipeId;
-  Recipe.findOne({ recipeId: requestedId })
-    .select()
-    .lean()
-    .then(function (recipe) {
-      if (recipe) {
-        res.json(recipe);
-      } else {
-        res.status(404).json(`Error 404: Recipe ${requestedId} not found`);
-      }
-    })
-    .catch((err) => {
-      res.send("Error retrieving recipe ");
-    });
+  const requestedId = req.params.recipeId;
+  try {
+    const recipe = await Recipe.findOne({ recipeId: requestedId })
+      .select()
+      .lean();
+
+    if (recipe && recipe.creator) {
+      const creatorIdAndName = await User.findOne({
+        username: { $in: recipe.creator },
+      }).select("username firstName lastName");
+
+      recipe.creator = creatorIdAndName;
+    }
+
+    if (recipe) {
+      res.json(recipe);
+    } else {
+      res.status(404).json(`Error 404: Recipe ${requestedId} not found`);
+    }
+  } catch (err) {
+    res.send("Error retrieving recipe ");
+  }
 });
 
 // Route for POST request to create a recipe

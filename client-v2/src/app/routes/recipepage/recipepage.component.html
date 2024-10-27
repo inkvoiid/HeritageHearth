@@ -106,7 +106,7 @@
               by
               <a
                 class="link"
-                [routerLink]="['/profile/' + recipe.creator]"
+                [routerLink]="['/profile/' + recipe.creator.username]"
                 (error)="setUserNotFound()"
                 >{{ recipeCreatorName }}</a
               >

@@ -57,9 +57,9 @@ export class ProfilepageComponent implements OnInit {
           this.isOwnProfile = false;
         }
 
-        if (this.auth.getLoggedInStatus()) {
-          this.auth.setSavedRecipes();
-        }
+        // if (this.auth.getLoggedInStatus()) {
+        //   this.auth.setSavedRecipes();
+        // }
         // Clear the arrays
         this.recipes = [];
         this.pendingRecipes = [];
@@ -80,19 +80,15 @@ export class ProfilepageComponent implements OnInit {
           });
         }
 
-        this.recipeService
-          .getUserRecipes(this.user.username, true)
-          .subscribe((recipes) => {
-            this.allRecipes = recipes;
+        this.allRecipes = this.user.recipes;
 
-            for (let recipe of this.allRecipes) {
-              if (recipe.approved === false) {
-                this.pendingRecipes.push(recipe);
-              } else {
-                this.recipes.push(recipe);
-              }
-            }
-          });
+        for (let recipe of this.allRecipes) {
+          if (recipe.approved === false) {
+            this.pendingRecipes.push(recipe);
+          } else {
+            this.recipes.push(recipe);
+          }
+        }
       },
       (error) => {
         this.user = null;

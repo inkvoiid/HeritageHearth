@@ -64,7 +64,7 @@ export class RecipepageComponent implements OnInit {
 
   doesUserOwnRecipe(): boolean {
     if (this.recipe) {
-      return this.auth.getUsername() === this.recipe.creator;
+      return this.auth.getUsername() === this.recipe.creator.username;
     }
     return false;
   }
@@ -74,19 +74,8 @@ export class RecipepageComponent implements OnInit {
       (response: any) => {
         this.recipe = response.body;
         this.loading = false;
-        this.userService.getUser(response.body.creator).subscribe(
-          (userResponse: any) => {
-            if (userResponse.status === 200) {
-              this.recipeCreatorName =
-                userResponse.body.firstName + ' ' + userResponse.body.lastName;
-            } else {
-              this.setUserNotFound();
-            }
-          },
-          (error) => {
-            this.setUserNotFound();
-          }
-        );
+        this.recipeCreatorName =
+          this.recipe.creator.firstName + ' ' + this.recipe.creator.lastName;
         if (this.recipe.recipeImage) {
           this.recipeImageSrc = this.recipe.recipeImage;
         }

@@ -1,6 +1,6 @@
 <div class="container">
   <h1 class="tertiary darktitleoverride heading">Welcome to Our Kitchen</h1>
-  <h2 class="subheading">Nau mai ki To Mātau Kītini</h2>
+  <p class="subheading">Nau mai ki To Mātau Kītini</p>
   <p>Hello, welcome to the family recipe site.</p>
   <div *ngIf="!(auth.loggedInStatus$ | async)">
     <p>To get started, login or sign up to add recipes.</p>
@@ -35,10 +35,12 @@
 <div class="container">
   <h1 class="tertiary darktitleoverride">Current Members</h1>
   <p>Who's already a part of Our Kitchen?</p>
-  <div class="grid" [@listAnimation]="users.length">
-    <!-- for each user in the list of users, create a p tag -->
-    <div class="userPreview" *ngFor="let user of users">
-      <app-userpreview [user]="user"></app-userpreview>
+  <div style="display: flex; place-content: center">
+    <div class="grid userPreviewGrid" [@listAnimation]="users.length">
+      <!-- for each user in the list of users, create a p tag -->
+      <div class="userPreview" *ngFor="let user of users">
+        <app-userpreview [user]="user"></app-userpreview>
+      </div>
     </div>
   </div>
 </div>
@@ -56,7 +58,7 @@
     easily upload and share the old recipes they're hanging on to, so that
     everyone can use them.
   </p>
-  <p>© Kaleb Dickson 2023</p>
+  <p>© inkvoiid 2024</p>
 </div>
 
 <app-addrecipebutton></app-addrecipebutton>

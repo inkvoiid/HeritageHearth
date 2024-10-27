@@ -30,21 +30,31 @@ export class RecipeapprovalpreviewComponent implements OnInit {
     if (this.recipe != null) {
       this.recipeImageSrc = this.recipe.recipeImage;
 
-      if (this.recipe.creator != null) {
-        this.userService.getUser(this.recipe.creator, true).subscribe(
-          (response: any) => {
-            if (response.status === 200) {
-              this.creatorName =
-                response.body.firstName + ' ' + response.body.lastName;
-            }
-          },
-          (error) => {
-            this.creatorName = 'An unknown user';
-          }
-        );
+      if (this.recipe.creator.firstName) {
+        this.creatorName =
+          this.recipe.creator.firstName + ' ' + this.recipe.creator.lastName;
+      } else if (this.recipe.creator.username) {
+        this.creatorName = this.recipe.creator.username;
       } else {
-        this.creatorName = 'An unknown user';
+        this.creatorName = this.recipe.creator;
       }
+
+      console.log(this.recipe);
+      // if (this.recipe.creator != null) {
+      //   this.userService.getUser(this.recipe.creator, true).subscribe(
+      //     (response: any) => {
+      //       if (response.status === 200) {
+      //         this.creatorName =
+      //           response.body.firstName + ' ' + response.body.lastName;
+      //       }
+      //     },
+      //     (error) => {
+      //       this.creatorName = 'An unknown user';
+      //     }
+      //   );
+      // } else {
+      //   this.creatorName = 'An unknown user';
+      // }
 
       this.timeSinceLastUpdated = formatTimeAgo(this.recipe.updatedAt);
     }
