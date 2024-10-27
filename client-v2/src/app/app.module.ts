@@ -23,7 +23,7 @@ import { HomepageComponent } from './routes/homepage/homepage.component';
 import { PagenotfoundComponent } from './routes/pagenotfound/pagenotfound.component';
 import { RecipepreviewComponent } from './partial/recipepreview/recipepreview.component';
 import { LoginpageComponent } from './routes/loginpage/loginpage.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { ProfilepageComponent } from './routes/profilepage/profilepage.component';
 import { SignuppageComponent } from './routes/forms/signuppage/signuppage.component';
@@ -43,59 +43,52 @@ import { RejectrecipemodalComponent } from './partial/modals/rejectrecipemodal/r
 import { UserpreviewComponent } from './partial/userpreview/userpreview.component';
 import { LoadingComponent } from './partial/loading/loading.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    HomepageComponent,
-    PagenotfoundComponent,
-    RecipepreviewComponent,
-    LoginpageComponent,
-    ProfilepageComponent,
-    SignuppageComponent,
-    AddrecipebuttonComponent,
-    RecipeformComponent,
-    AuditlogpageComponent,
-    BrowserecipepageComponent,
-    RecipepageComponent,
-    EditprofileformComponent,
-    MobileheaderComponent,
-    DeleterecipemodalComponent,
-    DeleteusermodalComponent,
-    AdmindashpageComponent,
-    RecipeapprovalpreviewComponent,
-    RejectrecipemodalComponent,
-    UserpreviewComponent,
-    LoadingComponent,
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatInputModule,
-    MatIconModule,
-    MatCardModule,
-    MatDialogModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MatProgressSpinnerModule,
-    MatSlideToggleModule,
-    ToastrModule.forRoot(),
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: () => {
-          return localStorage.getItem('ourkitchen_auth');
-        },
-      },
-    }),
-    MatStepperModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatTooltipModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        NavbarComponent,
+        HomepageComponent,
+        PagenotfoundComponent,
+        RecipepreviewComponent,
+        LoginpageComponent,
+        ProfilepageComponent,
+        SignuppageComponent,
+        AddrecipebuttonComponent,
+        RecipeformComponent,
+        AuditlogpageComponent,
+        BrowserecipepageComponent,
+        RecipepageComponent,
+        EditprofileformComponent,
+        MobileheaderComponent,
+        DeleterecipemodalComponent,
+        DeleteusermodalComponent,
+        AdmindashpageComponent,
+        RecipeapprovalpreviewComponent,
+        RejectrecipemodalComponent,
+        UserpreviewComponent,
+        LoadingComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatInputModule,
+        MatIconModule,
+        MatCardModule,
+        MatDialogModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatProgressSpinnerModule,
+        MatSlideToggleModule,
+        ToastrModule.forRoot(),
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: () => {
+                    return localStorage.getItem('ourkitchen_auth');
+                },
+            },
+        }),
+        MatStepperModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatTooltipModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {}
