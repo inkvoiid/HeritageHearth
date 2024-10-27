@@ -85,7 +85,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
-    canceledNavigationResolution: 'computed', // or 'none'
     paramsInheritanceStrategy: 'always', // or 'emptyOnly'
     urlUpdateStrategy: 'deferred', // or 'eager'
     })],
